@@ -1,0 +1,31 @@
+# test coverage
+coverage
+/spec/coverage
+/spec/tmp
+spec/reports
+
+# public assets
+public/system/
+public/system/*
+public/assets/
+.sass-cache
+
+# IDEs
+.idea
+nbproject
+
+# configs
+config/database.yml
+
+# vendor/bundler stuff
+/.bundle
+/vendor/assets/
+/vendor/bundle/
+
+# misc stuff
+*.db
+uploads/*.csv
+log
+.env
+test.rb
+tmp/

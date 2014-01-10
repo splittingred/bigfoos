@@ -1,0 +1,7 @@
+targets:
+  development:
+    strategy: 'cap'
+  staging:
+    strategy: 'cap'
+  production:
+    strategy: 'cap'
