@@ -1,0 +1,12 @@
+%tr
+  %td= user.name
+  %td= user.email
+  %td= l user.created_at, format: :long
+
+  %td
+    = link_to user, class: 'btn btn-default' do
+      %i.icon.icon-chevron-right
+      %span.visible-widest= t('show')
+    = link_to edit_user_path(user), class: 'btn btn-info' do
+      %i.icon.icon-white.icon-pencil
+      %span.visible-widest= t('edit')

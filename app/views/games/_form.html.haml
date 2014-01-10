@@ -1,0 +1,27 @@
+= bootstrap_form_for(@game) do |f|
+
+  = f.number_field :num_players, :max => 4, :min => 2
+
+  .row
+    .col-xs-6
+      .form-group
+        %label{:for => 'game_user_ids'} Yellow Team
+        %select.form-control{multiple: true,:name => 'game[yellow_team]'}
+          = options_from_collection_for_select(@users,:id,:name,@yellow_team_users)
+    .col-xs-6
+      .form-group
+        %label{:for => 'game_user_ids'} Black Team
+        %select.form-control{multiple: true,:name => 'game[black_team]'}
+          = options_from_collection_for_select(@users,:id,:name,@black_team_users)
+
+  .clearfix
+
+  .row-fluid
+    - @game.teams.each do |team|
+      .span6
+        = f.fields_for team do |t|
+          %h3= team.color
+          = t.number_field :score, name: "game[#{team.id}][score]", min: 0, max: 10
+          = content_tag :div, '', id: team.color+'_score_text'
+
+  = f.submit 'Save'

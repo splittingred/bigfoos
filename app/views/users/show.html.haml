@@ -1,0 +1,38 @@
+%ul.breadcrumb
+  %li
+    = link_to 'BigFoos', root_path
+    %span.divider
+  %li
+    = link_to t('users'), users_path
+    %span.divider
+  %li.active= t('user')
+
+.pull-right
+  = link_to edit_user_path(@user), class: 'btn btn-primary' do
+    %i.icon.icon-pencil= t('edit')
+  = link_to user_path(@user), class: 'btn btn-danger', method: :delete, data: { confirm: 'Are you sure?' } do
+    %i.icon.icon-white.icon-trash= t('delete')
+  = link_to 'Back', users_path, class: 'btn btn-default'
+
+
+.user
+  .meta
+    %h2= t('.user_details')
+    %span= t('created_at')+': '+(l @user.created_at, format: :long)
+
+%br
+
+%table.table.table-bordered
+  %tbody
+    %tr
+      %td{style: 'width: 20%'} Name
+      %td= @user.name
+    %tr
+      %td Email
+      %td= @user.email
+    %tr
+      %td Total Points
+      %td= @user.total_points
+    %tr
+      %td Average Points Per Game
+      %td= @user.average_points_per_game

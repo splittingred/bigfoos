@@ -23,15 +23,20 @@ gem 'omniauth', '>= 1.0.0'
 gem 'omniauth_crowd', '~> 2.2.2'
 
 # rails stuff
+gem 'jquery-rails'
+gem 'font-awesome-sass-rails'
+gem 'jquery-ui-rails'
+gem 'haml-rails'
+gem 'bootstrap_form'
+gem 'bootstrap-sass', '~> 3.0.3.0'
 gem 'kaminari', '>= 0.14.0'
 gem 'hashugar', '~> 0.0.6', github: 'alex-klepa/hashugar'
 
 # asset pipeline
 group :assets do
-  gem 'sass-rails', '~> 4.0.0'
+  gem 'sass-rails', '>= 3.2'
   gem 'uglifier', '>= 1.3.0'
   gem 'coffee-rails', '~> 4.0.0'
-  gem 'jquery-rails', '~> 3.0.4'
 end
 
 group :doc do

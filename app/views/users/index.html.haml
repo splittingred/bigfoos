@@ -1,0 +1,14 @@
+%ul.breadcrumb
+  %li
+    = link_to 'BigFoos', root_path
+    %span.divider
+  %li.active= t('users')
+
+%p.pull-right= link_to t('new_user'), new_user_path, class: 'btn btn-success'
+%h1= t('users')
+
+
+%table.table.table-bordered
+  %tbody
+    = render partial: 'user', collection: @users
+

@@ -1,0 +1,14 @@
+%ul.breadcrumb
+  %li
+    = link_to 'BigFoos', root_path
+    %span.divider
+  %li.active Games
+
+%p.pull-right= link_to t('.new'), new_game_path, class: 'btn btn-success'
+%h1= t('.games')
+
+
+%table.table.table-bordered
+  %tbody
+    = render partial: 'game', collection: @games
+

@@ -1,0 +1,4 @@
+- flash.each do |k,v|
+  %div{:class => 'alert alert-danger'}
+    = v
+    %a.close{:data => {:dismiss => "alert"}, :href => '#'} &times;

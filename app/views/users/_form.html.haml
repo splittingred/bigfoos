@@ -1,0 +1,16 @@
+= bootstrap_form_for(@user) do |f|
+  - if @user.errors.any?
+    #error_explanation
+      %p
+        = pluralize(@user.errors.count,'error')
+        prevented this game from being saved:
+      %ul
+        - @user.errors.full_messages.each do |msg|
+          %li= msg
+
+  = f.text_field :name
+  = f.email_field :email
+  = f.password_field :password if @user.new_record?
+  = f.text_field :uid
+
+  = f.submit 'Submit', {:class => 'btn btn-primary'}

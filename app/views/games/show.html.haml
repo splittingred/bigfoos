@@ -1,0 +1,32 @@
+%ul.breadcrumb
+  %li
+    = link_to 'BigFoos', root_path
+    %span.divider
+  %li
+    = link_to t('games'), games_path
+    %span.divider
+  %li.active Game Details
+
+.pull-right
+  = link_to edit_game_path(@game), class: 'btn btn-primary' do
+    %i.icon.icon-pencil Edit
+  = link_to game_path(@game), class: 'btn btn-danger', method: :delete, data: { confirm: 'Are you sure?' } do
+    %i.icon.icon-white.icon-trash Delete
+  = link_to t('back'), games_path, class: 'btn btn-default'
+
+
+.game
+  .meta
+    %h2 Game Details
+    %span= l @game.created_at, format: :long
+
+  .row
+    - @game.teams.each do |team|
+      .col-xs-5.well.score-box
+        %h3.pull-right.scores= team.score
+        %h4{class: team.color.downcase}
+          = team.color
+        - team.players.each do |p|
+          %div{:class => 'player '+(p.top_scorer? ? 'top-scorer' : '')}
+            = link_to p.user.name, p.user
+            = ': '+p.points.to_s

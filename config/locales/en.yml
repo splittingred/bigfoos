@@ -20,4 +20,19 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  user: "User"
+  edit: "Edit"
+  delete: "Delete"
+  back: "Back"
+  show: "Show"
+
+  games: "Games"
+  users: "Users"
+
+  games:
+    index:
+      new: "New User"
+    edit:
+      editing: "Editing Game"
+    new:
+      new: "New Game"
