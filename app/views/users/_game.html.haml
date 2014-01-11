@@ -1,9 +1,12 @@
-%tr
-  %td= l game.created_at, format: :long
+- player = Player.for_user(game,@user)
+%tr{:class => (player.team == game.winning_team ? 'success' : 'danger')}
+  %td= link_to (l game.created_at, format: :long), game_path(game)
   %td
     - game.teams.each_with_index do |team,i|
+
       %p{class: (i == 0 ? 'pull-right' : '')}
-        %span{class: team.color.downcase}= team.color+': '
+        %span{class: team.color.downcase}= team.color+': '+team.score+ ' - '
+
         - len = team.users.count-1
         - team.users.each_with_index do |u,idx|
           = (link_to u.name, u)+(idx >= len ? '' : ',')

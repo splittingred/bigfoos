@@ -44,11 +44,11 @@
   .tab-pane#tab-games
     %h2= t('games.title')
 
-    %table.table.table-striped
+    %table.table
       %thead
         %tr
           %th Date
           %th Teams
-          %th Score
+          %th Points
       %tbody
         = render partial: 'game', collection: @user.games

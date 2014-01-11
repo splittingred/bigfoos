@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   end
 
   def points_for(game)
-    team_ids = game.teams.pluck(:id)
-    Player.where(:team_id => team_ids, user_id: self.id).first.points
+    Player.for_user(game,self).points
   end
+
 end
