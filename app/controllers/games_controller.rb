@@ -4,7 +4,7 @@ class GamesController < ApplicationController
   before_action :prepare_teams, only: [:edit]
 
   def index
-    @games = Game.all
+    @games = Game.page(params[:page])
   end
 
   def show

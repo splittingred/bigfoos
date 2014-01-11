@@ -7,7 +7,6 @@
 %p.pull-right= link_to t('.new'), new_game_path, class: 'btn btn-success'
 %h1= t('games.title')
 
-
 %table.table.table-striped
   %thead
     %tr
@@ -17,3 +16,4 @@
   %tbody
     = render partial: 'game', collection: @games
 
+= paginate @games
