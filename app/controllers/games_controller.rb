@@ -1,6 +1,7 @@
 class GamesController < ApplicationController
   before_action :fetch_game, only: [:show, :edit, :update, :destroy]
-  before_action :build_game, only: [:new]
+  before_action :build_game, only: [:new, :create]
+  before_action :prepare_teams, only: [:edit]
 
   def index
     @games = Game.all
@@ -17,9 +18,31 @@ class GamesController < ApplicationController
 
   def edit
     @users = User.all
-    @yellow_team_users = @game.users_for_team('Yellow').collect{ |u| u.id }
-    @black_team_users = @game.users_for_team('Black').collect{ |u| u.id }
     render
+  end
+
+  def create
+    data = game_params
+    teams = data.delete(:teams_attributes)
+    @game = Game.new(data)
+
+    teams.each do |idx,t|
+      if t[:players_attributes]
+        users = t.delete(:players_attributes)
+        team = Team.new(t)
+
+        users.each do |user_id|
+          player = Player.new
+          player.user_id = user_id.to_i
+          team.players << player
+        end
+
+        @game.teams << team
+      end
+    end if teams
+
+    authorize! :create, @game
+    @game.save ? redirect_to(@game, flash: { success: 'Game successfully created.'}) : render(action: :new)
   end
 
   def update
@@ -28,13 +51,21 @@ class GamesController < ApplicationController
   end
 
   def destroy
-
+    authorize! :destroy, @game
+    @game.destroy
+    redirect_to games_path
   end
 
   protected
 
   def fetch_game
     @game = Game.find(params[:id])
+  end
+
+  def prepare_teams
+    @players = {}
+    @players[:yellow] = @game.users_for_team('Yellow').collect{ |u| u.id }
+    @players[:black] = @game.users_for_team('Black').collect{ |u| u.id }
   end
 
   def build_game
@@ -49,6 +80,10 @@ class GamesController < ApplicationController
   end
 
   def game_params
-    params.require(:game).permit(:num_players)
+    params.require(:game).permit(:num_players,teams_attributes: [
+      :score,
+      :color,
+      :players_attributes => []
+    ])
   end
 end

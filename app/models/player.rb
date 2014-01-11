@@ -4,6 +4,7 @@ class Player < ActiveRecord::Base
   belongs_to :user
 
   def top_scorer?
-    self.game.players.maximum(:points) == self.points
+    team_ids = self.team.game.teams.pluck(:id)
+    Player.where(:team_id => team_ids).maximum(:points) == self.points
   end
 end

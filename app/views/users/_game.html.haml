@@ -8,4 +8,4 @@
         - team.users.each_with_index do |u,idx|
           = (link_to u.name, u)+(idx >= len ? '' : ',')
   %td
-    = game.players.where(user_id: @user.id).pluck(:points).first.to_s
+    = @user.points_for(game)

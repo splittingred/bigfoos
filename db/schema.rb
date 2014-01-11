@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140110205950) do
+ActiveRecord::Schema.define(version: 20140111040607) do
 
   create_table "games", force: true do |t|
     t.integer  "num_players", default: 4, null: false
@@ -23,14 +23,12 @@ ActiveRecord::Schema.define(version: 20140110205950) do
 
   create_table "players", force: true do |t|
     t.integer  "user_id",    default: 0, null: false
-    t.integer  "game_id",    default: 0, null: false
     t.integer  "team_id",    default: 0, null: false
     t.integer  "points",     default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "players", ["game_id"], name: "index_players_on_game_id", using: :btree
   add_index "players", ["team_id"], name: "index_players_on_team_id", using: :btree
   add_index "players", ["user_id"], name: "index_players_on_user_id", using: :btree
 

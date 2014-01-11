@@ -2,26 +2,20 @@
 
   = f.number_field :num_players, :max => 4, :min => 2
 
-  .row
-    .col-xs-6
-      .form-group
-        %label{:for => 'game_user_ids'} Yellow Team
-        %select.form-control{multiple: true,:name => 'game[yellow_team]'}
-          = options_from_collection_for_select(@users,:id,:name,@yellow_team_users)
-    .col-xs-6
-      .form-group
-        %label{:for => 'game_user_ids'} Black Team
-        %select.form-control{multiple: true,:name => 'game[black_team]'}
-          = options_from_collection_for_select(@users,:id,:name,@black_team_users)
+  - idx = 0
+  = f.fields_for :teams do |t|
+    .row
+      .col-xs-10
+        %h4= t.object.color+' Team'
+      .col-xs-5
+        .form-group
+          %label{:for => 'game_user_ids'} Players
+          %select.form-control{multiple: true,:name => 'game[teams_attributes]['+idx.to_s+'][players_attributes][]'}
+            = options_from_collection_for_select(@users,:id,:name,@game.new_record? ? nil : @players[t.object.color.downcase.to_sym])
+      .col-xs-5
+        = t.hidden_field :color
+        = t.number_field :score, min: 0, max: 10
 
-  .clearfix
-
-  .row-fluid
-    - @game.teams.each do |team|
-      .span6
-        = f.fields_for team do |t|
-          %h3= team.color
-          = t.number_field :score, name: "game[#{team.id}][score]", min: 0, max: 10
-          = content_tag :div, '', id: team.color+'_score_text'
+    - idx += 1
 
   = f.submit 'Save'

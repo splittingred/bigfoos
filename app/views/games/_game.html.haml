@@ -1,5 +1,5 @@
 %tr
-  %td= l game.created_at, format: :long
+  %td= link_to (l game.created_at, format: :long), game_path(game)
   %td
     - game.teams.each_with_index do |team,i|
       %p{class: (i == 0 ? 'pull-right' : '')}

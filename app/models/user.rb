@@ -6,14 +6,23 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :token_authenticatable#, :omniauthable
 
   has_many :players
-  has_many :games, :through => :players
   has_many :teams, :through => :players
 
   def total_points
     self.players.sum(:points)
   end
 
+  def games
+    game_ids = self.teams.pluck(:game_id)
+    Game.where(:id => game_ids).all
+  end
+
   def average_points_per_game
     self.players.average(:points)
+  end
+
+  def points_for(game)
+    team_ids = game.teams.pluck(:id)
+    Player.where(:team_id => team_ids, user_id: self.id).first.points
   end
 end
