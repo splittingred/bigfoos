@@ -1,5 +1,5 @@
 %tr
-  %td= user.name
+  %td= link_to user.name, user_path(user)
   %td= user.email
   %td= l user.created_at, format: :long
 

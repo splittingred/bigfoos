@@ -2,13 +2,19 @@
   %li
     = link_to 'BigFoos', root_path
     %span.divider
-  %li.active= t('users')
+  %li.active= t('users.title')
 
-%p.pull-right= link_to t('new_user'), new_user_path, class: 'btn btn-success'
-%h1= t('users')
+%p.pull-right= link_to t('.new'), new_user_path, class: 'btn btn-success'
+%h1= t('users.title')
 
 
-%table.table.table-bordered
+%table.table.table-striped
+  %thead
+    %tr
+      %th Name
+      %th Email
+      %th Signed up on
+      %th
   %tbody
     = render partial: 'user', collection: @users
 

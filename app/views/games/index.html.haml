@@ -2,13 +2,18 @@
   %li
     = link_to 'BigFoos', root_path
     %span.divider
-  %li.active Games
+  %li.active= t('games.title')
 
 %p.pull-right= link_to t('.new'), new_game_path, class: 'btn btn-success'
-%h1= t('.games')
+%h1= t('games.title')
 
 
-%table.table.table-bordered
+%table.table.table-striped
+  %thead
+    %tr
+      %th Played on
+      %th Teams
+      %th
   %tbody
     = render partial: 'game', collection: @games
 

@@ -25,14 +25,42 @@ en:
   delete: "Delete"
   back: "Back"
   show: "Show"
+  details: "Details"
 
-  games: "Games"
-  users: "Users"
+  # --- Models ---------------------------------------------------------------------------
+  activerecord:
+    models:
+      user: User
+      game: Game
+      team: Team
+      player: Player
+    attributes:
+      user:
+        email: Email
+        name: Name
+        uid: UID
+        created_at: Signed up on
+        total_points: Total Points
+        average_points_per_game: Average Points Per Game
 
-  games:
+  # --- Controllers ----------------------------------------------------------------------
+  users:
+    title: "Users"
     index:
       new: "New User"
     edit:
+      editing: "Editing User"
+    show:
+      user_details: "User Details"
+      signed_up_on: "Signed Up On"
+  games:
+    title: "Games"
+    index:
+      new: "New Game"
+    edit:
       editing: "Editing Game"
+    show:
+      details: "Game Details"
+      delete_confirm: "Are you sure you want to delete this game?"
     new:
       new: "New Game"

@@ -3,21 +3,21 @@
     = link_to 'BigFoos', root_path
     %span.divider
   %li
-    = link_to t('games'), games_path
+    = link_to t('games.title'), games_path
     %span.divider
-  %li.active Game Details
+  %li.active= t('.details')
 
 .pull-right
   = link_to edit_game_path(@game), class: 'btn btn-primary' do
-    %i.icon.icon-pencil Edit
-  = link_to game_path(@game), class: 'btn btn-danger', method: :delete, data: { confirm: 'Are you sure?' } do
-    %i.icon.icon-white.icon-trash Delete
+    %i.icon.icon-pencil= t('edit')
+  = link_to game_path(@game), class: 'btn btn-danger', method: :delete, data: { confirm: t('.delete_confirm') } do
+    %i.icon.icon-white.icon-trash= t('delete')
   = link_to t('back'), games_path, class: 'btn btn-default'
 
 
 .game
   .meta
-    %h2 Game Details
+    %h2= t('.details')
     %span= l @game.created_at, format: :long
 
   .row
