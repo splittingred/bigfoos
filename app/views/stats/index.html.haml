@@ -1,0 +1,37 @@
+%ul.breadcrumb
+  %li
+    = link_to 'BigFoos', root_path
+    %span.divider
+  %li.active= t('stats')
+
+%h1= t('stats')
+
+
+.row
+  .col-xs-5
+    %h3
+      Highest Scorers
+    %ol
+      - @top_scorers.each do |user|
+        %li.rank
+          = link_to user.name, user_path(user)
+          = ' - '+user[:points].to_s
+
+
+  .col-xs-5
+    %h3
+      Top Points Per Game
+    %ol
+      - @top_ppg.each do |user|
+        %li.rank
+          = link_to user.name, user_path(user)
+          = ' - '+user[:points].round(2).to_s
+
+  .col-xs-5
+    %h3
+      Most Games Played
+    %ol
+      - @most_games.each do |user|
+        %li.rank
+          = link_to user.name, user_path(user)
+          = ' - '+user[:games].to_s

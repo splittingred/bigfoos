@@ -8,6 +8,10 @@ class User < ActiveRecord::Base
   has_many :players
   has_many :teams, :through => :players
 
+  scope :top_scorers,joins(:players).select('users.*,SUM(players.points) AS `points`').group('users.id').order('points DESC')
+  scope :top_points_per_game,joins(:players).select('users.*,AVG(players.points) AS `points`').group('users.id').order('points DESC')
+  scope :most_games,joins(:players).select('users.*,COUNT(players.id) AS `games`').group('users.id').order('games DESC')
+
   def total_points
     self.players.sum(:points)
   end
