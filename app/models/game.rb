@@ -3,7 +3,7 @@ class Game < ActiveRecord::Base
   has_many :players
   has_many :users, :through => :players
 
-  accepts_nested_attributes_for :teams
+  accepts_nested_attributes_for :teams, :allow_destroy => true
 
   def users_for_team(color)
     team = self.teams.where(color: color).first

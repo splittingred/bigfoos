@@ -1,0 +1,15 @@
+- idx = 0
+= f.fields_for :teams do |t|
+  .row
+    .col-xs-10
+      %h4= t.object.color+' Team'
+    .col-xs-5
+      .form-group
+        %label{:for => 'game_user_ids'} Players
+        %select.form-control{multiple: true,:name => 'game[teams_attributes]['+idx.to_s+'][players_attributes][]'}
+          = options_from_collection_for_select(@users,:id,:name,@game.new_record? ? nil : @players[t.object.color.downcase.to_sym])
+    .col-xs-5
+      = t.hidden_field :color
+      = t.number_field :score, min: 0, max: 10
+
+  - idx += 1

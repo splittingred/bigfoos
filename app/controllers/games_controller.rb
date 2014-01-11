@@ -81,9 +81,11 @@ class GamesController < ApplicationController
 
   def game_params
     params.require(:game).permit(:num_players,teams_attributes: [
+      :id,
       :score,
       :color,
-      :players_attributes => []
+      :_destroy,
+      :players_attributes => (@game.new_record? ? [] : [:id,:user_id,:points,:_destroy])
     ])
   end
 end
