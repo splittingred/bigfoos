@@ -1,6 +1,8 @@
 BigFoos::Application.routes.draw do
 
-  resources :games
+  resources :games do
+    post 'score'
+  end
   resources :users
   resources :stats
 

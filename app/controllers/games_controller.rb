@@ -4,11 +4,15 @@ class GamesController < ApplicationController
   before_action :prepare_teams, only: [:edit]
 
   def index
-    @games = Game.finished.page(params[:page])
+    @games = Game.page(params[:page])
   end
 
   def show
-    render
+    if @game.in_progress?
+      render :in_progress
+    else
+      render
+    end
   end
 
   def new
@@ -18,7 +22,13 @@ class GamesController < ApplicationController
 
   def edit
     @users = User.all
-    render
+  end
+
+  def score
+    @player = Player.find(params[:player_id])
+    @player.score
+  rescue ActiveRecord::RecordNotFound
+    render :nothing => true
   end
 
   def create

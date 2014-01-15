@@ -5,12 +5,17 @@ class Game < ActiveRecord::Base
 
   accepts_nested_attributes_for :teams, :allow_destroy => true
 
-  scope :active, -> { where(status: 'active') }
+  scope :in_progress, -> { where(status: 'active') }
   scope :finished, -> { where(status: 'finished') }
+
 
   def users_for_team(color)
     team = self.teams.where(color: color).first
     team ? team.users : nil
+  end
+
+  def in_progress?
+    self.status == 'active'
   end
 
   def score_as_string
@@ -19,6 +24,20 @@ class Game < ActiveRecord::Base
       str << t.score.to_s
     end
     str.join ' / '
+  end
+
+  def set_winner(team)
+    self.transaction do
+      team.won = true
+      if team.save
+        team.players.each do |p|
+          p.won = true
+          p.save
+        end
+        self.status = 'finished'
+        self.save
+      end
+    end
   end
 
   def winning_team

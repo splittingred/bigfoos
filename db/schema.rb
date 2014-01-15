@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140115021318) do
+ActiveRecord::Schema.define(version: 20140115035644) do
 
   create_table "games", force: true do |t|
     t.integer  "num_players", default: 4,        null: false
@@ -25,26 +25,30 @@ ActiveRecord::Schema.define(version: 20140115021318) do
   add_index "games", ["status"], name: "index_games_on_status", using: :btree
 
   create_table "players", force: true do |t|
-    t.integer  "user_id",    default: 0, null: false
-    t.integer  "team_id",    default: 0, null: false
-    t.integer  "points",     default: 0, null: false
+    t.integer  "user_id",    default: 0,     null: false
+    t.integer  "team_id",    default: 0,     null: false
+    t.integer  "points",     default: 0,     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "won",        default: false, null: false
   end
 
   add_index "players", ["team_id"], name: "index_players_on_team_id", using: :btree
   add_index "players", ["user_id"], name: "index_players_on_user_id", using: :btree
+  add_index "players", ["won"], name: "index_players_on_won", using: :btree
 
   create_table "teams", force: true do |t|
-    t.integer  "game_id",                 default: 0,   null: false
-    t.string   "color",       limit: 100, default: "",  null: false
-    t.integer  "num_players",             default: 2,   null: false
+    t.integer  "game_id",                 default: 0,     null: false
+    t.string   "color",       limit: 100, default: "",    null: false
+    t.integer  "num_players",             default: 2,     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "score",                   default: "0", null: false
+    t.integer  "score",                   default: 0,     null: false
+    t.boolean  "won",                     default: false, null: false
   end
 
   add_index "teams", ["game_id"], name: "index_teams_on_game_id", using: :btree
+  add_index "teams", ["won"], name: "index_teams_on_won", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "name",                                null: false

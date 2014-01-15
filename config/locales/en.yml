@@ -64,3 +64,5 @@ en:
       delete_confirm: "Are you sure you want to delete this game?"
     new:
       new: "New Game"
+    in_progress:
+      delete_confirm: "Are you sure you want to delete this game?"

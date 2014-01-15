@@ -4,4 +4,8 @@ class Team < ActiveRecord::Base
   belongs_to :game
 
   accepts_nested_attributes_for :players, :allow_destroy => true
+
+  def won?
+    self.won
+  end
 end

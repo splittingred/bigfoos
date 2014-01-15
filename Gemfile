@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.0.0'
+
 gem 'active_model_serializers'
 gem 'rails', '4.0.2'
 gem 'mysql2', '0.3.14'
@@ -43,6 +45,11 @@ end
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', '~> 0.3.20', require: false
+end
+
+group :production do
+  gem 'rails_12factor'
+  gem 'pg'
 end
 
 group :development do

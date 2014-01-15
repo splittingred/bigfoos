@@ -10,6 +10,15 @@
 .row
   .col-xs-5
     %h3
+      Top Winners
+    %ol
+      - @top_winners.each do |user|
+        %li.rank
+          = link_to user.name, user_path(user)
+          = ' - '+user[:wins].to_s
+
+  .col-xs-5
+    %h3
       Highest Scorers
     %ol
       - @top_scorers.each do |user|

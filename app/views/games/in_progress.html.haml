@@ -1,0 +1,37 @@
+%ul.breadcrumb
+  %li
+    = link_to 'BigFoos', root_path
+    %span.divider
+  %li
+    = link_to t('games.title'), games_path
+    %span.divider
+  %li.active= t('.details')
+
+.pull-right
+  = link_to edit_game_path(@game), class: 'btn btn-primary' do
+    %i.icon.icon-pencil= t('edit')
+  = link_to game_path(@game), class: 'btn btn-danger', method: :delete, data: { confirm: t('.delete_confirm') } do
+    %i.icon.icon-white.icon-trash= t('delete')
+  = link_to t('back'), games_path, class: 'btn btn-default'
+
+
+.game
+  .meta
+    %h2= t('.details')
+    %span= l @game.created_at, format: :long
+
+  .row
+    - @game.teams.each do |team|
+      .col-xs-10
+        %h3.pull-right.scores{:id => 'team-score-'+team.id.to_s}= team.score
+        %h4{class: team.color.downcase}
+          = team.color
+        - team.players.each do |p|
+          %div{:class => 'player '+(p.top_scorer? ? 'top-scorer' : '')}
+            = link_to 'Score', game_score_path(@game,{:player_id => p.id }), :class => 'pull-left btn btn-score btn-info', :remote => true, :method => :post
+            &nbsp;
+            = link_to p.user.name, p.user
+            %span.player-score{:id => 'player-score-'+p.id.to_s}= ': '+p.points.to_s
+          .clearfix
+      .clearfix
+      %hr
