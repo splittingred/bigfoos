@@ -1,6 +1,6 @@
 class Game < ActiveRecord::Base
-  has_many :teams
-  has_many :players
+  has_many :teams, :dependent => :destroy
+  has_many :players, :dependent => :destroy
   has_many :users, :through => :players
 
   accepts_nested_attributes_for :teams, :allow_destroy => true

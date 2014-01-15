@@ -36,6 +36,7 @@ module BigFoos
     config.autoload_paths += Dir[Rails.root.join('app', 'models')]
 
     config.assets.intialize_on_precompile = false
+    config.assets.precompile += ['controllers/*.css']
   end
 end
 

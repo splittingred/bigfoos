@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :token_authenticatable, :omniauthable,
          :omniauth_providers => [:google_oauth2]
 
-  has_many :players
+  has_many :players, :dependent => :destroy
   has_many :teams, :through => :players
 
   scope :top_scorers, -> { joins(:players).select('users.*,SUM(players.points) AS points').group('users.id').order('points DESC') }
