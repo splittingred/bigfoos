@@ -31,6 +31,13 @@ class GamesController < ApplicationController
     render :nothing => true
   end
 
+  def unscore
+    @player = Player.find(params[:player_id])
+    @player.unscore
+  rescue ActiveRecord::RecordNotFound
+    render :nothing => true
+  end
+
   def create
     data = game_params
     teams = data.delete(:teams_attributes)
