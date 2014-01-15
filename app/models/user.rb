@@ -3,7 +3,8 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :token_authenticatable#, :omniauthable
+         :recoverable, :rememberable, :trackable, :validatable, :token_authenticatable, :omniauthable,
+         :omniauth_providers => [:google_oauth2]
 
   has_many :players
   has_many :teams, :through => :players
@@ -30,4 +31,19 @@ class User < ActiveRecord::Base
     Player.for_user(game,self).points
   end
 
+  def self.from_omniauth(auth)
+    user = User.find_by_email(auth.info.email)
+    if user
+      user.provider = auth.provider
+      user.uid = auth.uid
+      user
+    else
+      where(auth.slice(:provider, :uid)).first_or_create do |user|
+        user.provider = auth.provider || 'google_oauth2'
+        user.uid = auth.uid
+        user.name = auth.info.name
+        user.email = auth.info.email
+      end
+    end
+  end
 end

@@ -22,7 +22,7 @@ gem 'cancan', '~> 1.6.10'
 gem 'cancan_strong_parameters', '~> 0.4'
 gem 'role_model', '~> 0.8.1'
 gem 'omniauth', '>= 1.0.0'
-gem 'omniauth_crowd', '~> 2.2.2'
+gem 'omniauth-google-oauth2'
 
 # rails stuff
 gem 'jquery-rails'

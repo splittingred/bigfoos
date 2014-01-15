@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140115035644) do
+ActiveRecord::Schema.define(version: 20140115053009) do
 
   create_table "games", force: true do |t|
     t.integer  "num_players", default: 4,        null: false
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20140115035644) do
   add_index "teams", ["won"], name: "index_teams_on_won", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "name",                                null: false
+    t.string   "name"
     t.string   "email",                               null: false
     t.string   "uid"
     t.datetime "created_at"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20140115035644) do
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.string   "authentication_token"
+    t.string   "provider"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
