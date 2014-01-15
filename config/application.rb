@@ -22,10 +22,8 @@ module BigFoos
 
     # don't generate RSpec tests for views and helpers
     config.generators do |g|
-
       g.test_framework :rspec, fixture: true
       g.fixture_replacement :fabrication
-
 
       g.view_specs false
       g.helper_specs false
@@ -37,3 +35,5 @@ module BigFoos
     config.assets.intialize_on_precompile = false
   end
 end
+
+I18n.enforce_available_locales = false

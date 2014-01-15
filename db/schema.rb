@@ -11,15 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140111040607) do
+ActiveRecord::Schema.define(version: 20140115021318) do
 
   create_table "games", force: true do |t|
-    t.integer  "num_players", default: 4, null: false
-    t.integer  "num_teams",   default: 2, null: false
+    t.integer  "num_players", default: 4,        null: false
+    t.integer  "num_teams",   default: 2,        null: false
     t.text     "stats"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "status",      default: "active", null: false
   end
+
+  add_index "games", ["status"], name: "index_games_on_status", using: :btree
 
   create_table "players", force: true do |t|
     t.integer  "user_id",    default: 0, null: false

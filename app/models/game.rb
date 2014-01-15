@@ -5,6 +5,9 @@ class Game < ActiveRecord::Base
 
   accepts_nested_attributes_for :teams, :allow_destroy => true
 
+  scope :active, -> { where(status: 'active') }
+  scope :finished, -> { where(status: 'finished') }
+
   def users_for_team(color)
     team = self.teams.where(color: color).first
     team ? team.users : nil

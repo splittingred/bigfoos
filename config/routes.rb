@@ -4,7 +4,7 @@ BigFoos::Application.routes.draw do
   resources :users
   resources :stats
 
-  devise_for :users, :path => '', :path_names => {:sign_in => 'login', :sign_out => 'logout'}
+  devise_for :users
 
   root to: 'games#index'
 

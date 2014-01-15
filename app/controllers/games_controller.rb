@@ -4,7 +4,7 @@ class GamesController < ApplicationController
   before_action :prepare_teams, only: [:edit]
 
   def index
-    @games = Game.page(params[:page])
+    @games = Game.finished.page(params[:page])
   end
 
   def show
@@ -60,12 +60,17 @@ class GamesController < ApplicationController
 
   def fetch_game
     @game = Game.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    flash[:error] = 'Game not found'
+    redirect_to :action => :index
   end
 
   def prepare_teams
     @players = {}
-    @players[:yellow] = @game.users_for_team('Yellow').collect{ |u| u.id }
-    @players[:black] = @game.users_for_team('Black').collect{ |u| u.id }
+    yu = @game.users_for_team('Yellow')
+    @players[:yellow] = yu ? yu.collect{ |u| u.id } : []
+    bu = @game.users_for_team('Black')
+    @players[:black] = bu ? bu.collect{ |u| u.id } : []
   end
 
   def build_game
