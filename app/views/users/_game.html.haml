@@ -5,7 +5,7 @@
     - game.teams.each_with_index do |team,i|
 
       %p{class: (i == 0 ? 'pull-right' : '')}
-        %span{class: team.color.downcase}= team.color+': '+team.score+ ' - '
+        %span{class: team.color.downcase}= team.color+': '+team.score.to_s+ ' - '
 
         - len = team.users.count-1
         - team.users.each_with_index do |u,idx|
