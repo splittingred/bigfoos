@@ -10,8 +10,8 @@ gem 'foreman'
 
 # deployment/logging
 gem 'dotenv-rails', '~> 0.9.0'
+gem 'unicorn'
 gem 'unicorn-rails', '~> 1.1.0'
-gem 'passenger', '~> 4.0.23'
 gem 'rack-attack', '~> 2.3.0'
 gem 'rack-protection', '~> 1.5.1'
 
@@ -53,7 +53,6 @@ group :production do
 end
 
 group :development do
-  gem 'thin'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'capistrano'

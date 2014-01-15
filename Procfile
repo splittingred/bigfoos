@@ -1,1 +1,1 @@
-web:     bundle exec rails server thin -p 5000
+web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
