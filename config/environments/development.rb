@@ -29,10 +29,7 @@ BigFoos::Application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
-
-  config.static_cache_control = "public, max-age=#{1.year.to_i}"
-  config.assets.compile = true
-  config.assets.digest = true
+  config.assets.enabled = false
 
   STDOUT.sync = true
   config.logger = Logger.new(STDOUT)

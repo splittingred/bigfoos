@@ -8,7 +8,6 @@ Bundler.require(:default, Rails.env)
 
 module BigFoos
   class Application < Rails::Application
-    config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
     config.time_zone = 'Eastern Time (US & Canada)'
 
     # Settings in config/environments/* take precedence over those specified here.
@@ -36,6 +35,7 @@ module BigFoos
     config.autoload_paths += Dir[Rails.root.join('app', 'models')]
 
     config.assets.intialize_on_precompile = false
+    config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
     config.assets.precompile += ['controllers/*.css']
   end
 end
