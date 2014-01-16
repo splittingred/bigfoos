@@ -3,7 +3,9 @@ class UsersController < ApplicationController
   before_action :build_user, only: [:new]
 
   def index
-    @users = User.page(params[:page])
+    @users = User
+      .select('users.*, (SELECT COUNT(*) FROM players WHERE players.user_id = users.id AND players.won = true) AS wins, (SELECT COUNT(*) FROM players WHERE players.user_id = users.id AND players.won = false) AS losses')
+      .order('name ASC').page(params[:page])
   end
 
   def show

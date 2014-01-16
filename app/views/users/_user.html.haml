@@ -1,6 +1,7 @@
 %tr
   %td= link_to user.name, user_path(user)
   %td= user.email
+  %td= user.wins.to_s+' / '+user.losses.to_s
   %td= l user.created_at, format: :long
 
   %td

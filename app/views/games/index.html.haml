@@ -7,13 +7,15 @@
 %p.pull-right= link_to t('.new'), new_game_path, class: 'btn btn-success'
 %h1= t('games.title')
 
-%table.table.table-striped
-  %thead
-    %tr
-      %th Played on
-      %th Teams
-      %th
-  %tbody
-    = render partial: 'game', collection: @games
+.table-responsive
+  %table.table.table-striped
+    %thead
+      %tr
+        %th Played on
+        %th Teams
+        %th Winner
+        %th
+    %tbody
+      = render partial: 'game', collection: @games
 
 = paginate @games

@@ -4,7 +4,7 @@ class GamesController < ApplicationController
   before_action :prepare_teams, only: [:edit]
 
   def index
-    @games = Game.page(params[:page])
+    @games = Game.order('created_at DESC').page(params[:page])
   end
 
   def show
@@ -16,12 +16,12 @@ class GamesController < ApplicationController
   end
 
   def new
-    @users = User.all
+    @users = User.order('name ASC').all
     render
   end
 
   def edit
-    @users = User.all
+    @users = User.order('name ASC').all
   end
 
   def score

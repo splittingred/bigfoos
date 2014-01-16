@@ -8,14 +8,16 @@
 %h1= t('users.title')
 
 
-%table.table.table-striped
-  %thead
-    %tr
-      %th Name
-      %th Email
-      %th Signed up on
-      %th
-  %tbody
-    = render partial: 'user', collection: @users
+.table-responsive
+  %table.table.table-striped
+    %thead
+      %tr
+        %th Name
+        %th Email
+        %th W/L
+        %th Signed up on
+        %th
+    %tbody
+      = render partial: 'user', collection: @users
 
 = paginate @users

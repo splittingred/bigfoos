@@ -28,16 +28,9 @@ class Game < ActiveRecord::Base
   end
 
   def set_winner(team)
-    self.transaction do
-      team.won = true
-      if team.save
-        team.players.each do |p|
-          p.won = true
-          p.save
-        end
-        self.status = 'finished'
-        self.save
-      end
+    if team.win
+      self.status = 'finished'
+      self.save
     end
   end
 

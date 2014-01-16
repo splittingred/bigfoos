@@ -3,10 +3,13 @@
   %td
     - game.teams.each_with_index do |team,i|
       %p{class: (i == 0 ? 'pull-right' : '')}
-        %span{class: team.color.downcase}= team.color+': '
-        - len = team.users.count-1
-        - team.users.each_with_index do |u,idx|
-          = (link_to u.name, u)+(idx >= len ? '' : ',')
+        %span{class: team.color.downcase}
+          = team.color+': '
+          - len = team.users.count-1
+          - team.users.each_with_index do |u,idx|
+            = (link_to u.name, u)+(idx >= len ? '' : ',')
+  %td
+    %span{class: game.winning_team.color.downcase}= game.winning_team.color
   %td
     = link_to game, class: 'btn btn-default' do
       %i.icon.icon-chevron-right

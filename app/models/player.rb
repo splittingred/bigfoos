@@ -26,6 +26,11 @@ class Player < ActiveRecord::Base
     end
   end
 
+  def win
+    self.won = true
+    self.save
+  end
+
   def top_scorer?
     team_ids = self.team.game.teams.pluck(:id)
     Player.where(:team_id => team_ids).maximum(:points) == self.points

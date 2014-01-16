@@ -8,4 +8,15 @@ class Team < ActiveRecord::Base
   def won?
     self.won
   end
+
+  def win
+    transaction do
+      self.won = true
+      if self.save
+        self.players.each do |p|
+          p.win
+        end
+      end
+    end
+  end
 end
