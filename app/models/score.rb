@@ -12,6 +12,7 @@ class Score < ActiveRecord::Base
         self.player.team.score = self.player.team.score + 1
         self.player.team.save
       end
+      self.player.user.inc_stat(:scores)
     end
   end
 
@@ -22,6 +23,7 @@ class Score < ActiveRecord::Base
         self.player.team.score = self.player.team.score - 1
         self.player.team.save
       end
+      self.player.user.dec_stat(:scores)
     end
   end
 end

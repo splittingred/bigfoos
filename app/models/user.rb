@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
 
   has_many :players, :dependent => :destroy
   has_many :teams, :through => :players
+  has_many :user_stats, :dependent => :destroy
 
   scope :top_scorers, -> { joins(:players).select('users.*,SUM(players.points) AS points').group('users.id').order('points DESC') }
   scope :top_points_per_game, -> { joins(:players).select('users.*,AVG(players.points) AS points').group('users.id').order('points DESC') }
@@ -55,4 +56,107 @@ class User < ActiveRecord::Base
       'N/A'
     end
   end
+
+  ##
+  # Get the stats for the user
+  #
+  # @return [Array]
+  #
+  def stats
+    UserStat.select('*,(SELECT (COUNT(*)+1) FROM user_stats AS us2 WHERE us2.name = user_stats.name AND us2.user_id != '+self.id.to_s+' AND us2.value > user_stats.value ) AS rank').where('user_id = ?',self.id)
+  end
+
+  ##
+  # Get a stat value for a user
+  #
+  # @param [String|Symbol] k
+  # @param [Boolean] return_value
+  # @return [Integer|Float|UserStat]
+  #
+  def stat(k,return_value = true)
+    s = self.stats.where(:name => k.to_s).first
+    if return_value
+      if s
+        s.value
+      else
+        0
+      end
+    else
+      s
+    end
+  end
+
+  ##
+  # Set the stat for the user for a key
+  #
+  # @param [String|Symbol] k
+  # @param [Integer|Float|String] v
+  # @return [Boolean]
+  #
+  def set_stat(k,v)
+    s = self.stat(k,false)
+    unless s
+      s = UserStat.new({
+        :user => self,
+        :name => k.to_s,
+        :value => 0,
+      })
+    end
+    s.value = v
+    s.save
+  end
+
+  ##
+  # Delete the stat record for a key
+  #
+  # @param [String|Symbol] k
+  # @return [Boolean]
+  #
+  def delete_stat(k)
+    s = self.stat(k,false)
+    if s
+      s.destroy
+    end
+  end
+
+  ##
+  # Increase a stat value
+  #
+  # @param [String|Symbol] key
+  # @param [Integer] increment
+  # @return [Boolean]
+  #
+  def inc_stat(k,increment = 1)
+    s = self.stat(k,false)
+    unless s
+      s = UserStat.new({
+        :user => self,
+        :name => k.to_s,
+        :value => 0,
+      })
+    end
+    s.value = s.value.to_i+increment.to_i
+    s.save
+  end
+
+  ##
+  # Decrease a stat value
+  #
+  # @param [String|Symbol] key
+  # @param [Integer] decrement
+  # @return [Boolean]
+  #
+  def dec_stat(k,decrement = 1)
+    s = self.stat(k,false)
+    unless s
+      s = UserStat.new({
+        :user => self,
+        :name => k.to_s,
+        :value => 0,
+      })
+    end
+    s.value = s.value.to_i-decrement.to_i
+    s.save
+  end
+
 end
