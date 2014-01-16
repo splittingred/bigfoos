@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   scope :top_scorers, -> { joins(:players).select('users.*,SUM(players.points) AS points').group('users.id').order('points DESC') }
   scope :top_points_per_game, -> { joins(:players).select('users.*,AVG(players.points) AS points').group('users.id').order('points DESC') }
   scope :most_games, -> { joins(:players).select('users.*,COUNT(players.id) AS games').group('users.id').order('games DESC') }
-  scope :top_winners, -> { joins(:players).select('users.*,COUNT(players.won) AS wins').group('users.id').order('wins DESC')}
+  scope :top_winners, -> { select('users.*, (SELECT COUNT(players.won) FROM players WHERE players.user_id = users.id and players.won = true) AS wins').order('wins DESC')}
 
   def total_points
     self.players.sum(:points)
