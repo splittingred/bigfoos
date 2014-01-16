@@ -27,7 +27,14 @@ class Player < ActiveRecord::Base
   end
 
   def win
+    self.user.inc_stat(:wins)
     self.won = true
+    self.save
+  end
+
+  def lose
+    self.user.inc_stat(:losses)
+    self.won = false
     self.save
   end
 

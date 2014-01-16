@@ -19,4 +19,15 @@ class Team < ActiveRecord::Base
       end
     end
   end
+
+  def lose
+    transaction do
+      self.won = false
+      if self.save
+        self.players.each do |p|
+          p.lose
+        end
+      end
+    end
+  end
 end

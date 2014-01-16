@@ -1,6 +1,5 @@
 class Game < ActiveRecord::Base
   has_many :teams, :dependent => :destroy
-  has_many :players, :dependent => :destroy
   has_many :users, :through => :players
   has_many :scores
 
@@ -25,6 +24,19 @@ class Game < ActiveRecord::Base
       str << t.score.to_s
     end
     str.join ' / '
+  end
+
+  def finish
+    transaction do
+      winner = self.teams.where('score >= ?',5).first
+      loser = self.teams.where('score < ?',5).first
+      if winner and loser
+        winner.win
+        loser.lose
+        self.status = 'finished'
+        self.save
+      end
+    end
   end
 
   def set_winner(team)
