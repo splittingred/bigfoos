@@ -4,7 +4,7 @@
   %td= user.wins.to_s+' / '+user.losses.to_s
   %td= l user.created_at, format: :long
 
-  %td
+  %td.actions-column
     = link_to user, class: 'btn btn-default' do
       %i.icon.icon-chevron-right
       %span.visible-widest= t('show')

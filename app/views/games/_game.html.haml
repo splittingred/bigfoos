@@ -1,22 +1,17 @@
 %tr
   %td= link_to (l game.created_at, format: :long), game_path(game)
   %td
-    - game.teams.each_with_index do |team,i|
-      %p{class: (i == 0 ? 'pull-right' : '')}
-        - if team.won?
-          %i.icon.icon-trophy
+    %div.row
+      - game.teams.each_with_index do |team,i|
+        %p.col-md-6
+          - if team.won?
+            %i.icon.icon-trophy.winning-team-icon
 
-        %span{class: team.color.downcase}
-          = team.color+': '
+          %span{class: team.color.downcase}= team.color+': '
           - len = team.users.count-1
           - team.users.each_with_index do |u,idx|
             = (link_to u.name, u)+(idx >= len ? '' : ',')
-  %td
-    - if game.winning_team
-      %span{class: game.winning_team.color.downcase}= game.winning_team.color
-    - else
-      %span N/A
-  %td
+  %td.actions-column
     = link_to game, class: 'btn btn-default' do
       %i.icon.icon-chevron-right
       %span.visible-widest= t('show')
