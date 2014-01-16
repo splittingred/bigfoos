@@ -1,0 +1,2 @@
+Fabricator(:score) do
+end

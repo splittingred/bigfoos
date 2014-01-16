@@ -1,7 +1,7 @@
 class Player < ActiveRecord::Base
-  belongs_to :game
   belongs_to :team
   belongs_to :user
+  has_many :score, :dependent => :destroy
 
   class << self
     def for_user(game,user)
@@ -11,22 +11,18 @@ class Player < ActiveRecord::Base
   end
 
   def score
-    self.transaction do
-      self.points = self.points + 1
-      if self.save
-        self.team.score = self.team.score + 1
-        self.team.save
-      end
-    end
+    s = Score.new
+    s.game = self.team.game
+    s.player = self
+    s.save
   end
 
   def unscore
-    self.transaction do
-      self.points = self.points - 1
-      if self.save
-        self.team.score = self.team.score - 1
-        self.team.save
-      end
+    s = Score.where(:player_id => self.id, :game_id => self.team.game.id).first
+    if s
+      s.destroy
+    else
+      false
     end
   end
 
