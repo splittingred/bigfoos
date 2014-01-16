@@ -46,4 +46,13 @@ class User < ActiveRecord::Base
       end
     end
   end
+
+  def last_scored_at
+    s = Score.joins(:player).where('players.user_id = ?',self.id).first
+    if s
+      s.created_at.to_s(:long)
+    else
+      'N/A'
+    end
+  end
 end
