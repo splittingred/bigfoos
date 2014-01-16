@@ -10,10 +10,10 @@ class User < ActiveRecord::Base
   has_many :teams, :through => :players
   has_many :user_stats, :dependent => :destroy
 
-  scope :top_scorers, -> { joins(:players).select('users.*,SUM(players.points) AS points').group('users.id').order('points DESC') }
+  scope :top_scorers, -> { joins(:user_stats).select('users.*,user_stats.value AS points').where('user_stats.name = ?','scores').order('points DESC') }
   scope :top_points_per_game, -> { joins(:players).select('users.*,AVG(players.points) AS points').group('users.id').order('points DESC') }
   scope :most_games, -> { joins(:players).select('users.*,COUNT(players.id) AS games').group('users.id').order('games DESC') }
-  scope :top_winners, -> { select('users.*, (SELECT COUNT(players.won) FROM players WHERE players.user_id = users.id and players.won = true) AS wins').order('wins DESC')}
+  scope :top_winners, -> { joins(:user_stats).select('users.*,user_stats.value AS wins').where('user_stats.name = ?','wins').order('wins DESC') }
 
   def total_points
     self.players.sum(:points)
