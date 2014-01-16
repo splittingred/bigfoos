@@ -3,6 +3,9 @@
   %td
     - game.teams.each_with_index do |team,i|
       %p{class: (i == 0 ? 'pull-right' : '')}
+        - if team.won?
+          %i.icon.icon-trophy
+
         %span{class: team.color.downcase}
           = team.color+': '
           - len = team.users.count-1
