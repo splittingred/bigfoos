@@ -39,25 +39,7 @@ class GamesController < ApplicationController
   end
 
   def create
-    data = game_params
-    teams = data.delete(:teams_attributes)
-    @game = Game.new(data)
-
-    teams.each do |idx,t|
-      if t[:players_attributes]
-        users = t.delete(:players_attributes)
-        team = Team.new(t)
-
-        users.each do |user_id|
-          player = Player.new
-          player.user_id = user_id.to_i
-          team.players << player
-        end
-
-        @game.teams << team
-      end
-    end if teams
-
+    @game = Game.new(game_params)
     authorize! :create, @game
     @game.save ? redirect_to(@game, flash: { success: 'Game successfully created.'}) : render(action: :new)
   end
@@ -97,6 +79,9 @@ class GamesController < ApplicationController
       t = Team.new
       t.color = c
       t.num_players = 2
+      2.times do
+        t.players << Player.new
+      end
       @game.teams << t
     end
   end
@@ -107,7 +92,13 @@ class GamesController < ApplicationController
       :score,
       :color,
       :_destroy,
-      :players_attributes => (@game.new_record? ? [] : [:id,:user_id,:points,:_destroy])
+      :players_attributes => [
+          :id,
+          :user_id,
+          :position,
+          :points,
+          :_destroy,
+      ]
     ])
   end
 end

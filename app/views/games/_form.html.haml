@@ -1,6 +1,6 @@
 = bootstrap_form_for(@game) do |f|
 
-  = f.number_field :num_players, :max => 4, :min => 2
+  = f.hidden_field :num_players, :value => 4, :max => 4, :min => 2
 
   - if @game.new_record?
     = render 'players_new', {f: f}

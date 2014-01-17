@@ -9,7 +9,10 @@
           - team.users.each_with_index do |u,idx|
             = (link_to u.name, u)+(idx >= len ? '' : ',')
   %td
-    %span{class: game.winning_team.color.downcase}= game.winning_team.color
+    - if game.winning_team
+      %span{class: game.winning_team.color.downcase}= game.winning_team.color
+    - else
+      %span N/A
   %td
     = link_to game, class: 'btn btn-default' do
       %i.icon.icon-chevron-right

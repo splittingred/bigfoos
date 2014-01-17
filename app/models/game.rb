@@ -18,6 +18,10 @@ class Game < ActiveRecord::Base
     self.status == 'active'
   end
 
+  def finished?
+    self.status == 'finished'
+  end
+
   def score_as_string
     str = []
     self.teams.each do |t|

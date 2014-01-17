@@ -28,5 +28,6 @@
           = team.color
         - team.players.each do |p|
           %div{:class => 'player '+(p.top_scorer? ? 'top-scorer' : '')}
+            %span{class: 'position'}= p.position.capitalize.to_s+' - '
             = link_to p.user.name, p.user
             = ': '+p.points.to_s
