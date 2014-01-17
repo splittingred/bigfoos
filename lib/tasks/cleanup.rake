@@ -11,4 +11,10 @@ namespace :bigfoos do
       p.user.set_stat(:games,p.user.players.count)
     end
   end
+
+  task :recalculate_ratios => :environment do
+    User.all.each do |u|
+      u.recalculate_win_loss_ratio
+    end
+  end
 end
