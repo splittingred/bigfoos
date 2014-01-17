@@ -14,6 +14,14 @@ class User < ActiveRecord::Base
   scope :top_points_per_game, -> { joins(:players).select('users.*,AVG(players.points) AS points').group('users.id').order('points DESC') }
   scope :most_games, -> { joins(:players).select('users.*,COUNT(players.id) AS games').group('users.id').order('games DESC') }
   scope :top_winners, -> { joins(:user_stats).select('users.*,user_stats.value AS wins').where('user_stats.name = ?','wins').order('wins DESC') }
+  scope :top_losers, -> { joins(:user_stats).select('users.*,user_stats.value AS losses').where('user_stats.name = ?','losses').order('losses DESC') }
+
+  scope :best_wl_ratio, -> {
+    joins('inner join user_stats AS wins ON wins.user_id = users.id AND wins.name = "wins"
+           inner join user_stats AS games ON games.user_id = users.id AND games.name = "games"')
+    .select('users.*,
+            (IFNULL(wins.value,0) / IFNULL(games.value,0)) AS ratio').order('ratio DESC')
+  }
 
   ##
   # Get total points for this user

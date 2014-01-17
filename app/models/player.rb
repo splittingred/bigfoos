@@ -55,6 +55,7 @@ class Player < ActiveRecord::Base
   #
   def finish
     self.user.inc_stat(('played_'+self.position).to_sym)
+    self.user.inc_stat(:games)
     self.save
   end
 

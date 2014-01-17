@@ -5,4 +5,10 @@ namespace :bigfoos do
       t.destroy
     end
   end
+
+  task :fix_games_stat => :environment do
+    Player.all.each do |p|
+      p.user.set_stat(:games,p.user.players.count)
+    end
+  end
 end
