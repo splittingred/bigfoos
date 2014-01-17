@@ -10,12 +10,12 @@
 .row
   .col-xs-5
     %h3
-      Top Winners
+      Best W/L Ratio
     %ol
-      - @top_winners.each do |user|
+      - @best_wl_ratio.each do |user|
         %li.rank
           = link_to user.name, user_path(user)
-          = ' - '+user[:wins].to_s
+          = ' - '+((user[:wins].to_f / user[:games].to_f).round(2) * 100).to_s+'%'
 
   .col-xs-5
     %h3
@@ -26,6 +26,25 @@
           = link_to user.name, user_path(user)
           = ' - '+user[:points].to_s
 
+
+.row
+  .col-xs-5
+    %h3
+      Top Winners
+    %ol
+      - @top_winners.each do |user|
+        %li.rank
+          = link_to user.name, user_path(user)
+          = ' - '+user[:wins].to_s
+
+  .col-xs-5
+    %h3
+      Top Losers
+    %ol
+      - @top_losers.each do |user|
+        %li.rank
+          = link_to user.name, user_path(user)
+          = ' - '+user[:losses].to_s
 .row
 
   .col-xs-5
