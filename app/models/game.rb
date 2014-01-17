@@ -8,28 +8,42 @@ class Game < ActiveRecord::Base
   scope :in_progress, -> { where(status: 'active') }
   scope :finished, -> { where(status: 'finished') }
 
-
+  ##
+  # Returns a collection of User records for team of specified color
+  #
   def users_for_team(color)
     team = self.teams.where(color: color).first
     team ? team.users : nil
   end
 
+  ##
+  # Returns true if game is in progress
+  #
   def in_progress?
     self.status == 'active'
   end
 
+  ##
+  # Returns true if game is finished
+  #
   def finished?
     self.status == 'finished'
   end
 
-  def score_as_string
+  ##
+  # Returns score as string
+  #
+  def score_as_string(delimiter = ' /')
     str = []
     self.teams.each do |t|
       str << t.score.to_s
     end
-    str.join ' / '
+    str.join delimiter
   end
 
+  ##
+  # Finishes the game, setting winners/losers
+  #
   def finish
     transaction do
       winner = self.teams.where('score >= ?',5).first
@@ -43,6 +57,9 @@ class Game < ActiveRecord::Base
     end
   end
 
+  ##
+  # Sets winner for the game
+  #
   def set_winner(team)
     if team.win
       self.status = 'finished'
@@ -50,6 +67,9 @@ class Game < ActiveRecord::Base
     end
   end
 
+  ##
+  # Finds the winning team for the game by score
+  #
   def winning_team
     self.teams.order('score DESC').first
   end

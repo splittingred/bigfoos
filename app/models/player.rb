@@ -10,6 +10,9 @@ class Player < ActiveRecord::Base
     end
   end
 
+  ##
+  # Gives a point to the player
+  #
   def score
     s = Score.new
     s.game = self.team.game
@@ -17,6 +20,9 @@ class Player < ActiveRecord::Base
     s.save
   end
 
+  ##
+  # Takes away a point from the player
+  #
   def unscore
     s = Score.where(:player_id => self.id, :game_id => self.team.game.id).first
     if s
@@ -26,18 +32,35 @@ class Player < ActiveRecord::Base
     end
   end
 
+  ##
+  # Sets the player to win the game
+  #
   def win
     self.user.inc_stat(:wins)
     self.won = true
-    self.save
+    self.finish
   end
 
+  ##
+  # Sets the player lose the game
+  #
   def lose
     self.user.inc_stat(:losses)
     self.won = false
+    self.finish
+  end
+
+  ##
+  # finishes the game and stores a stat on position playing
+  #
+  def finish
+    self.user.inc_stat(('played_'+self.position).to_sym)
     self.save
   end
 
+  ##
+  # Tells if this player is the top scorer for the game
+  #
   def top_scorer?
     team_ids = self.team.game.teams.pluck(:id)
     Player.where(:team_id => team_ids).maximum(:points) == self.points

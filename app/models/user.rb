@@ -15,23 +15,38 @@ class User < ActiveRecord::Base
   scope :most_games, -> { joins(:players).select('users.*,COUNT(players.id) AS games').group('users.id').order('games DESC') }
   scope :top_winners, -> { joins(:user_stats).select('users.*,user_stats.value AS wins').where('user_stats.name = ?','wins').order('wins DESC') }
 
+  ##
+  # Get total points for this user
+  #
   def total_points
     self.players.sum(:points)
   end
 
+  ##
+  # Get all games for this user
+  #
   def games
     game_ids = self.teams.pluck(:game_id)
     Game.where(:id => game_ids).all
   end
 
+  ##
+  # Get APPG for this user
+  #
   def average_points_per_game
     self.players.average(:points)
   end
 
+  ##
+  # Get points for specified game for this user
+  #
   def points_for(game)
     Player.for_user(game,self).points
   end
 
+  ##
+  # Create user from omniauth
+  #
   def self.from_omniauth(auth)
     user = User.find_by_email(auth.info.email)
     if user
@@ -48,6 +63,9 @@ class User < ActiveRecord::Base
     end
   end
 
+  ##
+  # Find the last time this user scored
+  #
   def last_scored_at
     s = Score.joins(:player).where('players.user_id = ?',self.id).first
     if s

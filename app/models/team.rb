@@ -5,10 +5,16 @@ class Team < ActiveRecord::Base
 
   accepts_nested_attributes_for :players, :allow_destroy => true
 
+  ##
+  # Alias for won
+  #
   def won?
     self.won
   end
 
+  ##
+  # Set the team to win, updating players with win status
+  #
   def win
     transaction do
       self.won = true
@@ -20,6 +26,9 @@ class Team < ActiveRecord::Base
     end
   end
 
+  ##
+  # Set the team to lose, updating players with loss status
+  #
   def lose
     transaction do
       self.won = false

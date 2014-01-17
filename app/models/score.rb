@@ -5,6 +5,9 @@ class Score < ActiveRecord::Base
   before_create :add_score
   before_destroy :delete_score
 
+  ##
+  # Adds a score record, properly incrementing points and scores on appropriate tables
+  #
   def add_score
     transaction do
       self.player.points = self.player.points + 1
@@ -16,6 +19,9 @@ class Score < ActiveRecord::Base
     end
   end
 
+  ##
+  # Removes a score record, properly decrementing points and scores on appropriate tables
+  #
   def delete_score
     transaction do
       self.player.points = self.player.points - 1
