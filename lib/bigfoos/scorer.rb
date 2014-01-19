@@ -11,7 +11,7 @@ class BigFoos::Scorer
     @ratios = {
       :win_loss_ratio_multiplier => 100.0,
 
-      :score => 5,
+      :score => 4,
 
       :match_percentage_multiplier => 10,
       :loss => 1.0,

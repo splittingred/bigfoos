@@ -22,9 +22,11 @@
       - @users.each_with_index do |user,idx|
         %tr
           %td{style: 'font-weight: bold'}= '#'+(idx+1).to_s
-          %td= user.name
+          %td= link_to user.name, user_path(user)
           %td= user.score.to_s
           %td= user.stat(:wins).to_s+' / '+user.stat(:losses).to_s
           %td= (user.wl_ratio*100).to_s+'%'
           %td= user.stat(:scores).to_s
           %td= user.stat(:scored_against).to_s
+
+= paginate @users

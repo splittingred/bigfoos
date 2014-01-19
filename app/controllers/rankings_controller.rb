@@ -1,7 +1,7 @@
 class RankingsController < ApplicationController
 
   def index
-    @users = User.order('score DESC').all
+    @users = User.where('score > ?',0).order('score DESC').page
   end
 
   protected
