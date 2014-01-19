@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
   scope :best_wl_ratio, -> { minimum_games_threshold.order('wl_ratio DESC') }
   scope :minimum_games_threshold, -> {
     joins('join user_stats AS games ON games.user_id = users.id').where('games.name = ? AND games.value > ?','games',5)
+
   }
 
   ##
