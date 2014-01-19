@@ -12,8 +12,12 @@ class Game < ActiveRecord::Base
   # Returns a collection of User records for team of specified color
   #
   def users_for_team(color)
-    team = self.teams.where(color: color).first
+    team = team_by_color(color)
     team ? team.users : nil
+  end
+
+  def team_by_color(color)
+    self.teams.where(color: color).first
   end
 
   ##

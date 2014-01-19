@@ -31,7 +31,7 @@ module BigFoos
       g.helper_specs false
     end
 
-    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += Dir["#{config.root}/lib/**/"]
     config.autoload_paths += Dir[Rails.root.join('app', 'models')]
 
     config.assets.intialize_on_precompile = false

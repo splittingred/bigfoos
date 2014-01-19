@@ -57,6 +57,7 @@ class Player < ActiveRecord::Base
     self.user.inc_stat(('played_'+self.position).to_sym)
     self.user.inc_stat(:games)
     self.user.recalculate_win_loss_ratio
+    self.user.do_score
     self.save
   end
 
@@ -66,5 +67,46 @@ class Player < ActiveRecord::Base
   def top_scorer?
     team_ids = self.team.game.teams.pluck(:id)
     Player.where(:team_id => team_ids).maximum(:points) == self.points
+  end
+
+  ##
+  # Get the players team color
+  #
+  def team_color
+    self.team.color.downcase
+  end
+
+  ##
+  # Get the other team's color
+  #
+  def other_teams_color
+    self.team_color == 'yellow' ? 'black' : 'yellow'
+  end
+
+  ##
+  # Get the opposing team of the player
+  #
+  def other_team
+    self.team.other_team
+  end
+
+  def inc_score_stats
+    self.user.inc_stat(:scores)
+    self.user.inc_stat(:score_as_front) if self.position == 'front'
+    self.user.inc_stat(:score_as_back) if self.position == 'back'
+    self.other_team.players.each do |p|
+      p.user.inc_stat(:scored_against)
+      p.user.inc_stat(:scored_against_as_front) if p.position == 'front'
+      p.user.inc_stat(:scored_against_as_back) if p.position == 'back'
+    end if self.other_team
+  end
+
+  def dec_score_stats
+    self.user.dec_stat(:scores)
+    self.other_team.players.each do |p|
+      p.user.dec_stat(:scored_against)
+      p.user.dec_stat(:scored_against_as_front) if p.position == 'front'
+      p.user.dec_stat(:scored_against_as_back) if p.position == 'back'
+    end if self.other_team
   end
 end

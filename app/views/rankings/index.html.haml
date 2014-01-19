@@ -1,0 +1,28 @@
+%ul.breadcrumb
+  %li
+    = link_to 'BigFoos', root_path
+    %span.divider
+  %li.active= t('stats')
+
+%h1= t('stats')
+
+
+.table-responsive
+  %table.table.table-striped
+    %thead
+      %tr
+        %th Name
+        %th Score
+        %th W/L
+        %th W/L Ratio
+        %th Points
+        %th Points Against
+    %tbody
+      - @users.each do |user|
+        %tr
+          %td= user.name
+          %td= user.score.to_s
+          %td= user.stat(:wins).to_s+' / '+user.stat(:losses).to_s
+          %td= (user.wl_ratio*100).to_s+'%'
+          %td= user.stat(:scores).to_s
+          %td= user.stat(:scored_against).to_s

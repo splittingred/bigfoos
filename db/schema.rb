@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140117140850) do
+ActiveRecord::Schema.define(version: 20140118191956) do
 
   create_table "games", force: true do |t|
     t.integer  "num_players", default: 4,        null: false
@@ -91,11 +91,13 @@ ActiveRecord::Schema.define(version: 20140117140850) do
     t.string   "authentication_token"
     t.string   "provider"
     t.decimal  "wl_ratio",               precision: 5, scale: 2, default: 0.0, null: false
+    t.integer  "score",                                          default: 0,   null: false
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["score"], name: "index_users_on_score", using: :btree
   add_index "users", ["uid"], name: "index_users_on_uid", using: :btree
   add_index "users", ["wl_ratio"], name: "index_users_on_wl_ratio", using: :btree
 

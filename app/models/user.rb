@@ -1,3 +1,5 @@
+require 'bigfoos/scorer'
+
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -10,12 +12,15 @@ class User < ActiveRecord::Base
   has_many :teams, :through => :players
   has_many :user_stats, :dependent => :destroy
 
-  scope :top_scorers, -> { joins(:user_stats).select('users.*,user_stats.value AS points').where('user_stats.name = ?','scores').order('points DESC') }
-  scope :top_points_per_game, -> { joins(:players).select('users.*,AVG(players.points) AS points').group('users.id').order('points DESC') }
-  scope :most_games, -> { joins(:players).select('users.*,COUNT(players.id) AS games').group('users.id').order('games DESC') }
-  scope :top_winners, -> { joins(:user_stats).select('users.*,user_stats.value AS wins').where('user_stats.name = ?','wins').order('wins DESC') }
-  scope :top_losers, -> { joins(:user_stats).select('users.*,user_stats.value AS losses').where('user_stats.name = ?','losses').order('losses DESC') }
-  scope :best_wl_ratio, -> { order('wl_ratio DESC') }
+  scope :top_scorers, -> { minimum_games_threshold.joins(:user_stats).select('users.*,user_stats.value AS points').where('user_stats.name = ?','scores').order('points DESC') }
+  scope :top_points_per_game, -> { minimum_games_threshold.joins(:players).select('users.*,AVG(players.points) AS points').group('users.id').order('points DESC') }
+  scope :most_games, -> { minimum_games_threshold.joins(:players).select('users.*,COUNT(players.id) AS games').group('users.id').order('games DESC') }
+  scope :top_winners, -> { minimum_games_threshold.joins(:user_stats).select('users.*,user_stats.value AS wins').where('user_stats.name = ?','wins').order('wins DESC') }
+  scope :top_losers, -> { minimum_games_threshold.joins(:user_stats).select('users.*,user_stats.value AS losses').where('user_stats.name = ?','losses').order('losses DESC') }
+  scope :best_wl_ratio, -> { minimum_games_threshold.order('wl_ratio DESC') }
+  scope :minimum_games_threshold, -> {
+    joins('join user_stats AS games ON games.user_id = users.id').where('games.name = ? AND games.value > ?','games',5)
+  }
 
   ##
   # Get total points for this user
@@ -29,7 +34,7 @@ class User < ActiveRecord::Base
   #
   def games
     game_ids = self.teams.pluck(:game_id)
-    Game.where(:id => game_ids).all
+    Game.where(:id => game_ids)
   end
 
   ##
@@ -182,6 +187,8 @@ class User < ActiveRecord::Base
   ##
   # recalculates and saves win/loss ratio
   #
+  # @return [Boolean]
+  #
   def recalculate_win_loss_ratio
     wins = self.stat(:wins)
     games = self.stat(:games)
@@ -191,5 +198,22 @@ class User < ActiveRecord::Base
       self.wl_ratio = 0.00
     end
     self.save
+  end
+
+  ##
+  # Get stats as a name/value hash
+  #
+  # @return [Hash]
+  #
+  def stats_as_hash
+    h = {}
+    self.stats.each do |s|
+      h[s.name.to_sym] = s.value.to_i
+    end
+    h
+  end
+
+  def do_score
+    BigFoos::Scorer.score(self)
   end
 end

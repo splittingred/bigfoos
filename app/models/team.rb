@@ -39,4 +39,8 @@ class Team < ActiveRecord::Base
       end
     end
   end
+
+  def other_team
+    self.game.teams.where('color != ?',self.color).first
+  end
 end
