@@ -26,7 +26,9 @@ class UsersController < ApplicationController
   end
 
   def destroy
-
+    authorize! :destroy, @user
+    @user.destroy
+    redirect_to users_path
   end
 
   protected
