@@ -9,10 +9,9 @@ class BigFoos::Scorer
 
     @user = user
     @ratios = {
-      :win_ratio => 5.0,
-      :loss_ratio => 2.5,
+      :win_loss_ratio_multiplier => 100.0,
 
-      :score => 3,
+      :score => 5,
 
       :match_percentage_multiplier => 10,
       :loss => 1.0,
@@ -32,6 +31,7 @@ class BigFoos::Scorer
     if player_games >= @ratios[:minimum_matches]
       @score += self.win_ratio_adjustment
       #@score += self.inactivity_adjustment
+      @score += self.score_adjustment
     end
     @score = @score <= 0 ? 0 : @score
     @user.score = @score
@@ -40,6 +40,9 @@ class BigFoos::Scorer
     @score
   end
 
+  ##
+  # Calculates score boost for w/l ratios
+  #
   def win_ratio_adjustment
     adjustment = 0
     wins = @stats[:wins].to_i
@@ -49,26 +52,16 @@ class BigFoos::Scorer
 
     percentage_of_games = (player_games.to_f / total_games.to_f)
 
-    win_percentage = wins.to_f / player_games.to_f
-    loss_percentage = (100.00 - (win_percentage*100))/100.00
-    if loss_percentage > 0
-      win_multiplier = (win_percentage) / (loss_percentage*@ratios[:loss])
-    else
-      win_multiplier = win_percentage
-    end
-
-    puts "#{@user.name}: (W: #{win_percentage.to_s}) - (L: #{loss_percentage.to_s} * #{@ratios[:loss].to_s}) == #{win_multiplier.to_s}"
     if wins > 0 or losses > 0
-      win_adder = (wins * @ratios[:win_ratio]) - (losses * @ratios[:loss_ratio]) + (percentage_of_games * @ratios[:match_percentage_multiplier])
-      win_adder2 = win_adder * win_multiplier
-      adjustment += win_adder2
-
-      puts "#{@user.name}:  (#{wins.to_s} * #{@ratios[:win_ratio].to_s}) - (#{losses.to_s} * #{@ratios[:loss_ratio].to_s}) + (#{percentage_of_games.to_s} * #{@ratios[:match_percentage_multiplier].to_s}) == #{win_adder.to_s} * #{win_multiplier.to_s} == #{win_adder2.to_s}"
+      adjustment += ((@user.wl_ratio * @ratios[:win_loss_ratio_multiplier])*(percentage_of_games*@ratios[:match_percentage_multiplier]))
     end
 
     adjustment
   end
 
+  ##
+  # Penalizes inactive players
+  #
   def inactivity_adjustment
     adjustment = 0
     last_game = @user.games.where('status = ?','finished').last
@@ -79,5 +72,12 @@ class BigFoos::Scorer
       end
     end
     adjustment
+  end
+
+  ##
+  # Calculates score boost for points scored
+  #
+  def score_adjustment
+    @stats[:scores]*@ratios[:score]
   end
 end
