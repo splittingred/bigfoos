@@ -1,13 +1,14 @@
 .row
 
   = f.fields_for :teams do |t,idx|
-    %div{class: 'well col-xs-5 team-'+cycle('yellow','black'), style: 'margin: 10px'}
+    %div{class: 'well col-xs-5 team-'+t.object.color.downcase, style: 'margin: 10px'}
       = t.hidden_field :color
       = t.hidden_field :score
 
-      %h4= t.object.color.capitalize+' Team'
+      %h4{class: t.object.color.downcase}= t.object.color.capitalize+' Team'
       .form-group
         = t.fields_for :players do |p,pidx|
-          = p.select(:position,[["Front",'front'],['Back','back']],{selected: cycle('front','back')})
-          = p.select(:user_id,options_from_collection_for_select(@users,:id,:name),{:prompt => '--- Select a Person ---'},label: 'Person')
+          - position = cycle('front','back')
+          = p.hidden_field :position, :value => position
+          = p.select(:user_id,options_from_collection_for_select(@users,:id,:name),{:prompt => '--- Select a Person ---'},label: position.capitalize)
           %br

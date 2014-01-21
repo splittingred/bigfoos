@@ -32,6 +32,7 @@
             &nbsp;
             = link_to 'Unscore', game_unscore_path(@game,{:player_id => p.id }), :class => 'pull-left btn btn-score btn-info', :remote => true, :method => :post
             &nbsp;
+            %span{class: 'position'}= p.position.capitalize.to_s+' - '
             = link_to p.user.name, p.user
             %span.player-score{:id => 'player-score-'+p.id.to_s}= ': '+p.points.to_s
           .clearfix
