@@ -54,6 +54,7 @@ class Player < ActiveRecord::Base
   # finishes the game and stores a stat on position playing
   #
   def finish
+    self.points_against = self.other_team.score
     self.user.inc_stat(('played_'+self.position).to_sym)
     self.user.inc_stat(:games)
     self.user.recalculate_win_loss_ratio

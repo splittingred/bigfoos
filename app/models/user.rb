@@ -46,6 +46,13 @@ class User < ActiveRecord::Base
   end
 
   ##
+  # Get APAPG for this user
+  #
+  def average_points_against_per_game
+    self.players.average(:points_against)
+  end
+
+  ##
   # Get points for specified game for this user
   #
   def points_for(game)

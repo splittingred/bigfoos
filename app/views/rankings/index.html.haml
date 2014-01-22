@@ -16,8 +16,8 @@
         %th Score
         %th W/L
         %th W/L Ratio
-        %th Points
-        %th Points Against
+        %th Avg Points/Game
+        %th Avg Points Against
     %tbody
       - @users.each_with_index do |user,idx|
         %tr
@@ -26,7 +26,7 @@
           %td= user.score.to_s
           %td= user.stat(:wins).to_s+' / '+user.stat(:losses).to_s
           %td= (user.wl_ratio*100).to_s+'%'
-          %td= user.stat(:scores).to_s
-          %td= user.stat(:scored_against).to_s
+          %td= user[:ppg].to_s
+          %td= user[:ppg_against].to_s
 
 = paginate @users

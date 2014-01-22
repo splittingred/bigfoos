@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140118191956) do
+ActiveRecord::Schema.define(version: 20140122042550) do
 
   create_table "games", force: true do |t|
     t.integer  "num_players", default: 4,        null: false
@@ -25,13 +25,14 @@ ActiveRecord::Schema.define(version: 20140118191956) do
   add_index "games", ["status"], name: "index_games_on_status", using: :btree
 
   create_table "players", force: true do |t|
-    t.integer  "user_id",    default: 0,     null: false
-    t.integer  "team_id",    default: 0,     null: false
-    t.integer  "points",     default: 0,     null: false
+    t.integer  "user_id",        default: 0,     null: false
+    t.integer  "team_id",        default: 0,     null: false
+    t.integer  "points",         default: 0,     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "won",        default: false, null: false
-    t.string   "position",   default: "",    null: false
+    t.boolean  "won",            default: false, null: false
+    t.string   "position",       default: "",    null: false
+    t.integer  "points_against", default: 0,     null: false
   end
 
   add_index "players", ["position"], name: "index_players_on_position", using: :btree
@@ -76,6 +77,8 @@ ActiveRecord::Schema.define(version: 20140118191956) do
   create_table "users", force: true do |t|
     t.string   "name"
     t.string   "email",                                                        null: false
+    t.integer  "score",                                          default: 0,   null: false
+    t.decimal  "wl_ratio",               precision: 5, scale: 2, default: 0.0, null: false
     t.string   "uid"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -90,8 +93,6 @@ ActiveRecord::Schema.define(version: 20140118191956) do
     t.string   "last_sign_in_ip"
     t.string   "authentication_token"
     t.string   "provider"
-    t.decimal  "wl_ratio",               precision: 5, scale: 2, default: 0.0, null: false
-    t.integer  "score",                                          default: 0,   null: false
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree

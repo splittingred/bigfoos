@@ -5,16 +5,19 @@ class BigFoos::Scorer
       scorer.score
     end
   end
-  def initialize(user)
 
+  ##
+  # @param [User] user
+  #
+  def initialize(user)
     @user = user
     @ratios = {
       :win_loss_ratio_multiplier => 100.0,
 
-      :score => 4,
+      :ppg => 25.0,
+      :ppg_against => 15.0,
 
       :match_percentage_multiplier => 10,
-      :loss => 1.0,
       :inactive_penalty_multiplier => 25,
       :inactive_penalty_days => 5.00,
       :minimum_matches => 5
@@ -31,7 +34,7 @@ class BigFoos::Scorer
     if player_games >= @ratios[:minimum_matches]
       @score += self.win_ratio_adjustment
       #@score += self.inactivity_adjustment
-      @score += self.score_adjustment
+      @score += self.ppg_adjustments
     end
     @score = @score <= 0 ? 0 : @score
     @user.score = @score
@@ -75,9 +78,10 @@ class BigFoos::Scorer
   end
 
   ##
-  # Calculates score boost for points scored
+  # Calculates score boost for points scored per game avg
   #
-  def score_adjustment
-    @stats[:scores]*@ratios[:score]
+  def ppg_adjustments
+    adjustment = @user.average_points_per_game.to_f * @ratios[:ppg]
+    adjustment -= @user.average_points_against_per_game.to_f * @ratios[:ppg_against]
   end
 end
