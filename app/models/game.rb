@@ -29,13 +29,18 @@ class Game < ActiveRecord::Base
       assigned = 0
 
       %w(Yellow Black).each_with_index do |c,cidx|
+        positions_cycle = positions.dup
         team = Team.new
         team.color = c
         team.num_players = 2
         2.times do |idx|
           player = Player.new
-          player.user = users.at((idx*2)+cidx) # a/b/a/b
-          player.position = positions[idx] # need to make this smarter
+          # a/b/a/b selection of teams.
+          player.user = users.at((idx*2)+cidx)
+
+          # randomly select position. Eventually make this based on player history
+          player.position = positions_cycle.delete_at(rand(positions_cycle.length))
+
           team.players << player
         end
         assigned += 1

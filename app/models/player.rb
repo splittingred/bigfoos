@@ -2,6 +2,7 @@ class Player < ActiveRecord::Base
   belongs_to :team
   belongs_to :user
   has_many :score, :dependent => :destroy
+  default_scope { order(:position) }
 
   class << self
     def for_user(game,user)
