@@ -1,0 +1,7 @@
+%h1 New Auto-Assign Game
+
+= bootstrap_form_for(@game,{:url => games_auto_path}) do |f|
+  .row
+    = f.select(:auto_users,options_from_collection_for_select(@users,:id,:name),{},{label: 'Users',multiple: true,style: 'height: 200px'})
+
+  = f.submit 'Auto-assign Teams'

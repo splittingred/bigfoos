@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
   before_action :fetch_game, only: [:show, :edit, :update, :destroy]
-  before_action :build_game, only: [:new, :create]
+  before_action :build_game, only: [:new, :create, :auto]
   before_action :prepare_teams, only: [:edit]
 
   def index
@@ -18,6 +18,17 @@ class GamesController < ApplicationController
   def new
     @users = User.order('name ASC').all
     render
+  end
+
+  def auto
+    @users = User.order('name ASC').all
+    render
+  end
+
+  def auto_create
+    @game = Game.matchmake(game_params[:auto_users])
+    authorize! :create, @game
+    @game.save ? redirect_to(@game, flash: { success: 'Game successfully created.'}) : render(action: :auto)
   end
 
   def edit
@@ -87,7 +98,9 @@ class GamesController < ApplicationController
   end
 
   def game_params
-    params.require(:game).permit(:num_players,teams_attributes: [
+    params.require(:game).permit(:num_players,
+                                 :auto_users => [],
+                                 teams_attributes: [
       :id,
       :score,
       :color,

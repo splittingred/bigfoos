@@ -8,6 +8,44 @@ class Game < ActiveRecord::Base
   scope :in_progress, -> { where(status: 'active') }
   scope :finished, -> { where(status: 'finished') }
 
+  attr_accessor :auto_users
+
+  class << self
+    def matchmake(user_ids)
+      user_ids.reject!(&:empty?)
+      return false if user_ids.count != 4
+
+      # do something here to sort users by rank
+      users = []
+      user_ids.each do |u|
+        users << User.find(u)
+      end
+      users.sort {|a,b| a.score <=> b.score }
+
+      positions = %w(front back)
+      game = Game.new
+      game.num_players = 4
+      game.teams = []
+      assigned = 0
+
+      %w(Yellow Black).each_with_index do |c,cidx|
+        team = Team.new
+        team.color = c
+        team.num_players = 2
+        2.times do |idx|
+          player = Player.new
+          player.user = users.at((idx*2)+cidx) # a/b/a/b
+          player.position = positions[idx] # need to make this smarter
+          team.players << player
+        end
+        assigned += 1
+        game.teams << team
+      end
+
+      game
+    end
+  end
+
   ##
   # Returns a collection of User records for team of specified color
   #

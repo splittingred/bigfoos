@@ -1,6 +1,10 @@
 BigFoos::Application.routes.draw do
 
+  get 'games/auto' => 'games#auto'
+  post 'games/auto' => 'games#auto_create'
+
   resources :games do
+    #get 'auto'
     post 'score'
     post 'unscore'
   end
