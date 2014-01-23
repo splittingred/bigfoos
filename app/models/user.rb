@@ -237,7 +237,11 @@ class User < ActiveRecord::Base
   # Gets achievements for user
   # TODO: move into scope on Achievement
   def achievements
-    Achievement.joins(:user_achievements).where(:user_achievements => {:user_id => self.id}).order('stat ASC, value ASC')
+    Achievement
+      .joins(:user_achievements)
+      .select('achievements.*,user_achievements.created_at AS earned_on')
+      .where(:user_achievements => {:user_id => self.id})
+      .order('stat ASC, value ASC')
   end
 
   def achievements_as_list

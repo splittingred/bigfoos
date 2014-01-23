@@ -19,6 +19,8 @@
     %a{href: '#tab-details', data: {toggle:'tab'}}= t('details')
   %li
     %a{href: '#tab-games', data: {toggle:'tab'}}= t('games.title')
+  %li
+    %a{href: '#tab-achievements', data: {toggle:'tab'}}= t('achievements.title')
 
 .tab-content
   .tab-pane.active#tab-details
@@ -54,4 +56,20 @@
           %th Teams
           %th Points
       %tbody
-        = render partial: 'game', collection: @user.games
+        = render partial: 'game', collection: @games
+
+    = paginate @games
+
+  .tab-pane#tab-achievements
+    %h2= t('achievements.title')
+
+    %table.table
+      %thead
+        %tr
+          %th Name
+          %th Description
+          %th Earned On
+      %tbody
+        = render partial: 'achievement', collection: @achievements
+
+    = paginate @achievements

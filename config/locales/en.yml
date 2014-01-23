@@ -44,6 +44,8 @@ en:
         average_points_per_game: Average Points Per Game
 
   # --- Controllers ----------------------------------------------------------------------
+  achievements:
+    title: "Achievements"
   users:
     title: "Users"
     index:

@@ -1,5 +1,7 @@
 %h3= @achievement.name
 
+%p= @achievement.description
+
 .table-responsive
   %table.table.table-striped
     %thead
@@ -9,5 +11,5 @@
     %tbody
       - @achievement.users.each do |user|
         %tr
-          %td= user.name
+          %td= link_to user.name, user_path(user)
           %td= user.stat(@achievement.stat.to_sym)

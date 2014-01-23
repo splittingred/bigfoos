@@ -12,8 +12,8 @@
       = nav_link "<i class='icon icon-group'></i> Users".html_safe, users_path
       = nav_link "<i class='icon icon-flag'></i> Games".html_safe, games_path
       = nav_link "<i class='icon icon-trophy'></i> Stats".html_safe, stats_path
-      = nav_link "<i class='icon icon-flag'></i> Rankings".html_safe, rankings_path
-      = nav_link "<i class='icon icon-flag'></i> Achievements".html_safe, achievements_path
+      = nav_link "<i class='icon icon-list-alt'></i> Rankings".html_safe, rankings_path
+      = nav_link "<i class='icon icon-ok-circle'></i> Achievements".html_safe, achievements_path
     %ul.nav.navbar-nav.pull-right
       - if user_signed_in?
         %i.icon.icon-person

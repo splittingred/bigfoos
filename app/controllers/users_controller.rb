@@ -9,6 +9,8 @@ class UsersController < ApplicationController
   end
 
   def show
+    @games = @user.games.page(params[:page])
+    @achievements = @user.achievements.page(params[:page])
     render
   end
 
