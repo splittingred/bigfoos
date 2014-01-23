@@ -1,3 +1,12 @@
+%ul.breadcrumb
+  %li
+    = link_to 'BigFoos', root_path
+    %span.divider
+  %li
+    = link_to t('achievements.title'), achievements_path
+    %span.divider
+  %li.active= @achievement.name
+
 %h3= @achievement.name
 
 %p= @achievement.description
