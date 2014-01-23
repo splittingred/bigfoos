@@ -3,6 +3,19 @@
 For tracking foosball games at Bigcommerce.
 
 
+## Setup
+
+```
+rake db:create
+rake db:migrate
+rake db:seed
+```
+
+## Testing
+
+```
+rspec
+```
 
 ## TODO
 

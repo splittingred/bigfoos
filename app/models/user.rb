@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :players, :dependent => :destroy
   has_many :teams, :through => :players
   has_many :user_stats, :dependent => :destroy
+  has_many :user_achievements
 
   scope :top_scorers, -> { minimum_games_threshold.joins(:user_stats).select('users.*,user_stats.value AS points').where('user_stats.name = ?','scores').order('points DESC') }
   scope :top_points_per_game, -> { minimum_games_threshold.joins(:players).select('users.*,AVG(players.points) AS points').group('users.id').order('points DESC') }
@@ -230,5 +231,20 @@ class User < ActiveRecord::Base
 
   def do_score
     BigFoos::Scorer.score(self)
+  end
+
+  ##
+  # Gets achievements for user
+  # TODO: move into scope on Achievement
+  def achievements
+    Achievement.joins(:user_achievements).where(:user_achievements => {:user_id => self.id}).order('stat ASC, value ASC')
+  end
+
+  def achievements_as_list
+    l = []
+    self.achievements.each do |a|
+      l << a.code
+    end
+    l
   end
 end

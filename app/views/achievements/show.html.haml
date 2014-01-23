@@ -1,0 +1,13 @@
+%h3= @achievement.name
+
+.table-responsive
+  %table.table.table-striped
+    %thead
+      %tr
+        %th Name
+        %th= @achievement.stat.capitalize
+    %tbody
+      - @achievement.users.each do |user|
+        %tr
+          %td= user.name
+          %td= user.stat(@achievement.stat.to_sym)

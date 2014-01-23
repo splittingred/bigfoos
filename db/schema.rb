@@ -11,7 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140123030825) do
+ActiveRecord::Schema.define(version: 20140123031700) do
+
+  create_table "achievements", force: true do |t|
+    t.string   "name"
+    t.string   "code"
+    t.text     "description"
+    t.integer  "prior"
+    t.string   "stat"
+    t.string   "operator"
+    t.integer  "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "achievements", ["prior"], name: "index_achievements_on_prior", using: :btree
+  add_index "achievements", ["stat"], name: "index_achievements_on_stat", using: :btree
 
   create_table "games", force: true do |t|
     t.integer  "num_players", default: 4,        null: false
@@ -63,6 +78,18 @@ ActiveRecord::Schema.define(version: 20140123030825) do
 
   add_index "teams", ["game_id"], name: "index_teams_on_game_id", using: :btree
   add_index "teams", ["won"], name: "index_teams_on_won", using: :btree
+
+  create_table "user_achievements", force: true do |t|
+    t.integer  "achievement_id"
+    t.integer  "user_id"
+    t.integer  "game_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_achievements", ["achievement_id"], name: "index_user_achievements_on_achievement_id", using: :btree
+  add_index "user_achievements", ["game_id"], name: "index_user_achievements_on_game_id", using: :btree
+  add_index "user_achievements", ["user_id"], name: "index_user_achievements_on_user_id", using: :btree
 
   create_table "user_stats", force: true do |t|
     t.integer  "user_id",    default: 0,  null: false

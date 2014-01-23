@@ -4,6 +4,14 @@ GIT
   specs:
     hashugar (0.0.6)
 
+GIT
+  remote: git://github.com/mbleigh/seed-fu.git
+  revision: 6dbf3fac92666f2fcfc65ab882fb95ed3ef51712
+  specs:
+    seed-fu (2.3.0)
+      activerecord (>= 3.1, < 4.1)
+      activesupport (>= 3.1, < 4.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -398,6 +406,7 @@ DEPENDENCIES
   rspec-rails (~> 2.0)
   sass-rails (>= 3.2)
   sdoc (~> 0.3.20)
+  seed-fu!
   selenium-webdriver
   sqlite3
   thin

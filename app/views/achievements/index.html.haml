@@ -1,0 +1,27 @@
+%ul.breadcrumb
+  %li
+    = link_to 'BigFoos', root_path
+    %span.divider
+  %li.active= t('achievements')
+
+%h1= t('achievements')
+
+
+.table-responsive
+  %table.table.table-striped
+    %thead
+      %tr
+        %th Name
+        %th Description
+        %th Criteria
+        %th Winners
+
+    %tbody
+      - @achievements.each do |ach|
+        %tr
+          %td= link_to ach.name, achievement_path(ach)
+          %td= ach.description
+          %td= ach.stat.capitalize+' '+ach.operator+' '+ach.value.to_s
+          %td= ach.users.count
+
+= paginate @achievements

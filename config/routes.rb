@@ -11,6 +11,7 @@ BigFoos::Application.routes.draw do
   resources :users
   resources :stats
   resources :rankings
+  resources :achievements
 
   devise_for :users, :path => '', :path_names => {:sign_in => 'login', :sign_out => 'logout'}, controllers: { omniauth_callbacks: "omniauth_callbacks" }
 
