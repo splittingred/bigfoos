@@ -17,7 +17,9 @@
     %ul.nav.navbar-nav.pull-right
       - if user_signed_in?
         %i.icon.icon-person
-        %li= link_to "<i class='icon icon-user'></i> #{current_user.name}".html_safe, current_user
+        %img{src: current_user.gravatar_url(size:40), alt:'',class: 'pull-left', style: 'margin-top: 5px'}
+        %li
+          = link_to (current_user.name.html_safe), current_user
         %li= link_to "<i class='icon icon-signin'></i> Sign out".html_safe, destroy_user_session_path, :method => :delete
       - else
         %li= link_to "<i class='icon icon-signout'></i> Sign in".html_safe, user_omniauth_authorize_path(:google_oauth2)#new_user_session_path
