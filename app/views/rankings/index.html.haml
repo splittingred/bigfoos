@@ -12,6 +12,7 @@
     %thead
       %tr
         %th
+        %th
         %th Name
         %th Score
         %th W/L
@@ -22,6 +23,8 @@
       - @users.each_with_index do |user,idx|
         %tr
           %td{style: 'font-weight: bold'}= '#'+(idx+1).to_s
+          %td
+            %img{src: user.gravatar_url(size: 30), alt: ''}
           %td= link_to user.name, user_path(user)
           %td= user.score.to_s
           %td= user.stat(:wins).to_s+' / '+user.stat(:losses).to_s

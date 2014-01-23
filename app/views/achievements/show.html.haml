@@ -6,10 +6,15 @@
   %table.table.table-striped
     %thead
       %tr
+        %th
         %th Name
         %th= @achievement.stat.capitalize
+        %th Earned On
     %tbody
       - @achievement.users.each do |user|
         %tr
-          %td= link_to user.name, user_path(user)
+          %td
+            %img{src: user.gravatar_url, alt: ''}
+          %td{style: 'width: 60%'}= link_to user.name, user_path(user)
           %td= user.stat(@achievement.stat.to_sym)
+          %td= l user.stat(@achievement.stat.to_sym,false).created_at, format: :short

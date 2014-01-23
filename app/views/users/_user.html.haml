@@ -1,4 +1,6 @@
 %tr
+  %td
+    %img{src: user.gravatar_url, alt: ''}
   %td= link_to user.name, user_path(user)
   %td= user.email
   %td= user.wins.to_s+' / '+user.losses.to_s

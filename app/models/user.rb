@@ -8,6 +8,9 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :token_authenticatable, :omniauthable,
          :omniauth_providers => [:google_oauth2]
 
+  include ::Gravtastic
+  gravtastic secure: true, size: 50
+
   has_many :players, :dependent => :destroy
   has_many :teams, :through => :players
   has_many :user_stats, :dependent => :destroy

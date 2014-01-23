@@ -33,6 +33,7 @@ gem 'kaminari', '>= 0.14.0'
 gem 'kaminari-bootstrap', '~> 3.0.1'
 gem 'hashugar', '~> 0.0.6', github: 'alex-klepa/hashugar'
 gem 'seed-fu', github: 'mbleigh/seed-fu'
+gem 'gravtastic'
 
 # asset pipeline
 group :assets do
