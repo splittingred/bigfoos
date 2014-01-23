@@ -99,7 +99,7 @@ class Game < ActiveRecord::Base
         saved = self.save
 
         User.score_all
-        Achievement.recalculate(self.users,self.id)
+        #Achievement.recalculate(self.users,self.id)
       end
     end
     saved
