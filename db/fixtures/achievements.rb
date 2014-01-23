@@ -220,7 +220,7 @@ Achievement.seed(:code) do |ach|
   ach.prior = 19
   ach.stat = 'games'
   ach.operator = '>='
-  ach.value = 5
+  ach.value = 500
 end
 
 Achievement.seed(:code) do |ach|
