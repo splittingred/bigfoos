@@ -271,7 +271,7 @@ end
 
 Achievement.seed(:code) do |ach|
   ach.id = 25
-  ach.name = 'Line Tt Up'
+  ach.name = 'Line It Up'
   ach.code = 'scores-50'
   ach.description = 'Got 50 points'
   ach.prior = 24
