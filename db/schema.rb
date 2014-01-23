@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140122042550) do
+ActiveRecord::Schema.define(version: 20140123030825) do
 
   create_table "games", force: true do |t|
     t.integer  "num_players", default: 4,        null: false
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20140122042550) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "status",      default: "active", null: false
+    t.datetime "ended_at"
   end
 
   add_index "games", ["status"], name: "index_games_on_status", using: :btree

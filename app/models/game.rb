@@ -87,6 +87,7 @@ class Game < ActiveRecord::Base
   # Finishes the game, setting winners/losers
   #
   def finish
+    saved = false
     transaction do
       winner = self.teams.where('score >= ?',5).first
       loser = self.teams.where('score < ?',5).first
@@ -94,9 +95,13 @@ class Game < ActiveRecord::Base
         winner.win
         loser.lose
         self.status = 'finished'
-        self.save
+        self.ended_at = Time.now
+        saved = self.save
+
+        User.score_all
       end
     end
+    saved
   end
 
   ##
