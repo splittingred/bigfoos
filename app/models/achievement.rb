@@ -55,7 +55,12 @@ class Achievement < ActiveRecord::Base
   end
 
   def users
-    User.joins(:user_achievements).select('users.*,user_stats.value').joins('INNER JOIN user_stats ON users.id = user_stats.user_id AND user_stats.name = "'+self.stat+'"').where(:user_achievements => {:achievement_id => self.id}).order('value DESC')
+    User
+      .joins(:user_achievements)
+      .joins("INNER JOIN user_stats ON users.id = user_stats.user_id AND user_stats.name = '"+self.stat+"'")
+      .select('users.*,user_stats.value')
+      .where(:user_achievements => {:achievement_id => self.id})
+      .order('value DESC')
   end
 
   def users_close(limit = 20,offset = 0,range = 0.75)
@@ -73,12 +78,12 @@ class Achievement < ActiveRecord::Base
 
   def users_as_list(limit = 20,offset = 0)
     l = {}
-    l[:total] = self.users.joins('INNER JOIN user_stats ON users.id = user_stats.user_id AND user_stats.name = "'+self.stat+'"').count
+    l[:total] = self.users.joins("INNER JOIN user_stats ON users.id = user_stats.user_id AND user_stats.name = '"+self.stat+"'").count
     l[:results] = {}
     l[:offset] = offset
 
     self.users.select('users.*,user_stats.value')
-    .joins('INNER JOIN user_stats ON users.id = user_stats.user_id AND user_stats.name = "'+self.stat+'"')
+    .joins("INNER JOIN user_stats ON users.id = user_stats.user_id AND user_stats.name = '"+self.stat+"'")
     .limit(limit).offset(offset)
     .order('user_stats.value DESC').each do |u|
       l[:results][u.name] = u.value
@@ -89,7 +94,7 @@ class Achievement < ActiveRecord::Base
   def related(limit = 10,offset = 0)
     tag = self.code.split('.').first.split('-').first
     list = []
-    Achievement.where('code LIKE "%'+tag+'%" AND id != ?',self.id).order('stat ASC, value ASC').limit(limit).offset(offset).each do |a|
+    Achievement.where('code LIKE ? AND id != ?','%'+tag+'%',self.id).order('stat ASC, value ASC').limit(limit).offset(offset).each do |a|
       list << {
           :code => a.code,
           :name => a.name,
