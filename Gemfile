@@ -10,8 +10,6 @@ gem 'foreman'
 
 # deployment/logging
 gem 'dotenv-rails', '~> 0.9.0'
-gem 'unicorn'
-gem 'unicorn-rails', '~> 1.1.0'
 gem 'rack-attack', '~> 2.3.0'
 gem 'rack-protection', '~> 1.5.1'
 
@@ -50,6 +48,8 @@ end
 group :production do
   gem 'rails_12factor'
   gem 'pg'
+  gem 'unicorn'
+  gem 'unicorn-rails', '~> 1.1.0'
 end
 
 group :development do
@@ -75,6 +75,7 @@ group :test do
 end
 
 group :development, :test do
+  gem 'thin'
   gem 'fabrication'
   gem 'awesome_print'
   gem 'rspec-rails', '~> 2.0'

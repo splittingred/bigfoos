@@ -16,34 +16,29 @@ class Game < ActiveRecord::Base
       return false if user_ids.count != 4
 
       # do something here to sort users by rank
-      users = []
-      user_ids.each do |u|
-        users << User.find(u)
-      end
-      users.sort {|a,b| a.score <=> b.score }
+      users = User.where(:id => user_ids).order('score DESC')
 
-      positions = %w(front back)
       game = Game.new
       game.num_players = 4
       game.teams = []
-      assigned = 0
+
+      player_order = [1,4,2,3]
 
       %w(Yellow Black).each_with_index do |c,cidx|
-        positions_cycle = positions.dup
+        positions = %w(front back)
         team = Team.new
         team.color = c
         team.num_players = 2
-        2.times do |idx|
+        2.times do
           player = Player.new
-          # a/b/a/b selection of teams.
-          player.user = users.at((idx*2)+cidx)
+          # 1/4/2/3 selection of teams.
+          player.user = users.at(player_order.shift.to_i-1)
 
           # randomly select position. Eventually make this based on player history
-          player.position = positions_cycle.delete_at(rand(positions_cycle.length))
+          player.position = positions.delete_at(rand(positions.length))
 
           team.players << player
         end
-        assigned += 1
         game.teams << team
       end
 

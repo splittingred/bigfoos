@@ -51,13 +51,13 @@ ActiveRecord::Schema.define(version: 20140122042550) do
   add_index "scores", ["player_id"], name: "index_scores_on_player_id", using: :btree
 
   create_table "teams", force: true do |t|
-    t.integer  "game_id",                 default: 0,     null: false
-    t.string   "color",       limit: 100, default: "",    null: false
-    t.integer  "num_players",             default: 2,     null: false
+    t.integer  "game_id",     default: 0,     null: false
+    t.string   "color",       default: "",    null: false
+    t.integer  "num_players", default: 2,     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "score",                   default: 0,     null: false
-    t.boolean  "won",                     default: false, null: false
+    t.integer  "score",       default: 0,     null: false
+    t.boolean  "won",         default: false, null: false
   end
 
   add_index "teams", ["game_id"], name: "index_teams_on_game_id", using: :btree
@@ -75,10 +75,8 @@ ActiveRecord::Schema.define(version: 20140122042550) do
   add_index "user_stats", ["user_id"], name: "index_user_stats_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "name"
+    t.string   "name",                                                         null: false
     t.string   "email",                                                        null: false
-    t.integer  "score",                                          default: 0,   null: false
-    t.decimal  "wl_ratio",               precision: 5, scale: 2, default: 0.0, null: false
     t.string   "uid"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -93,6 +91,8 @@ ActiveRecord::Schema.define(version: 20140122042550) do
     t.string   "last_sign_in_ip"
     t.string   "authentication_token"
     t.string   "provider"
+    t.decimal  "wl_ratio",               precision: 5, scale: 2, default: 0.0, null: false
+    t.integer  "score",                                          default: 0,   null: false
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
