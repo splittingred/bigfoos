@@ -4,8 +4,10 @@
     %span.divider
   %li.active= t('games.title')
 
-%p.pull-right= link_to t('.new'), new_game_path, class: 'btn btn-success'
-%p.pull-right= link_to 'New Auto Game', 'games/auto', class: 'btn btn-success'
+.btn-group.pull-right
+  = link_to t('.new'), new_game_path, class: 'btn btn-success'
+  = link_to 'New Auto Game', 'games/auto', class: 'btn btn-success'
+
 %h1= t('games.title')
 
 .table-responsive
