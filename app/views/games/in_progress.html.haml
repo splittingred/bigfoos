@@ -22,19 +22,22 @@
 
   .row
     - @game.teams.each do |team|
-      .col-xs-10
-        %h3.pull-right.scores{:id => 'team-score-'+team.id.to_s}= team.score
+      .col-xs-12
         %h4{class: team.color.downcase}
           = team.color
-        - team.players.each do |p|
-          %div{:class => 'player '+(p.top_scorer? ? 'top-scorer' : '')}
-            = link_to 'Score', game_score_path(@game,{:player_id => p.id }), :class => 'pull-left btn btn-score btn-info', :remote => true, :method => :post
-            &nbsp;
-            = link_to 'Unscore', game_unscore_path(@game,{:player_id => p.id }), :class => 'pull-left btn btn-score btn-info', :remote => true, :method => :post
-            &nbsp;
-            %span{class: 'position'}= p.position.capitalize.to_s+' - '
-            = link_to p.user.name, p.user
-            %span.player-score{:id => 'player-score-'+p.id.to_s}= ': '+p.points.to_s
+        .row
+          .col-xs-8
+            - team.players.each do |p|
+              %div{:class => 'clearfix player '+(p.top_scorer? ? 'top-scorer' : '')}
+                .score-controls
+                  = link_to 'Score', game_score_path(@game,{:player_id => p.id }), :class => 'pull-left btn btn-score btn-primary', :remote => true, :method => :post
+                  = link_to 'Unscore', game_unscore_path(@game,{:player_id => p.id }), :class => 'pull-left btn btn-score btn-primary disabled', :remote => true, :method => :post
+                .player-meta
+                  %span{class: 'position'}= p.position.capitalize.to_s+' - '
+                  = link_to p.user.name, p.user
+                  %span.player-score{:id => 'player-score-'+p.id.to_s}= ': '+p.points.to_s
+          .col-xs-4
+            %h3.scores{:id => 'team-score-'+team.id.to_s}= team.score
           .clearfix
       .clearfix
       %hr

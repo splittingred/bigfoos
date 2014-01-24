@@ -1,6 +1,8 @@
 // Place all the styles related to the games controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@import "bootstrap/variables"
+@import "bootstrap/mixins"
 
 .game
   h2
@@ -21,6 +23,10 @@
     padding-top: 4px
     margin-left: 15px
 
+.score-controls
+  @include clearfix()
+  float: left
+
 .btn-score
   margin-right: 5px
 
@@ -29,3 +35,11 @@
 
 .winning-team-icon
   margin-left: -17px
+
+.player
+  margin-bottom: 20px
+
+.player-meta
+  float: left
+  position: relative
+  top: 0.5em
