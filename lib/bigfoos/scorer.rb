@@ -17,7 +17,7 @@ class BigFoos::Scorer
       :ppg => 35.0,
       :ppg_against => 20.0,
 
-      :match_percentage_multiplier => 2,
+      :match_percentage_multiplier => 10,
       :inactive_penalty_multiplier => 25,
       :inactive_penalty_days => 5.00,
       :minimum_matches => 5
@@ -56,7 +56,7 @@ class BigFoos::Scorer
     percentage_of_games = (player_games.to_f / total_games.to_f)
 
     if wins > 0 or losses > 0
-      adjustment += (@user.wl_ratio * 10 * @ratios[:win_loss_ratio_multiplier])*(percentage_of_games*10*@ratios[:match_percentage_multiplier])
+      adjustment += (@user.wl_ratio * 10 * @ratios[:win_loss_ratio_multiplier])+(percentage_of_games*100*@ratios[:match_percentage_multiplier])
         # taking this out as its skewing toward most games played
         #*(percentage_of_games*100*@ratios[:match_percentage_multiplier]))
     end
