@@ -1,12 +1,22 @@
 class Achievement < ActiveRecord::Base
   has_many :user_achievements
   has_one :next_achievement, :foreign_key => 'prior', :class_name => 'Achievement'
+
+  scope :recent,->(limit = 20) {
+    select('achievements.*,users.name,user_achievements.created_at')
+      .joins('JOIN user_achievements ON achievements.id = user_achievements.achievement_id JOIN users ON users.id = user_achievements.user_id')
+      .order('user_achievements.created_at DESC, achievements.stat ASC, achievements.value ASC')
+      .limit(limit)
+  }
+  scope :with_code,->(code) { where(code: code).first }
+  scope :paged,->(limit = 0,offset = 0) { limit(limit).offset(offset) }
+
   default_scope { order('stat ASC, value ASC')}
 
   class << self
     ##
     # Recalculate achievements for given users
-    def recalculate(users,match_id = nil)
+    def recalculate(users,game = nil)
       granted = Hash.new
       users.each do |user|
         granted[user.name.to_sym] = [] unless granted[user.name.to_sym]
@@ -19,7 +29,7 @@ class Achievement < ActiveRecord::Base
             value = ach.value.to_i
             op = ach.operator.to_sym
             if stats[ach.stat.to_sym].send(op,value)
-              ach.grant(user,match_id)
+              ach.grant(user,game)
               granted[user.name.to_sym] << ach.code
             end
           end
@@ -28,15 +38,11 @@ class Achievement < ActiveRecord::Base
       granted
     end
 
-    def grant(achievement,user,match_id = nil)
-      achievement = Achievement.find_by_code(achievement,user)
+    def grant(code,user,game = nil)
+      achievement = Achievement.with_code(code)
       if achievement
-        achievement.grant(user,match_id)
+        achievement.grant(user,game)
       end
-    end
-
-    def recent(limit = 20)
-      Achievement.select('achievements.*,users.name,user_achievements.created_at').joins('JOIN user_achievements ON achievements.id = user_achievements.achievement_id JOIN users ON users.id = user_achievements.user_id').order('user_achievements.created_at DESC, achievements.stat ASC, achievements.value ASC').limit(limit)
     end
   end
 
@@ -44,13 +50,13 @@ class Achievement < ActiveRecord::Base
     code
   end
 
-  def grant(user,game_id = nil)
-    return false unless ::UserAchievement.where(:user_id => user.id,:achievement_id => self.id).count == 0
+  def grant(user,game = nil)
+    return false unless UserAchievement.for_user_and_achievement(user,self).count == 0
 
     ua = UserAchievement.new
-    ua.user_id = user.id
-    ua.achievement_id = self.id
-    ua.game_id = game_id unless game_id.nil?
+    ua.user = user
+    ua.achievement = self
+    ua.game = game unless game.nil?
     ua.save
   end
 

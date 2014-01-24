@@ -23,7 +23,7 @@
       - @achievement.users.each do |user|
         %tr
           %td
-            %img{src: user.gravatar_url, alt: ''}
+            %img{src: user.gravatar_url(size: 25), alt: ''}
           %td{style: 'width: 60%'}= link_to user.name, user_path(user)
           %td= user.stat(@achievement.stat.to_sym)
           %td= l user.stat(@achievement.stat.to_sym,false).created_at, format: :short

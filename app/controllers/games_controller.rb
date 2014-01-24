@@ -16,12 +16,12 @@ class GamesController < ApplicationController
   end
 
   def new
-    @users = User.order('name ASC').all
+    @users = User.order('name ASC')
     render
   end
 
   def auto
-    @users = User.order('name ASC').all
+    @users = User.order('name ASC')
     render
   end
 
@@ -32,7 +32,7 @@ class GamesController < ApplicationController
   end
 
   def edit
-    @users = User.order('name ASC').all
+    @users = User.order('name ASC')
   end
 
   def score
