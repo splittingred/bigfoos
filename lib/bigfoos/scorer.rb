@@ -56,7 +56,7 @@ class BigFoos::Scorer
     percentage_of_games = (player_games.to_f / total_games.to_f)
 
     if wins > 0 or losses > 0
-      adjustment += (@user.wl_ratio * 10 * @ratios[:win_loss_ratio_multiplier])
+      adjustment += (@user.wl_ratio * 10 * @ratios[:win_loss_ratio_multiplier])*(percentage_of_games*10*@ratios[:match_percentage_multiplier])
         # taking this out as its skewing toward most games played
         #*(percentage_of_games*100*@ratios[:match_percentage_multiplier]))
     end
