@@ -5,6 +5,9 @@ class Score < ActiveRecord::Base
   before_create :add_score
   before_destroy :delete_score
 
+  scope :for_player, ->(player) { where(player: player) }
+  scope :for_player_and_game, ->(player,game) { where(player: player, game: game) }
+
   ##
   # Adds a score record, properly incrementing points and scores on appropriate tables
   #

@@ -16,7 +16,7 @@ class Game < ActiveRecord::Base
       return false if user_ids.count != 4
 
       # do something here to sort users by rank
-      users = User.where(:id => user_ids).order('score DESC')
+      users = User.of_ids(user_ids).ordered_by_score
 
       game = Game.new
       game.num_players = 4
@@ -119,6 +119,6 @@ class Game < ActiveRecord::Base
   # Finds the winning team for the game by score
   #
   def winning_team
-    self.teams.order('score DESC').first
+    self.teams.ordered_by_score.first
   end
 end

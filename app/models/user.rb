@@ -25,6 +25,8 @@ class User < ActiveRecord::Base
   scope :minimum_games_threshold, -> {
     joins('join user_stats AS games ON games.user_id = users.id').where('games.name = ? AND games.value > ?','games',5)
   }
+  scope :of_ids, ->(ids) { where(:id => ids) }
+  scope :ordered_by_score, -> { order('score DESC') }
 
   class << self
     def score_all

@@ -5,6 +5,8 @@ class Team < ActiveRecord::Base
 
   accepts_nested_attributes_for :players, :allow_destroy => true
 
+  scope :ordered_by_score, -> { order('score DESC') }
+
   ##
   # Alias for won
   #

@@ -2,6 +2,8 @@ class Player < ActiveRecord::Base
   belongs_to :team
   belongs_to :user
   has_many :score, :dependent => :destroy
+
+  scope :top_scorer_for_teams, ->(team_ids) { where(team_id: team_ids).maximum(:points) }
   default_scope { order(:position) }
 
   class << self
@@ -11,12 +13,16 @@ class Player < ActiveRecord::Base
     end
   end
 
+  def game
+    self.team.game
+  end
+
   ##
   # Gives a point to the player
   #
   def score
     s = Score.new
-    s.game = self.team.game
+    s.game = self.game
     s.player = self
     s.save
   end
@@ -25,7 +31,7 @@ class Player < ActiveRecord::Base
   # Takes away a point from the player
   #
   def unscore
-    s = Score.where(:player_id => self.id, :game_id => self.team.game.id).first
+    s = Score.for_player(self).first
     if s
       s.destroy
     else
@@ -68,7 +74,7 @@ class Player < ActiveRecord::Base
   #
   def top_scorer?
     team_ids = self.team.game.teams.pluck(:id)
-    Player.where(:team_id => team_ids).maximum(:points) == self.points
+    Player.top_scorer_for_teams(team_ids) == self.points
   end
 
   ##
