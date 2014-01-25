@@ -24,7 +24,8 @@ class Player < ActiveRecord::Base
     s = Score.new
     s.game = self.game
     s.player = self
-    s.save
+    return false unless s.save
+    s
   end
 
   ##
@@ -33,10 +34,9 @@ class Player < ActiveRecord::Base
   def unscore
     s = Score.for_player(self).first
     if s
-      s.destroy
-    else
-      false
+      return false unless s.destroy
     end
+    s
   end
 
   ##
