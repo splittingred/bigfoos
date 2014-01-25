@@ -1,7 +1,2 @@
-<% if @player.team.score >= 5 %>
-<% @player.team.game.set_winner(@player.team) %>
-window.location.href = "<%= games_path(@player.team.game) %>";
-<% else %>
 $('#player-score-<%= @player.id.to_s %>').text(": <%= @player.points.to_s %>");
 $('#team-score-<%= @player.team.id.to_s %>').text("<%= @player.team.score.to_s %>");
-<% end %>

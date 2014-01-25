@@ -234,21 +234,25 @@ class User < ActiveRecord::Base
     h
   end
 
+  ##
+  # Score/rank the user
+  #
   def do_score
     BigFoos::Scorer.score(self)
   end
 
   ##
   # Gets achievements for user
-  # TODO: move into scope on Achievement
+  #
   def achievements
-    Achievement
-      .joins(:user_achievements)
-      .select('achievements.*,user_achievements.created_at AS earned_on')
-      .where(:user_achievements => {:user_id => self.id})
-      .order('stat ASC, value ASC')
+    Achievement.for_user(self.id)
   end
 
+  ##
+  # Gets achievements as a k => v hash
+  #
+  # @return [Hash]
+  #
   def achievements_as_list
     l = []
     self.achievements.each do |a|

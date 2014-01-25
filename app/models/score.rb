@@ -3,6 +3,7 @@ class Score < ActiveRecord::Base
   belongs_to :game
 
   before_create :add_score
+  after_create :check_for_game_end
   before_destroy :delete_score
 
   scope :for_player, ->(player) { where(player: player) }
@@ -33,6 +34,15 @@ class Score < ActiveRecord::Base
         self.player.team.save
       end
       self.player.dec_score_stats
+    end
+  end
+
+  ##
+  # checks for game end
+  #
+  def check_for_game_end
+    if self.player.team.score >= 5
+      self.player.game.finish
     end
   end
 end

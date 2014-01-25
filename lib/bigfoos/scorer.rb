@@ -39,7 +39,7 @@ class BigFoos::Scorer
     @score = @score <= 0 ? 0 : @score
     @user.score = @score
     @user.save
-    puts "Setting score for #{@user.name} to #{@score.to_s}"
+    puts "Setting score for #{@user.name} to #{@score.to_s}" if Rails.env != 'test'
     @score
   end
 

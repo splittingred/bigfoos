@@ -1,5 +1,4 @@
-<% if @player.team.score >= 5 %>
-<% @player.team.game.finish %>
+<% if @player.game.finished? %>
 window.location.href = "<%= games_path(@player.team.game) %>";
 <% else %>
 $('#player-score-<%= @player.id.to_s %>').text(": <%= @player.points.to_s %>");

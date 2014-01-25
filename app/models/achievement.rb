@@ -10,6 +10,12 @@ class Achievement < ActiveRecord::Base
   }
   scope :with_code,->(code) { where(code: code).first }
   scope :paged,->(limit = 0,offset = 0) { limit(limit).offset(offset) }
+  scope :for_user,->(user_id) {
+    joins(:user_achievements)
+    .select('achievements.*,user_achievements.created_at AS earned_on')
+    .where(:user_achievements => {:user_id => user_id})
+    .order('stat ASC, value ASC')
+  }
 
   default_scope { order('stat ASC, value ASC')}
 
