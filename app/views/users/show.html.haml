@@ -21,6 +21,8 @@
     %a{href: '#tab-games', data: {toggle:'tab'}}= t('games.title')
   %li
     %a{href: '#tab-achievements', data: {toggle:'tab'}}= t('achievements.title')
+  %li
+    %a{href: '#tab-stats', data: {toggle:'tab'}}= t('stats.title')
 
 .tab-content
   .tab-pane.active#tab-details
@@ -37,11 +39,20 @@
           %td= t('.email')
           %td= mail_to @user.email
         %tr
+          %td= t('.win_loss_ratio')
+          %td= (@user.wl_ratio*100).to_s+'%'
+        %tr
           %td= t('.total_points')
           %td= @user.total_points
         %tr
+          %td= t('.total_points_against')
+          %td= @user.total_points_against
+        %tr
           %td= t('.average_points_per_game')
-          %td= @user.average_points_per_game
+          %td= @user.average_points_per_game.round(2)
+        %tr
+          %td= t('.average_points_against_per_game')
+          %td= @user.average_points_against_per_game.round(2)
         %tr
           %td= t('.last_scored_at')
           %td= @user.last_scored_at
@@ -63,7 +74,7 @@
   .tab-pane#tab-achievements
     %h2= t('achievements.title')
 
-    %table.table
+    %table.table.table-striped
       %thead
         %tr
           %th Name
@@ -73,3 +84,17 @@
         = render partial: 'achievement', collection: @achievements
 
     = paginate @achievements
+
+  .tab-pane#tab-stats
+    %h2= t('stats.title')
+
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Name
+          %th{style: 'width: 60%'} Times
+      %tbody
+        - @stats.each do |k,v|
+          %tr
+            %td= k.to_s.titleize
+            %td= v.to_s

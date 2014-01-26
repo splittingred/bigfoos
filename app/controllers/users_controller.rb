@@ -11,6 +11,7 @@ class UsersController < ApplicationController
   def show
     @games = @user.games.page(params[:page])
     @achievements = @user.achievements.page(params[:page])
+    @stats = @user.stats_as_hash
     render
   end
 

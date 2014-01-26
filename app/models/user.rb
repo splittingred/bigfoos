@@ -42,6 +42,12 @@ class User < ActiveRecord::Base
   def total_points
     self.players.sum(:points)
   end
+  ##
+  # Get total points against this user
+  #
+  def total_points_against
+    self.players.sum(:points_against)
+  end
 
   ##
   # Get all games for this user
@@ -228,7 +234,7 @@ class User < ActiveRecord::Base
   #
   def stats_as_hash
     h = {}
-    self.stats.each do |s|
+    self.stats.order('name ASC').each do |s|
       h[s.name.to_sym] = s.value.to_i
     end
     h
