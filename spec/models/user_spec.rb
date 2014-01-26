@@ -97,6 +97,95 @@ describe User do
     expect(user.last_scored_at).to eq s.created_at.to_s(:long)
   end
 
+  context 'stats' do
+    it 'test stats' do
+      expect(user.stats.count).to eq 0
+      user.inc_stat(:fake,3)
+      expect(user.stats.count).to eq 1
+
+      u2 = Fabricate(:user)
+      u2.inc_stat(:fake,5)
+      expect(user.stats.count).to eq 1
+      s = user.stats.first
+      expect(s.rank).to eq 2
+      expect(s.name).to eq 'fake'
+      expect(s.value).to eq 3
+    end
+
+    it 'test stat' do
+      expect(user.stat(:game_changer)).to eq 0
+      user.inc_stat(:game_changer)
+      expect(user.stat(:game_changer)).to eq 1
+    end
+
+    it 'test stat returning object' do
+      user.inc_stat(:hyper_growth)
+      s = user.stat(:hyper_growth,false)
+      expect(s).to be_a UserStat
+      expect(s.value).to eq 1
+      expect(s.name).to eq 'hyper_growth'
+    end
+
+    it 'test set stat' do
+      user.set_stat(:foo,23)
+      expect(user.stat(:foo)).to eq 23
+    end
+
+    it 'test delete stat' do
+      user.inc_stat(:war_room,50)
+      expect(user.stat(:war_room)).to eq 50
+      user.delete_stat(:war_room)
+      expect(user.stat(:war_room)).to eq 0
+    end
+
+    context 'incrementing stat' do
+      it 'test inc stat' do
+        expect(user.stat(:bar)).to eq 0
+        user.inc_stat(:bar,23)
+        expect(user.stat(:bar)).to eq 23
+      end
+
+      it 'test inc stat with increment > 1' do
+        expect(user.stat(:bar2)).to eq 0
+        user.inc_stat(:bar2,2)
+        expect(user.stat(:bar2)).to eq 2
+      end
+    end
+
+    context 'decrementing stat' do
+      it 'test dec stat' do
+        user.set_stat(:bar,10)
+        expect(user.stat(:bar)).to eq 10
+        user.dec_stat(:bar,2)
+        expect(user.stat(:bar)).to eq 8
+      end
+
+      it 'test dec stat with decrement > 1' do
+        user.set_stat(:bar2,23)
+        expect(user.stat(:bar2)).to eq 23
+        user.dec_stat(:bar2,2)
+        expect(user.stat(:bar2)).to eq 21
+      end
+    end
+
+    it 'test stats as hash' do
+      user.set_stat(:foo,123)
+      user.set_stat(:bar,23)
+      hash = user.stats_as_hash
+      expect(hash).to have_key(:foo)
+      expect(hash[:foo]).to eq 123
+      expect(hash).to have_key(:foo)
+      expect(hash[:bar]).to eq 23
+    end
+  end
+
+  it 'test recalculation of win/loss ratio' do
+    user.set_stat(:wins,90)
+    user.set_stat(:games,100)
+    expect(user.recalculate_win_loss_ratio).to be_true
+    expect(user.wl_ratio).to eq 0.90
+  end
+
   def create_game_for_user
     g = Fabricate(:game)
     t1 = Fabricate(:team,game: g,color: 'Yellow')

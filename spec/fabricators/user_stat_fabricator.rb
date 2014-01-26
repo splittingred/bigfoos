@@ -1,5 +1,5 @@
 Fabricator(:user_stat) do
-  user_id 1
-  name    "MyString"
-  value   1
+  user
+  name    { Faker::Product.name.downcase.parameterize }
+  value   { rand(100) }
 end
