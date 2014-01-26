@@ -9,6 +9,16 @@
 
 %h3= @achievement.name
 
+%ul.achievement-trajectory
+  - @achievement.trajectory.each do |ach|
+    %li{class: ach[:current] ? 'current' : ''}
+      - if ach[:current]
+        = ach['name']
+      - else
+        %a= link_to ach['name'], ach['code']
+
+%p.clearfix
+
 %p= @achievement.description
 
 .table-responsive
