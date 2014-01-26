@@ -28,6 +28,10 @@ class User < ActiveRecord::Base
   scope :of_ids, ->(ids) { where(:id => ids) }
   scope :ordered_by_score, -> { order('score DESC') }
 
+  scope :top_for_stat, ->(stat) {
+    select('user_stats.value,users.*').joins(:user_stats).where(:user_stats => {name: stat}).order('user_stats.value DESC')
+  }
+
   class << self
     def score_all
       User.all.each do |u|

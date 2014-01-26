@@ -70,3 +70,16 @@ en:
       delete_confirm: "Are you sure you want to delete this game?"
   stats:
     title: "Stats"
+  stat:
+    games_desc: 'Total games played'
+    losses_desc: 'Total losses'
+    wins_desc: 'Total wins'
+    played_back_desc: 'Played the back position'
+    played_front_desc: 'Played the front position'
+    scores_desc: 'Total points scored'
+    score_as_back_desc: 'Scored from the back position'
+    score_as_front_desc: 'Scored from the front position'
+    scored_against_desc: 'Total points scored against player'
+    scored_against_as_front_desc: 'Scored against when playing the front position'
+    scored_against_as_back_desc: 'Scored against when playing the back position'
+

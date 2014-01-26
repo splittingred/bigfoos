@@ -64,3 +64,13 @@
         %li.rank
           = link_to user.name, user_path(user)
           = ' - '+user[:games].to_s
+
+%hr
+%h2 Statistics
+.row
+  %table.table.table-striped
+    %tbody
+      - @stats.each do |stat|
+        %tr
+          %td= link_to stat.titleize, stat_path(stat)
+          %td= t('stat.'+stat+'_desc')
