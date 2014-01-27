@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   }
   scope :of_ids, ->(ids) { where(:id => ids) }
   scope :ordered_by_score, -> { order('score DESC') }
+  scope :in_teams, ->(team_ids) { joins(:players).where(:players => {team_id: team_ids}) }
 
   scope :top_for_stat, ->(stat) {
     select('user_stats.value,users.*').joins(:user_stats).where(:user_stats => {name: stat}).order('user_stats.value DESC')

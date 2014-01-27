@@ -7,6 +7,7 @@ gem 'rails', '4.0.2'
 gem 'mysql2', '0.3.14'
 gem 'draper', '~> 1.3' # for view decorators
 gem 'foreman'
+gem 'sucker_punch', '~> 1.0'
 
 # deployment/logging
 gem 'dotenv-rails', '~> 0.9.0'

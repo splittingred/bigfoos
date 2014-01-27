@@ -98,8 +98,7 @@ class Game < ActiveRecord::Base
         self.ended_at = Time.now
         saved = self.save
 
-        User.score_all
-        #Achievement.recalculate(self.users,self)
+        ScoreWorker.new.async.perform(self)
       end
     end
     saved
@@ -120,5 +119,12 @@ class Game < ActiveRecord::Base
   #
   def winning_team
     self.teams.ordered_by_score.first
+  end
+
+  ##
+  # Get all users in game
+  #
+  def users
+    User.in_teams(self.teams.pluck(:id))
   end
 end

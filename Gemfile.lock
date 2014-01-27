@@ -316,6 +316,8 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh
       term-ansicolor
+    sucker_punch (1.0.2)
+      celluloid (~> 0.15.1)
     term-ansicolor (1.2.2)
       tins (~> 0.8)
     thin (1.6.1)
@@ -411,6 +413,7 @@ DEPENDENCIES
   seed-fu!
   selenium-webdriver
   sqlite3
+  sucker_punch (~> 1.0)
   thin
   uglifier (>= 1.3.0)
   unicorn
