@@ -24,8 +24,8 @@ class Game < ActiveRecord::Base
 
       player_order = [1,4,2,3]
 
-      %w(Yellow Black).each_with_index do |c,cidx|
-        positions = %w(front back)
+      %w(Yellow Black).shuffle.each_with_index do |c,cidx|
+        positions = %w(front back).shuffle
         team = Team.new
         team.color = c
         team.num_players = 2
@@ -35,7 +35,12 @@ class Game < ActiveRecord::Base
           player.user = users.at(player_order.shift.to_i-1)
 
           # randomly select position. Eventually make this based on player history
-          player.position = positions.delete_at(rand(positions.length))
+          if positions.count > 1
+            position = positions.delete(player.least_played_position.to_s)
+          else
+            position = positions.pop
+          end
+          player.position = position
 
           team.players << player
         end

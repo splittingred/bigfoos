@@ -17,6 +17,16 @@ class Player < ActiveRecord::Base
     self.team.game
   end
 
+  def times_at_position(position)
+    Player.where(user_id: self.user_id, position: position.to_s).count
+  end
+
+  def least_played_position
+    f = times_at_position(:front)
+    b = times_at_position(:back)
+    f > b ? :back : :front
+  end
+
   ##
   # Gives a point to the player
   #
