@@ -67,13 +67,13 @@ ActiveRecord::Schema.define(version: 20140201035011) do
   add_index "scores", ["player_id"], name: "index_scores_on_player_id", using: :btree
 
   create_table "teams", force: true do |t|
-    t.integer  "game_id",                 default: 0,     null: false
-    t.string   "color",       limit: 100, default: "",    null: false
-    t.integer  "num_players",             default: 2,     null: false
+    t.integer  "game_id",     default: 0,     null: false
+    t.string   "color",       default: "",    null: false
+    t.integer  "num_players", default: 2,     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "score",                   default: 0,     null: false
-    t.boolean  "won",                     default: false, null: false
+    t.integer  "score",       default: 0,     null: false
+    t.boolean  "won",         default: false, null: false
   end
 
   add_index "teams", ["game_id"], name: "index_teams_on_game_id", using: :btree
