@@ -45,7 +45,6 @@ class Player < ActiveRecord::Base
     s = Score.for_player(self).last
 
     if s
-      s.player = self
       return false unless s.destroy
     end
     s
