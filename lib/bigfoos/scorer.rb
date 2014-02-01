@@ -17,7 +17,7 @@ class BigFoos::Scorer
       :ppg => 35.0,
       :ppg_against => 20.0,
 
-      :match_percentage_multiplier => 0.2,
+      :match_percentage_multiplier => 10,
       :inactive_penalty_multiplier => 25,
       :inactive_penalty_days => 5.00,
       :minimum_matches => 5
@@ -62,11 +62,19 @@ class BigFoos::Scorer
   # Calculates score boost for games played
   #
   def percentage_of_games_adjustment
+    adjustment = 0
     player_games = @stats[:games].to_i
-    total_games = ::Game.where('status = ?','finished').count
-    percentage_of_games = (player_games.to_f / total_games.to_f)
 
-    percentage_of_games * 10 * @ratios[:match_percentage_multiplier]
+    average_games = UserStat.where(name: 'games').average(:value)
+
+    # deduct points from people who have played less than average games
+    # this prevents newbies from topping charts
+    delta = average_games - player_games
+    if delta > 0
+      adjustment = -(@ratios[:match_percentage_multiplier]*delta)
+    end
+    #puts '-- delta for '+@user.name+': '+delta.to_s+' --- adjustment: '+adjustment.to_s
+    adjustment
   end
 
   ##
