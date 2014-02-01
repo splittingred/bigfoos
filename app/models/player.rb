@@ -42,8 +42,10 @@ class Player < ActiveRecord::Base
   # Takes away a point from the player
   #
   def unscore
-    s = Score.for_player(self).first
+    s = Score.for_player(self).last
+
     if s
+      s.player = self
       return false unless s.destroy
     end
     s
