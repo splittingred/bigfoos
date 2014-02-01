@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140123031700) do
+ActiveRecord::Schema.define(version: 20140201035011) do
 
   create_table "achievements", force: true do |t|
     t.string   "name"
@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 20140123031700) do
     t.integer  "num_players",             default: 2,     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "score",                   default: "0",   null: false
+    t.integer  "score",                   default: 0,     null: false
     t.boolean  "won",                     default: false, null: false
   end
 
