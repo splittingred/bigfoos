@@ -239,7 +239,11 @@ class User < ActiveRecord::Base
   #
   def ratio(k,return_value = false)
     r = Ratio.for_user(self,k).first
-    r ? (return_value ? r.value : r) : nil
+    if r
+      return_value ? r.value : r
+    else
+      0.00
+    end
   end
 
   ##

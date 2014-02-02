@@ -13,6 +13,7 @@ class BigFoos::Scorer
     @user = user
     @ratios = {
       :win_loss_ratio_multiplier => 100.0,
+      :pfpa_ratio_multiplier => 20.0,
 
       :ppg => 35.0,
       :ppg_against => 20.0,
@@ -32,7 +33,7 @@ class BigFoos::Scorer
     player_games = @stats[:games].to_i
 
     if player_games >= @ratios[:minimum_matches]
-      @score += self.win_ratio_adjustment
+      @score += self.ratios_adjustment
       #@score += self.inactivity_adjustment
       @score += self.ppg_adjustments
       @score += self.percentage_of_games_adjustment
@@ -47,15 +48,10 @@ class BigFoos::Scorer
   ##
   # Calculates score boost for w/l ratios
   #
-  def win_ratio_adjustment
+  def ratios_adjustment
     adjustment = 0
-    wins = @stats[:wins].to_i
-    losses = @stats[:losses].to_i
-    if wins > 0 or losses > 0
-      adjustment += @user.wl_ratio * 10 * @ratios[:win_loss_ratio_multiplier]
-    end
-
-    adjustment
+    adjustment += @user.ratio('win-loss',true) * 10 * @ratios[:win_loss_ratio_multiplier]
+    adjustment += @user.ratio('pf-pa',true) * 10 * @ratios[:pfpa_ratio_multiplier]
   end
 
   ##
