@@ -15,7 +15,7 @@
       - @best_wl_ratio.each do |user|
         %li.rank
           = link_to user.name, user_path(user)
-          = ' - '+(user[:wl_ratio] * 100).round(2).to_s+'%'
+          = ' - '+(user.ratio('win-loss',true) * 100).round(2).to_s+'%'
 
   .col-xs-5
     %h3

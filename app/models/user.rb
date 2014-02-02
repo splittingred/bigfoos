@@ -15,13 +15,14 @@ class User < ActiveRecord::Base
   has_many :teams, :through => :players
   has_many :user_stats, :dependent => :destroy
   has_many :user_achievements
+  has_many :ratios
 
   scope :top_scorers, -> { minimum_games_threshold.joins(:user_stats).select('users.*,user_stats.value AS points').where('user_stats.name = ?','scores').order('points DESC') }
   scope :top_points_per_game, -> { minimum_games_threshold.joins(:players).select('users.*,AVG(players.points) AS points').group('users.id').order('points DESC') }
   scope :most_games, -> { minimum_games_threshold.joins(:players).select('users.*,COUNT(players.id) AS games').group('users.id').order('games DESC') }
   scope :top_winners, -> { minimum_games_threshold.joins(:user_stats).select('users.*,user_stats.value AS wins').where('user_stats.name = ?','wins').order('wins DESC') }
   scope :top_losers, -> { minimum_games_threshold.joins(:user_stats).select('users.*,user_stats.value AS losses').where('user_stats.name = ?','losses').order('losses DESC') }
-  scope :best_wl_ratio, -> { minimum_games_threshold.order('wl_ratio DESC') }
+  scope :best_wl_ratio, -> { minimum_games_threshold.joins(:ratios).where(ratios: {name: 'win-loss'}).order('ratios.value DESC') }
   scope :minimum_games_threshold, -> {
     joins('join user_stats AS games ON games.user_id = users.id').where('games.name = ? AND games.value > ?','games',5)
   }
@@ -224,12 +225,23 @@ class User < ActiveRecord::Base
   def recalculate_win_loss_ratio
     wins = self.stat(:wins)
     games = self.stat(:games)
-    if games > 0
-      self.wl_ratio = wins.to_f / games.to_f
-    else
-      self.wl_ratio = 0.00
-    end
-    self.save
+    ratio = (games > 0) ? (wins.to_f / games.to_f) : 0.00
+    self.set_ratio('win-loss',ratio)
+  end
+
+  ##
+  # Set the value for a ratio
+  #
+  def set_ratio(k,v)
+    Ratio.set_for_user(self,k,v)
+  end
+
+  ##
+  # Get the ratio
+  #
+  def ratio(k,return_value = false)
+    r = Ratio.for_user(self,k)
+    r ? (return_value ? r.value : r) : nil
   end
 
   ##

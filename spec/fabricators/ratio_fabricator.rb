@@ -1,0 +1,2 @@
+Fabricator(:ratio) do
+end

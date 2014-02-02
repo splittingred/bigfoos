@@ -40,7 +40,7 @@
           %td= mail_to @user.email
         %tr
           %td= t('.win_loss_ratio')
-          %td= (@user.wl_ratio*100).to_s+'%'
+          %td= (@user.ratio('win-loss',true)*100).to_s+'%'
         %tr
           %td= t('.total_points')
           %td= @user.total_points

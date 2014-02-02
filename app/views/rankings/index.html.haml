@@ -28,7 +28,7 @@
           %td= link_to user.name, user_path(user)
           %td= user.score.to_s
           %td= user.stat(:wins).to_s+' / '+user.stat(:losses).to_s
-          %td= (user.wl_ratio*100).to_s+'%'
+          %td= (user.ratio('win-loss',true)*100).to_s+'%'
           %td= user[:ppg].round(2).to_s
           %td= user[:ppg_against].round(2).to_s
 

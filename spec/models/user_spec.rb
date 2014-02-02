@@ -183,7 +183,7 @@ describe User do
     user.set_stat(:wins,90)
     user.set_stat(:games,100)
     expect(user.recalculate_win_loss_ratio).to be_true
-    expect(user.wl_ratio).to eq 0.90
+    expect(user.ratio('win-loss',true)).to eq 0.90
   end
 
   def create_game_for_user
