@@ -11,7 +11,8 @@ class Ratio < ActiveRecord::Base
         ratio.user = user
         ratio.name = k
       end
-      ratio.value = v
+      #puts ratio.name+': '+v.to_f.round(2).to_s if Rails.env != :production
+      ratio.value = v ? v.to_f.round(2) : 0.0
       ratio.save
     end
 
@@ -26,7 +27,7 @@ class Ratio < ActiveRecord::Base
       # Points For / Points Against
       scores = stats[:scores].to_i
       tot_points = (scores + stats[:scored_against].to_i).to_i
-      ratio = scores.to_f / tot_points.to_f
+      ratio = tot_points > 0 ? scores.to_f / tot_points.to_f : 0.00
       Ratio.set_for_user(user,'pf-pa',ratio)
       true
     end

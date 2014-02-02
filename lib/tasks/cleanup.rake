@@ -15,6 +15,7 @@ namespace :bigfoos do
 
   desc 'Recalculate ratios for all users'
   task :recalculate_ratios => :environment do
+    ActiveRecord::Base.logger = nil
     User.all.each do |u|
       u.recalculate_ratios
       u.players.each do |p|
