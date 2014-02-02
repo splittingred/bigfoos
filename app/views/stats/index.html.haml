@@ -19,12 +19,12 @@
 
   .col-xs-5
     %h3
-      Highest Scorers
+      Best Points For/Against Ratio
     %ol
-      - @top_scorers.each do |user|
+      - @best_pf_pa.each do |user|
         %li.rank
           = link_to user.name, user_path(user)
-          = ' - '+user[:points].to_s
+          = ' - '+(user.ratio('pf-pa',true) * 100).round(2).to_s+'%'
 
 
 .row

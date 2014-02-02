@@ -22,11 +22,11 @@ describe Ratio do
   it 'test recalculate_for' do
     @user.set_stat(:games,10)
     @user.set_stat(:wins,9)
-    @user.set_stat(:scores,20)
-    @user.set_stat(:scored_against,18)
+    @user.set_stat(:scores,6)
+    @user.set_stat(:scored_against,4)
 
     @user.recalculate_ratios
     expect(@user.ratio('win-loss',true)).to eq 0.9
-    expect(@user.ratio('pf-pa',true)).to eq 2
+    expect(@user.ratio('pf-pa',true)).to eq 0.6
   end
 end

@@ -42,6 +42,9 @@
           %td= t('.win_loss_ratio')
           %td= (@user.ratio('win-loss',true)*100).to_s+'%'
         %tr
+          %td= t('.points_for/against_ratio')
+          %td= (@user.ratio('pf-pa',true)*100).to_s+'%'
+        %tr
           %td= t('.total_points')
           %td= @user.total_points
         %tr

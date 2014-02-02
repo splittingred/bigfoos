@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
   scope :top_winners, -> { minimum_games_threshold.joins(:user_stats).select('users.*,user_stats.value AS wins').where('user_stats.name = ?','wins').order('wins DESC') }
   scope :top_losers, -> { minimum_games_threshold.joins(:user_stats).select('users.*,user_stats.value AS losses').where('user_stats.name = ?','losses').order('losses DESC') }
   scope :best_wl_ratio, -> { minimum_games_threshold.joins(:ratios).where(ratios: {name: 'win-loss'}).order('ratios.value DESC') }
+  scope :best_pfpa_ratio, -> { minimum_games_threshold.joins(:ratios).where(ratios: {name: 'pf-pa'}).order('ratios.value DESC') }
   scope :minimum_games_threshold, -> {
     joins('join user_stats AS games ON games.user_id = users.id').where('games.name = ? AND games.value > ?','games',5)
   }

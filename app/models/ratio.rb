@@ -24,7 +24,9 @@ class Ratio < ActiveRecord::Base
       Ratio.set_for_user(user,'win-loss',ratio)
 
       # Points For / Points Against
-      ratio = stats[:scores].to_i - stats[:scored_against].to_i
+      scores = stats[:scores].to_i
+      tot_points = (scores + stats[:scored_against].to_i).to_i
+      ratio = scores.to_f / tot_points.to_f
       Ratio.set_for_user(user,'pf-pa',ratio)
       true
     end
