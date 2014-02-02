@@ -16,7 +16,7 @@ namespace :bigfoos do
   desc 'Recalculate ratios for all users'
   task :recalculate_ratios => :environment do
     User.all.each do |u|
-      u.recalculate_win_loss_ratio
+      u.recalculate_ratios
       u.players.each do |p|
         p.points_against = p.other_team.score
         p.save

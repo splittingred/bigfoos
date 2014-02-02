@@ -76,7 +76,7 @@ class Player < ActiveRecord::Base
     self.points_against = self.other_team.score
     self.user.inc_stat(('played_'+self.position).to_sym)
     self.user.inc_stat(:games)
-    self.user.recalculate_win_loss_ratio
+    self.user.recalculate_ratios
     self.user.do_score
     self.save
   end

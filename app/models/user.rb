@@ -218,15 +218,12 @@ class User < ActiveRecord::Base
   end
 
   ##
-  # recalculates and saves win/loss ratio
+  # recalculates and saves ratios
   #
   # @return [Boolean]
   #
-  def recalculate_win_loss_ratio
-    wins = self.stat(:wins)
-    games = self.stat(:games)
-    ratio = (games > 0) ? (wins.to_f / games.to_f) : 0.00
-    self.set_ratio('win-loss',ratio)
+  def recalculate_ratios
+    Ratio.recalculate_for(self)
   end
 
   ##
@@ -240,7 +237,7 @@ class User < ActiveRecord::Base
   # Get the ratio
   #
   def ratio(k,return_value = false)
-    r = Ratio.for_user(self,k)
+    r = Ratio.for_user(self,k).first
     r ? (return_value ? r.value : r) : nil
   end
 
