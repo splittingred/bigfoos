@@ -18,7 +18,7 @@ class BigFoos::Scorer
       :ppg => 35.0,
       :ppg_against => 20.0,
 
-      :match_percentage_multiplier => 25,
+      :match_percentage_multiplier => 15,
       :inactive_penalty_multiplier => 25,
       :inactive_penalty_days => 5.00,
       :minimum_matches => 5
