@@ -1,6 +1,18 @@
 BigFoos::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  config.action_mailer.default_url_options = { :host => 'bigfoos.herokuapp.com' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+      :authentication => :plain,
+      :address => 'smtp.mailgun.org',
+      :port => 587,
+      :domain => ENV['RAILGUN_DOMAIN'],
+      :user_name => ENV['RAILGUN_USERNAME'],
+      :password => ENV['RAILGUN_PASSWORD']
+  }
+
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 

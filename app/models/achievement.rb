@@ -63,7 +63,10 @@ class Achievement < ActiveRecord::Base
     ua.user = user
     ua.achievement = self
     ua.game = game unless game.nil?
-    ua.save
+    success = ua.save
+    if success
+      RailgunMailer.achievement_gained(user: user,achievement: self).deliver
+    end
   end
 
   def users

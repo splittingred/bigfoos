@@ -25,6 +25,8 @@ describe Achievement do
     @achievement.grant(@user,@game)
     expect(@achievement.user_achievements.count).to eq 1
     expect(@achievement.user_achievements.first.game_id).to eq @game.id
+    expect(ActionMailer::Base.deliveries.last.to).to eq [@user.email]
+    expect(ActionMailer::Base.deliveries.last.body).to_not be_empty
 
     @achievement.grant(@user,@game)
     expect(@achievement.user_achievements.count).to eq 1
@@ -34,10 +36,13 @@ describe Achievement do
     expect(Achievement.grant(@achievement.code,@user)).to be_true
     expect(@user.achievements.count).to eq 1
     expect(@achievement.users.count).to eq 1
+    expect(ActionMailer::Base.deliveries.last.to).to eq [@user.email]
+    expect(ActionMailer::Base.deliveries.last.body).to_not be_empty
   end
 
   it 'test users as list' do
     @achievement.grant(@user)
+
     hash = @achievement.users_as_list(1,0)
     expect(hash).to_not be_nil
     expect(hash[:results].count).to eq 1

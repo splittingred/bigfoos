@@ -190,7 +190,7 @@ describe User do
     user.set_stat(:scores,30)
     user.set_stat(:scored_against,20)
     expect(user.recalculate_ratios).to be_true
-    expect(user.ratio('pf-pa',true)).to eq 10
+    expect(user.ratio('pf-pa',true)).to eq 0.6
   end
 
   def create_game_for_user
