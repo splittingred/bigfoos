@@ -9,6 +9,11 @@ class GamesController < ApplicationController
 
   def show
     if @game.in_progress?
+
+      if params[:feature] == 'foosui'
+        @foosui = true
+      end
+
       render :in_progress
     else
       render

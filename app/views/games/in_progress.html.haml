@@ -20,24 +20,97 @@
     %h2= t('.details')
     %span= l @game.created_at, format: :long
 
-  .row
-    - @game.teams.each do |team|
-      .col-xs-12
-        %h4{class: team.color.downcase}
-          = team.color
-        .row
-          .col-xs-8
-            - team.players.each do |p|
-              %div{:class => 'clearfix player '+(p.top_scorer? ? 'top-scorer' : '')}
-                .score-controls
-                  = link_to 'Score', game_score_path(@game,{:player_id => p.id }), :class => 'pull-left btn btn-score btn-primary', :remote => true, :method => :post
-                  = link_to 'Unscore', game_unscore_path(@game,{:player_id => p.id }), :class => 'pull-left btn btn-unscore btn-default', :remote => true, :method => :post
-                .player-meta
-                  %span{class: 'position'}= p.position.capitalize.to_s+' - '
-                  = link_to p.user.name, p.user
-                  %span.player-score{:id => 'player-score-'+p.id.to_s}= ': '+p.points.to_s
-          .col-xs-4
-            %h3.scores{:id => 'team-score-'+team.id.to_s}= team.score
-          .clearfix
-      .clearfix
-      %hr
+  - if defined? @foosui
+    .row
+      .col-xs-1
+        .score.score-black
+          0
+      .col-xs-10
+        .board
+          .board-halfway
+
+          .rod.rod-1.team-bottom.men-3
+            = man_link 13
+
+            = man_link '12'
+
+            = man_link '11'
+
+          .rod.rod-2.team-bottom.men-2
+            = man_link '10'
+
+            = man_link '9'
+
+          .rod.rod-3.team-top.men-3
+            = man_link '1'
+
+            = man_link '2'
+
+            = man_link '3'
+
+          .rod.rod-4.team-bottom.men-5
+
+            = man_link '8'
+
+            = man_link '7'
+
+            = man_link '6'
+
+            = man_link '5'
+
+            = man_link '4'
+
+          .rod.rod-5.team-top.men-5
+            = man_link '4'
+
+            = man_link '5'
+
+            = man_link '6'
+
+            = man_link '7'
+
+            = man_link '8'
+
+          .rod.rod-6.team-bottom.men-3
+            = man_link '3'
+
+            = man_link '2'
+
+            = man_link '1'
+
+          .rod.rod-7.team-top.men-2
+            = man_link '9'
+
+            = man_link '10'
+          .rod.rod-8.team-top.men-3
+            = man_link '11'
+
+            = man_link '12'
+
+            = man_link '13'
+
+      .col-xs-1
+        .score.score-yellow
+          0
+  - else
+    .row
+      - @game.teams.each do |team|
+        .col-xs-12
+          %h4{class: team.color.downcase}
+            = team.color
+          .row
+            .col-xs-8
+              - team.players.each do |p|
+                %div{:class => 'clearfix player '+(p.top_scorer? ? 'top-scorer' : '')}
+                  .score-controls
+                    = link_to 'Score', game_score_path(@game,{:player_id => p.id }), :class => 'pull-left btn btn-score btn-primary', :remote => true, :method => :post
+                    = link_to 'Unscore', game_unscore_path(@game,{:player_id => p.id }), :class => 'pull-left btn btn-unscore btn-default', :remote => true, :method => :post
+                  .player-meta
+                    %span{class: 'position'}= p.position.capitalize.to_s+' - '
+                    = link_to p.user.name, p.user
+                    %span.player-score{:id => 'player-score-'+p.id.to_s}= ': '+p.points.to_s
+            .col-xs-4
+              %h3.scores{:id => 'team-score-'+team.id.to_s}= team.score
+            .clearfix
+        .clearfix
+        %hr

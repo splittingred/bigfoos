@@ -1,0 +1,112 @@
+@import "mixins";
+
+$include-board-grid-css: false!default;
+
+$board-grid-columns: 8!default;
+$board-grid-gutter: 12%!default;
+
+
+$board-bg-color: #009E60!default;
+
+$man-width: 3em!default;
+$man-height: $man-width!default;
+$man-border-radius: 50%!default;
+
+$team-top-man-bg-color: #000!default;
+$team-bottom-man-bg-color: #FDEE00!default;
+
+@mixin board-rod() {
+  position: relative;
+  width: percentage((100 / $board-grid-columns)) / 100;
+  float: left;
+  //margin-left: $board-grid-gutter / 2;
+  //margin-right: $board-grid-gutter / 2;
+  text-align: center;
+}
+
+@mixin halfway-marker($line-color:#fff) {
+  position: absolute;
+  content: " ";
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  border-left: 1px solid $line-color;
+  z-index: 1;
+}
+
+@if($include-board-grid-css) {
+  .board {
+    @include clearfix();
+    background-color: $board-bg-color;
+
+    &:before {
+      @include halfway-marker();
+    }
+  }
+
+  .rod {
+    @include board-rod();
+
+    &:before {
+      @include halfway-marker(#222);
+    }
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    .man {
+      position: relative;
+      z-index: 10;
+      left: 50%;
+
+      display: block;
+      width: $man-width;
+      height: $man-height;
+      line-height: $man-height;
+
+      margin: 1em 0;
+      margin-left: -$man-width / 2;
+
+      border-radius: $man-border-radius;
+
+      @include text-stroke();
+    }
+
+  }
+
+  .team-top {
+    .man {
+      background-color: $team-top-man-bg-color;
+    }
+  }
+
+  .team-bottom {
+    .man {
+      background-color: $team-bottom-man-bg-color;
+    }
+  }
+
+  .men-2 {
+    .man {
+      margin-top: 5em;
+      margin-bottom: 5em;
+    }
+  }
+
+  .men-3 {
+    .man {
+      margin-top: 3em;
+      margin-bottom: 3em;
+    }
+  }
+
+
+
+
+}
