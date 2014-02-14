@@ -26,7 +26,7 @@ class GamesController < ApplicationController
   end
 
   def auto_create
-    @game = Game.matchmake(game_params[:auto_users])
+    @game = Game.matchmake(game_params[:auto_users],game_params[:random_teams])
     authorize! :create, @game
     @game.save ? redirect_to(@game, flash: { success: 'Game successfully created.'}) : render(action: :auto)
   end
@@ -99,6 +99,7 @@ class GamesController < ApplicationController
 
   def game_params
     params.require(:game).permit(:num_players,
+                                 :random_teams,
                                  :auto_users => [],
                                  teams_attributes: [
       :id,

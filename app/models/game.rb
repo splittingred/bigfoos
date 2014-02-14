@@ -9,9 +9,11 @@ class Game < ActiveRecord::Base
   scope :finished, -> { where(status: 'finished') }
 
   attr_accessor :auto_users
+  attr_accessor :random_teams
 
   class << self
-    def matchmake(user_ids)
+    def matchmake(user_ids,random_teams = false)
+      random_teams = random_teams.to_i
       user_ids.reject!(&:empty?)
       return false if user_ids.count != 4
 
@@ -23,6 +25,7 @@ class Game < ActiveRecord::Base
       game.teams = []
 
       player_order = [1,4,2,3]
+      player_order.shuffle! if random_teams
 
       %w(Yellow Black).shuffle.each_with_index do |c,cidx|
         positions = %w(front back).shuffle
@@ -31,10 +34,14 @@ class Game < ActiveRecord::Base
         team.num_players = 2
         2.times do
           player = Player.new
-          # 1/4/2/3 selection of teams.
-          player.user = users.at(player_order.shift.to_i-1)
+          # 1/4/2/3 selection of teams, unless random_teams is true
+          if random_teams
+            player.user = users.at(player_order.shift.to_i-1)
+          else
+            player.user = users.sample
+          end
 
-          # randomly select position. Eventually make this based on player history
+          # select position based on player's history, putting them in least played position if one of the top 2 players
           if positions.count > 1
             position = positions.delete(player.least_played_position.to_s)
           else
