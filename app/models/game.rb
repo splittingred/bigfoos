@@ -25,7 +25,7 @@ class Game < ActiveRecord::Base
       game.teams = []
 
       player_order = [1,4,2,3]
-      player_order.shuffle! if random_teams
+      player_order.shuffle! if random_teams == 1
 
       %w(Yellow Black).shuffle.each_with_index do |c,cidx|
         positions = %w(front back).shuffle
