@@ -1,6 +1,6 @@
 module GamesHelper
 
-  def man_link index
-    link_to index.to_s, game_path, class: 'man'
+  def score_link(game, player, scored_with)
+    link_to 'Score', game_score_path(game,{:player_id => player.id, :scored_with => scored_with }), class: 'man', :remote => true, :method => :post
   end
 end

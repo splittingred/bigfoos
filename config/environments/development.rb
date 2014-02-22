@@ -1,4 +1,9 @@
 BigFoos::Application.configure do
+  silence_warnings do
+    require 'pry'
+    require 'pry-remote'
+  end
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }

@@ -85,8 +85,7 @@ group :development, :test do
   gem 'capybara'
   gem 'coveralls', require: false
   gem 'ffaker'
-  gem 'pry-rails'
-  gem 'pry-debugger'
+  gem 'jazz_hands'
   gem 'yard'
   gem 'yard-rspec'
 end

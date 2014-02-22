@@ -30,10 +30,11 @@ class Player < ActiveRecord::Base
   ##
   # Gives a point to the player
   #
-  def score
+  def score(scored_with)
     s = Score.new
     s.game = self.game
     s.player = self
+    s.scored_with = scored_with
     return false unless s.save
     s
   end

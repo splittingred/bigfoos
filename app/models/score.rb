@@ -2,6 +2,8 @@ class Score < ActiveRecord::Base
   belongs_to :player
   belongs_to :game
 
+  validates_inclusion_of :scored_with, within: 1..13
+
   before_create :add_score
   after_create :check_for_game_end
   before_destroy :delete_score

@@ -9,6 +9,13 @@ class GamesController < ApplicationController
 
   def show
     if @game.in_progress?
+      @players = []
+
+      @game.teams.each do | team |
+        team.players.each do | player |
+          @players << player
+        end
+      end
 
       if params[:feature] == 'foosui'
         @foosui = true
@@ -42,7 +49,7 @@ class GamesController < ApplicationController
 
   def score
     @player = Player.find(params[:player_id])
-    @player.score
+    @player.score params[:scored_with]
   rescue ActiveRecord::RecordNotFound
     render :nothing => true
   end

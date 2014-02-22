@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140202035517) do
+ActiveRecord::Schema.define(version: 20140222043407) do
 
   create_table "achievements", force: true do |t|
     t.string   "name"
@@ -68,10 +68,11 @@ ActiveRecord::Schema.define(version: 20140202035517) do
   add_index "ratios", ["user_id"], name: "index_ratios_on_user_id", using: :btree
 
   create_table "scores", force: true do |t|
-    t.integer  "player_id",  default: 0, null: false
-    t.integer  "game_id",    default: 0, null: false
+    t.integer  "player_id",   default: 0, null: false
+    t.integer  "game_id",     default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "scored_with", default: 0, null: false
   end
 
   add_index "scores", ["game_id"], name: "index_scores_on_game_id", using: :btree
