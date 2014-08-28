@@ -13,6 +13,21 @@ namespace :bigfoos do
     end
   end
 
+  desc 'Truncates data and resets BigFoos'
+  task :start_over => :environment do
+    Game.destroy_all
+    Player.destroy_all
+    Ratio.destroy_all
+    Score.destroy_all
+    Team.destroy_all
+    UserAchievement.destroy_all
+    UserStat.destroy_all
+    User.all.each do |u|
+      u.score = 0
+      u.save
+    end
+  end
+
   desc 'Recalculate ratios for all users'
   task :recalculate_ratios => :environment do
     ActiveRecord::Base.logger = nil
