@@ -68,7 +68,7 @@ class User < ActiveRecord::Base
   # Get APPG for this user
   #
   def average_points_per_game
-    self.players.average(:points)
+    self.players.average(:points) || 0
   end
 
   ##
