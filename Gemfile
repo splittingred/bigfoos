@@ -1,18 +1,24 @@
 source 'https://rubygems.org'
 
-ruby '2.0.0'
+#ruby '2.0.0'
 
-gem 'active_model_serializers'
-gem 'rails', '4.0.2'
-gem 'mysql2', '0.3.14'
+gem 'active_model_serializers', github: 'rails-api/active_model_serializers', branch: 'master'
 gem 'draper', '~> 1.3' # for view decorators
 gem 'foreman'
+gem 'hashie', '~> 3.3' # hashes on steroids
+gem 'interactor-rails', '~> 2.0' # feature rich service classes
+gem 'json', '~> 1.8'
+gem 'mysql2', '0.3.14'
+gem 'rails', '4.1.5'
+gem 'settingslogic', '~> 2.0'
 gem 'sucker_punch', '~> 1.0'
+gem 'versionist', '~> 1.4.0' # api versioning
+gem 'workflow', '~> 1.1'
 
 # deployment/logging
-gem 'dotenv-rails', '~> 0.9.0'
-gem 'rack-attack', '~> 2.3.0'
-gem 'rack-protection', '~> 1.5.1'
+gem 'dotenv-rails', '~> 0.11'
+gem 'rack-attack', '~> 2.3'
+gem 'rack-protection', '~> 1.5'
 
 # auth/security
 gem 'devise', '~> 3.0.1'
@@ -58,7 +64,6 @@ end
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'capistrano'
   gem 'guard-livereload'
   gem 'guard-rspec', '~> 4.0.3'
   gem 'quiet_assets'
