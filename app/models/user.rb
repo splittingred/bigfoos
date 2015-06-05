@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
   has_many :user_achievements
   has_many :ratios
 
+  before_save { generate_auth_token if authentication_token.blank? }
+
   scope :top_scorers, -> { minimum_games_threshold.joins(:user_stats).select('users.*,user_stats.value AS points').where('user_stats.name = ?','scores').order('points DESC') }
   scope :top_points_per_game, -> { minimum_games_threshold.joins(:players).select('users.*,AVG(players.points) AS points').group('users.id').order('points DESC') }
   scope :most_games, -> { minimum_games_threshold.joins(:players).select('users.*,COUNT(players.id) AS games').group('users.id').order('games DESC') }
@@ -30,6 +32,8 @@ class User < ActiveRecord::Base
   scope :of_ids, ->(ids) { where(:id => ids) }
   scope :ordered_by_score, -> { order('score DESC') }
   scope :in_teams, ->(team_ids) { joins(:players).where(:players => {team_id: team_ids}) }
+  scope :by_email, ->(email) { where('users.email = ?',email) }
+  scope :by_authentication_token, ->(authentication_token) { where('authentication_token = ?', authentication_token) }
 
   scope :top_for_stat, ->(stat) {
     select('user_stats.value,users.*').joins(:user_stats).where(:user_stats => {name: stat}).order('user_stats.value DESC')
@@ -284,5 +288,32 @@ class User < ActiveRecord::Base
       l << a.code
     end
     l
+  end
+
+  ##
+  # Find a user by email and API Auth token
+  #
+  # @param [String] email
+  # @param [String] token
+  # @return [User,NilClass]
+  def self.find_by_api_credentials(email, token)
+    by_email(email).by_authentication_token(token).first
+  end
+
+  ##
+  # Generates a new auth token for the user. Can pass in an override token to use.
+  #
+  # @param [String|NilClass] token
+  # @return [String]
+  #
+  def generate_auth_token(token = nil)
+    if token.nil?
+      begin
+        self.authentication_token = SecureRandom.hex
+      end while self.class.exists?(authentication_token: self.authentication_token)
+    else
+      self.authentication_token = token
+    end
+    self.authentication_token
   end
 end

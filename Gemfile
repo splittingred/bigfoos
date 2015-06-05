@@ -6,6 +6,7 @@ gem 'active_model_serializers', github: 'rails-api/active_model_serializers', br
 gem 'draper', '~> 1.3' # for view decorators
 gem 'foreman'
 gem 'hashie', '~> 3.3' # hashes on steroids
+gem 'has_scope', '~> 0.5' # query parameter filtering for views
 gem 'interactor-rails', '~> 2.0' # feature rich service classes
 gem 'json', '~> 1.8'
 gem 'mysql2', '0.3.14'

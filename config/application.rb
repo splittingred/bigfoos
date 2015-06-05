@@ -31,8 +31,10 @@ module BigFoos
       g.helper_specs false
     end
 
+    config.autoload_paths += Dir[Rails.root.join('lib')]
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
     config.autoload_paths += Dir[Rails.root.join('app', 'models')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'interactors')]
 
     config.assets.intialize_on_precompile = false
     config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)

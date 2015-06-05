@@ -13,8 +13,13 @@ BigFoos::Application.routes.draw do
   resources :rankings
   resources :achievements
 
-  devise_for :users, :path => '', :path_names => {:sign_in => 'login', :sign_out => 'logout'}, controllers: { omniauth_callbacks: "omniauth_callbacks" }
+  devise_for :users, path: '', path_names: {sign_in: 'login', sign_out: 'logout'}, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
 
+  namespace :api do
+    api_version(module: 'V1', path: {value: 'v1'}, defaults: {format: :json}) do
+      resources :users, only: [:index]
+    end
+  end
 
   root to: 'games#index'
 
