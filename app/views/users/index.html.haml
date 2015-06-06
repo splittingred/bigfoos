@@ -19,6 +19,6 @@
         %th Signed up on
         %th
     %tbody
-      = render partial: 'user', collection: @users
+      = render users
 
-= paginate @users
+= paginate users

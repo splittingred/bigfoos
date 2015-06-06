@@ -1,9 +1,8 @@
 %tr
-  %td
-    %img{src: user.gravatar_url, alt: ''}
+  %td= user.gravatar
   %td= link_to user.name, user_path(user)
   %td= user.email
-  %td= user.wins.to_s+' / '+user.losses.to_s
+  %td= user.win_loss
   %td= l user.created_at, format: :long
 
   %td.actions-column

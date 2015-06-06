@@ -7,6 +7,7 @@ class Game < ActiveRecord::Base
 
   scope :in_progress, -> { where(status: 'active') }
   scope :finished, -> { where(status: 'finished') }
+  scope :latest, -> { order(created_at: :desc) }
 
   attr_accessor :auto_users
   attr_accessor :random_teams

@@ -3,26 +3,22 @@ class GamesController < ApplicationController
   before_action :build_game, only: [:new, :create, :auto]
   before_action :prepare_teams, only: [:edit]
 
+  decorates_assigned :games, :game
+
   def index
-    @games = Game.order('created_at DESC').page(params[:page])
+    @games = filter_games
   end
 
   def show
-    if @game.in_progress?
-      render :in_progress
-    else
-      render
-    end
+    render :in_progress if @game.in_progress?
   end
 
   def new
     @users = User.order('name ASC')
-    render
   end
 
   def auto
     @users = User.order('name ASC')
-    render
   end
 
   def auto_create
@@ -67,6 +63,10 @@ class GamesController < ApplicationController
   end
 
   protected
+
+  def filter_games
+    Game.latest.page(params[:page])
+  end
 
   def fetch_game
     @game = Game.find(params[:id])

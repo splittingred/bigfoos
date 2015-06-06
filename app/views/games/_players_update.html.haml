@@ -1,5 +1,5 @@
 %hr
-- idx = 0
+
 = f.fields_for :teams do |t|
   = t.hidden_field :id
   %h3= t.object.color
@@ -12,10 +12,9 @@
   = t.fields_for :players do |p|
     .col-xs-5
       = p.hidden_field :id
-      = p.collection_select(:user_id,User.all,:id,:name, {})
+      = p.collection_select(:user_id,User.order(name: :asc).all,:id,:name)
       = p.select(:position,[["Front",'front'],['Back','back'],['','']])
       = p.text_field :points
-
 
   .clearfix
 

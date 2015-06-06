@@ -4,9 +4,7 @@ class UsersController < ApplicationController
   decorates_assigned :user, :users
 
   def index
-    @users = User
-      .select('users.*, (SELECT COUNT(*) FROM players WHERE players.user_id = users.id AND players.won = true) AS wins, (SELECT COUNT(*) FROM players WHERE players.user_id = users.id AND players.won = false) AS losses')
-      .order('name ASC').page(params[:page])
+    @users = filter_users
   end
 
   def show
@@ -31,6 +29,12 @@ class UsersController < ApplicationController
   end
 
   protected
+
+  def filter_users
+    User
+        .select('users.*, (SELECT COUNT(*) FROM players WHERE players.user_id = users.id AND players.won = true) AS wins, (SELECT COUNT(*) FROM players WHERE players.user_id = users.id AND players.won = false) AS losses')
+        .order('name ASC').page(params[:page])
+  end
 
   def load_user
     @user = User.find(params[:id])

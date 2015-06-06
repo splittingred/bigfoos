@@ -8,25 +8,25 @@
   %li.active= t('.details')
 
 .pull-right
-  = link_to edit_game_path(@game), class: 'btn btn-primary' do
+  = link_to edit_game_path(game), class: 'btn btn-primary' do
     %i.icon.icon-pencil= t('edit')
-  = link_to game_path(@game), class: 'btn btn-danger', method: :delete, data: { confirm: t('.delete_confirm') } do
+  = link_to game_path(game), class: 'btn btn-danger', method: :delete, data: { confirm: t('.delete_confirm') } do
     %i.icon.icon-white.icon-trash= t('delete')
   = link_to t('back'), games_path, class: 'btn btn-default'
 
 .game
   .meta
     %h2= t('.details')
-    %span= l @game.created_at, format: :long
+    %span= l game.created_at, format: :long
 
   .row
-    - @game.teams.each do |team|
+    - game.teams.each do |team|
       .col-xs-5.well.score-box
         %h3.pull-right.scores= team.score
-        %h4{class: team.color.downcase}
+        %h4{class: team.css_class}
           = team.color
         - team.players.each do |p|
-          %div{:class => 'player '+(p.top_scorer? ? 'top-scorer' : '')}
-            %span{class: 'position'}= p.position.capitalize.to_s+' - '
-            = link_to p.user.name, p.user
+          %div{class: "player #{p.top_scorer_css_class}"}
+            %span{class: 'position'}= p.position_formatted+' - '
+            = p.link_to_user
             = ': '+p.points.to_s
