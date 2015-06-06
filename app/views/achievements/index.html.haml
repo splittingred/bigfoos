@@ -17,11 +17,11 @@
         %th Winners
 
     %tbody
-      - @achievements.each do |ach|
+      - achievements.each do |ach|
         %tr
-          %td= link_to ach.name, achievement_path(ach)
+          %td= ach.show_link
           %td= ach.description
-          %td= ach.stat.capitalize+' '+ach.operator+' '+ach.value.to_s
+          %td= ach.criteria
           %td= ach.users.count
 
-= paginate @achievements
+= paginate achievements

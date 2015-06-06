@@ -25,6 +25,14 @@ class UserDecorator < ApplicationDecorator
     self[:ppg_against].round(2).to_s
   end
 
+  def avg_ppg
+    average_points_per_game.round(2)
+  end
+
+  def avg_papg
+    average_points_against_per_game.round(2)
+  end
+
   def gravatar(size = 30)
     h.content_tag :img, '', {src: gravatar_url(size: size), alt: ''}
   end

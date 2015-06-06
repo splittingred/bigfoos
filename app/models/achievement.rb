@@ -1,6 +1,7 @@
 class Achievement < ActiveRecord::Base
   has_many :user_achievements
-  has_one :next_achievement, :foreign_key => 'prior', :class_name => 'Achievement'
+  has_one :next_achievement, foreign_key: 'prior', class_name: 'Achievement'
+  has_many :users, through: :user_achievements
 
   scope :recent,->(limit = 20) {
     select('achievements.*,users.name,user_achievements.created_at')
@@ -8,12 +9,12 @@ class Achievement < ActiveRecord::Base
       .order('user_achievements.created_at DESC, achievements.stat ASC, achievements.value ASC')
       .limit(limit)
   }
-  scope :with_code,->(code) { where(code: code).first }
-  scope :paged,->(limit = 0,offset = 0) { limit(limit).offset(offset) }
-  scope :for_user,->(user_id) {
+  scope :with_code, ->(code) { where(code: code).first }
+  scope :paged,     ->(limit = 0,offset = 0) { limit(limit).offset(offset) }
+  scope :for_user,  ->(user_id) {
     joins(:user_achievements)
     .select('achievements.*,user_achievements.created_at AS earned_on')
-    .where(:user_achievements => {:user_id => user_id})
+    .where(user_achievements: {user_id: user_id})
     .order('stat ASC, value ASC')
   }
 
@@ -69,12 +70,12 @@ class Achievement < ActiveRecord::Base
     end
   end
 
-  def users
+  def users_with_stats
     User
       .joins(:user_achievements)
       .joins("INNER JOIN user_stats ON users.id = user_stats.user_id AND user_stats.name = '"+self.stat+"'")
       .select('users.*,user_stats.value')
-      .where(:user_achievements => {:achievement_id => self.id})
+      .where(user_achievements: {achievement_id: self.id})
       .order('value DESC')
   end
 
@@ -120,7 +121,7 @@ class Achievement < ActiveRecord::Base
   end
 
   def prior_achievement
-    Achievement.where(:id => self.prior).first
+    Achievement.find_by_id(self.prior)
   end
 
   def trajectory(list = [])

@@ -1,9 +1,10 @@
 class AchievementsController < ApplicationController
-
   before_action :fetch_achievement, only: [:show]
 
+  decorates_assigned :achievement, :achievements
+
   def index
-    @achievements = Achievement.page(params[:page])
+    @achievements = filter_achievements
   end
 
   def show
@@ -11,6 +12,10 @@ class AchievementsController < ApplicationController
   end
 
   protected
+
+  def filter_achievements
+    Achievement.page(params[:page])
+  end
 
   def fetch_achievement
     @achievement = Achievement.find_by_code(params[:id])

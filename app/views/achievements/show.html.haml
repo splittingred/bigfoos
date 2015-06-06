@@ -5,12 +5,12 @@
   %li
     = link_to t('achievements.title'), achievements_path
     %span.divider
-  %li.active= @achievement.name
+  %li.active= achievement.name
 
-%h3= @achievement.name
+%h3= achievement.name
 
 %ul.achievement-trajectory
-  - @achievement.trajectory.each do |ach|
+  - achievement.trajectory.each do |ach|
     %li{class: ach[:current] ? 'current' : ''}
       - if ach[:current]
         = ach['name']
@@ -19,7 +19,7 @@
 
 %p.clearfix
 
-%p= @achievement.description
+%p= achievement.description
 
 .table-responsive
   %table.table.table-striped
@@ -27,13 +27,12 @@
       %tr
         %th
         %th Name
-        %th= @achievement.stat.capitalize
+        %th= achievement.stat_name
         %th Earned On
     %tbody
-      - @achievement.users.each do |user|
+      - achievement.users_with_stats.decorate.each do |user|
         %tr
-          %td
-            %img{src: user.gravatar_url(size: 25), alt: ''}
-          %td{style: 'width: 60%'}= link_to user.name, user_path(user)
-          %td= user.stat(@achievement.stat.to_sym)
-          %td= l user.stat(@achievement.stat.to_sym,false).created_at, format: :short
+          %td= user.gravatar
+          %td{style: 'width: 60%'}= user.show_link
+          %td= user.stat(achievement.stat.to_sym)
+          %td= l user.stat(achievement.stat.to_sym,false).created_at, format: :short

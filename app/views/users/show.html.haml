@@ -5,12 +5,12 @@
   %li
     = link_to t('users.title'), users_path
     %span.divider
-  %li.active= @user.name
+  %li.active= user.name
 
 .pull-right
-  = link_to edit_user_path(@user), class: 'btn btn-primary' do
+  = link_to edit_user_path(user), class: 'btn btn-primary' do
     %i.icon.icon-pencil= t('edit')
-  = link_to user_path(@user), class: 'btn btn-danger', method: :delete, data: { confirm: 'Are you sure?' } do
+  = link_to user_path(user), class: 'btn btn-danger', method: :delete, data: { confirm: 'Are you sure?' } do
     %i.icon.icon-white.icon-trash= t('delete')
   = link_to 'Back', users_path, class: 'btn btn-default'
 
@@ -28,37 +28,37 @@
   .tab-pane.active#tab-details
     .user.meta
       %h2= t('.user_details')
-      %i= t('.signed_up_on')+' '+(l @user.created_at, format: :long)
+      %i= t('.signed_up_on')+' '+(l user.created_at, format: :long)
     %br
     %table.table.table-bordered
       %tbody
         %tr
           %td{style: 'width: 20%'}= t('.name')
-          %td= @user.name
+          %td= user.name
         %tr
           %td= t('.email')
-          %td= mail_to @user.email
+          %td= mail_to user.email
         %tr
           %td= t('.win_loss_ratio')
-          %td= (@user.ratio('win-loss',true)*100).to_s+'%'
+          %td= user.win_loss_ratio
         %tr
           %td= t('.points_for/against_ratio')
-          %td= (@user.ratio('pf-pa',true)*100).to_s+'%'
+          %td= user.pfpa_ratio
         %tr
           %td= t('.total_points')
-          %td= @user.total_points
+          %td= user.total_points
         %tr
           %td= t('.total_points_against')
-          %td= @user.total_points_against
+          %td= user.total_points_against
         %tr
           %td= t('.average_points_per_game')
-          %td= @user.average_points_per_game.round(2)
+          %td= user.avg_ppg
         %tr
           %td= t('.average_points_against_per_game')
-          %td= @user.average_points_against_per_game.round(2)
+          %td= user.avg_papg
         %tr
           %td= t('.last_scored_at')
-          %td= @user.last_scored_at
+          %td= user.last_scored_at
 
   .tab-pane#tab-games
     %h2= t('games.title')
@@ -70,9 +70,9 @@
           %th Teams
           %th Points
       %tbody
-        = render partial: 'game', collection: @games
+        = render partial: 'game', collection: games
 
-    = paginate @games
+    = paginate games
 
   .tab-pane#tab-achievements
     %h2= t('achievements.title')
@@ -84,9 +84,9 @@
           %th Description
           %th Earned On
       %tbody
-        = render partial: 'achievement', collection: @achievements
+        = render partial: 'achievement', collection: achievements
 
-    = paginate @achievements
+    = paginate achievements
 
   .tab-pane#tab-stats
     %h2= t('stats.title')
@@ -99,5 +99,5 @@
       %tbody
         - @stats.each do |k,v|
           %tr
-            %td= k.to_s.titleize
+            %td= link_to k.to_s.titleize, stat_path(k)
             %td= v.to_s

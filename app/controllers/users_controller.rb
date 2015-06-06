@@ -2,13 +2,15 @@ class UsersController < ApplicationController
   before_action :load_user, only: [:show, :edit, :update, :destroy]
 
   decorates_assigned :user, :users
+  decorates_assigned :game, :games
+  decorates_assigned :achievement, :achievements
 
   def index
     @users = filter_users
   end
 
   def show
-    @games = @user.games.page(params[:page])
+    @games = @user.games.latest.page(params[:page])
     @achievements = @user.achievements.page(params[:page])
     @stats = @user.stats_as_hash
   end

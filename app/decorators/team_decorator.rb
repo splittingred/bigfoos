@@ -1,6 +1,6 @@
 class TeamDecorator < ApplicationDecorator
   delegate_all
-  decorates_association :players
+  decorates_associations :players, :users
 
   def css_class
     color.downcase
