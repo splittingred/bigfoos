@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
   has_many :user_stats, :dependent => :destroy
   has_many :user_achievements
   has_many :ratios
+  has_many :achievements, through: :user_achievements
 
   before_save { generate_auth_token if authentication_token.blank? }
 
@@ -273,7 +274,7 @@ class User < ActiveRecord::Base
   ##
   # Gets achievements for user
   #
-  def achievements
+  def achievements_with_user
     Achievement.for_user(self.id)
   end
 

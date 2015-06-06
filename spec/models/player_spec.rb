@@ -28,7 +28,7 @@ describe Player do
     end
 
     it 'test failed unscore' do
-      expect(player.unscore).to be_false
+      expect(player.unscore).to be_falsey
       expect(player.points).to eq 0
     end
   end
@@ -36,15 +36,15 @@ describe Player do
 
   it 'test top_scorer?' do
     player.score
-    expect(player.top_scorer?).to be_true
+    expect(player.top_scorer?).to be_truthy
 
     player2 = Player.new
     player2.team = player.team
     player2.points = 2
     player2.save
 
-    expect(player.top_scorer?).to be_false
-    expect(player2.top_scorer?).to be_true
+    expect(player.top_scorer?).to be_falsey
+    expect(player2.top_scorer?).to be_truthy
   end
 
   it 'test team_color' do

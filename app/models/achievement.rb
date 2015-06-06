@@ -4,7 +4,7 @@ class Achievement < ActiveRecord::Base
   has_many :users, through: :user_achievements
 
   scope :recent,->(limit = 20) {
-    select('achievements.*,users.name,user_achievements.created_at')
+    select('achievements.*,users.name AS user_name,user_achievements.created_at')
       .joins('JOIN user_achievements ON achievements.id = user_achievements.achievement_id JOIN users ON users.id = user_achievements.user_id')
       .order('user_achievements.created_at DESC, achievements.stat ASC, achievements.value ASC')
       .limit(limit)
@@ -13,7 +13,7 @@ class Achievement < ActiveRecord::Base
   scope :paged,     ->(limit = 0,offset = 0) { limit(limit).offset(offset) }
   scope :for_user,  ->(user_id) {
     joins(:user_achievements)
-    .select('achievements.*,user_achievements.created_at AS earned_on')
+    .select('achievements.*, user_achievements.created_at AS earned_on')
     .where(user_achievements: {user_id: user_id})
     .order('stat ASC, value ASC')
   }

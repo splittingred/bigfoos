@@ -1,2 +1,0 @@
-Fabricator(:ratio) do
-end

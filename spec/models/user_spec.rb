@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe User do
-  let(:user) { create :user }
+  let!(:user) { create :user }
 
   it 'has a valid factory for players' do
     expect(user).to be_valid
@@ -99,13 +99,13 @@ describe User do
 
   context 'stats' do
     it 'test stats' do
-      expect(user.stats.count).to eq 0
+      expect(user.stats.size).to eq 0
       user.inc_stat(:fake,3)
-      expect(user.stats.count).to eq 1
+      expect(user.stats.size).to eq 1
 
       u2 = create(:user)
       u2.inc_stat(:fake,5)
-      expect(user.stats.count).to eq 1
+      expect(user.stats.size).to eq 1
       s = user.stats.first
       expect(s.rank).to eq 2
       expect(s.name).to eq 'fake'
@@ -182,14 +182,14 @@ describe User do
   it 'test recalculation of win/loss ratio' do
     user.set_stat(:wins,90)
     user.set_stat(:games,100)
-    expect(user.recalculate_ratios).to be_true
+    expect(user.recalculate_ratios).to be_truthy
     expect(user.ratio('win-loss',true)).to eq 0.9
   end
 
   it 'test recalculation of pf/pa ratio' do
     user.set_stat(:scores,30)
     user.set_stat(:scored_against,20)
-    expect(user.recalculate_ratios).to be_true
+    expect(user.recalculate_ratios).to be_truthy
     expect(user.ratio('pf-pa',true)).to eq 0.6
   end
 

@@ -1,9 +1,9 @@
 FactoryGirl.define do
   factory :user do
-    name     { Faker::Name.name }
-    email    { Faker::Internet.email }
-    uid      { Faker::Identification.ssn }
-    password { Faker::Product.name }
+    name     { FFaker::Name.name }
+    email    { FFaker::Internet.email }
+    uid      { FFaker::Identification.ssn }
+    password { FFaker::Product.name }
     score    { 0 }
   end
 end

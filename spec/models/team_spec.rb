@@ -5,9 +5,9 @@ describe Team do
 
   it 'test won?' do
     team.won = false
-    expect(team.won?).to be_false
+    expect(team.won?).to be_falsey
     team.won = true
-    expect(team.won?).to be_true
+    expect(team.won?).to be_truthy
   end
 
   it 'test other_team' do

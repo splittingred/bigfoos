@@ -4,6 +4,7 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 require 'database_cleaner'
+require 'ffaker'
 require 'draper/test/rspec_integration'
 require 'factory_girl_rails'
 require 'rake'
@@ -41,15 +42,4 @@ RSpec.configure do |config|
 
   config.include FactoryGirl::Syntax::Methods
   config.before(:suite) { FactoryGirl.reload }
-
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
-  end
-
-  config.around(:each) do |spec|
-    DatabaseCleaner.cleaning do
-      spec.run
-    end
-  end
 end

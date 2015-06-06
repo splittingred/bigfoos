@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe Achievement do
-  let(:achievement) { create :achievement }
-  let(:user) { create :user }
-  let(:game) { create :game }
-  let(:user_stat) { create :user_stat, user: user, name: achievement.stat, value: achievement.value }
+  let!(:achievement) { create :achievement }
+  let!(:user) { create :user }
+  let!(:game) { create :game }
+  let!(:user_stat) { create :user_stat, user: user, name: achievement.stat, value: achievement.value }
 
   context 'scopes' do
-    let(:user_achievement) { create :user_achievement, achievement: achievement, user: user, game: game }
+    let!(:user_achievement) { create :user_achievement, achievement: achievement, user: user, game: game }
 
     it :recent do
       a = Achievement.recent(1)
@@ -30,7 +30,7 @@ describe Achievement do
   end
 
   it 'test grant class method' do
-    expect(Achievement.grant(achievement.code,user)).to be_true
+    Achievement.grant(achievement.code,user)
     expect(user.achievements.count).to eq 1
     expect(achievement.users.count).to eq 1
     #expect(ActionMailer::Base.deliveries.last.to).to eq [user.email]
