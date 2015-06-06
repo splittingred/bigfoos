@@ -89,7 +89,6 @@ group :development, :test do
   gem 'factory_girl_rails', require: false
   gem 'ffaker'
   gem 'thin'
-  gem 'fabrication'
   gem 'awesome_print'
   gem 'rspec-rails', '~> 2.0'
   gem 'capybara'
