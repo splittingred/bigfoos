@@ -21,6 +21,16 @@ class ApplicationController < ActionController::Base
           |u| u.permit(registration_params)
       }
     end
+
+    def not_found(resource_name = nil, exception = nil)
+      logger.error(exception.inspect) if exception
+      if resource_name
+        flash.now[:alert] = I18n.t('flash.missing')
+      else
+        flash.now[:alert] = I18n.t('flash.generic')
+      end
+      render 'errors/admin_404', status: :not_found
+    end
   end
 
 end

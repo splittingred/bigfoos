@@ -440,7 +440,7 @@ DEPENDENCIES
   kaminari-bootstrap (~> 3.0.1)
   mysql2 (= 0.3.14)
   omniauth (>= 1.0.0)
-  omniauth-google-oauth2
+  omniauth-google-oauth2 (= 0.2.6)
   pg
   poltergeist
   pry-debugger

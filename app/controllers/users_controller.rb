@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-  before_action :fetch_user, only: [:show, :edit, :update, :destroy]
-  before_action :build_user, only: [:new]
+  before_action :load_user, only: [:show, :edit, :update, :destroy]
+
+  decorates_assigned :user, :users
 
   def index
     @users = User
@@ -12,15 +13,10 @@ class UsersController < ApplicationController
     @games = @user.games.page(params[:page])
     @achievements = @user.achievements.page(params[:page])
     @stats = @user.stats_as_hash
-    render
   end
 
   def new
-    render
-  end
-
-  def edit
-    render
+    @user = User.new
   end
 
   def update
@@ -36,12 +32,10 @@ class UsersController < ApplicationController
 
   protected
 
-  def fetch_user
+  def load_user
     @user = User.find(params[:id])
-  end
-
-  def build_user
-    @user = User.new
+  rescue => e
+    not_found('feature_set', e)
   end
 
   def user_params
