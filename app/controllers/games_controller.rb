@@ -22,9 +22,15 @@ class GamesController < ApplicationController
   end
 
   def auto_create
-    @game = Game.matchmake(game_params[:auto_users],game_params[:random_teams])
-    authorize! :create, @game
-    @game.save ? redirect_to(@game, flash: { success: 'Game successfully created.'}) : render(action: :auto)
+    @game = Games::Matchmake.call(users: game_params[:auto_users], random_teams: game_params[:random_teams])
+
+    if result.success?
+      flash[:success] = 'Game successfully created.'
+      redirect_to result.game
+    else
+      flash.now[:error] = result.error
+      render action: :auto
+    end
   end
 
   def edit
