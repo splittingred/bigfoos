@@ -26,9 +26,9 @@ describe GamesController do
 
   describe '#edit' do
     it 'test get edit page' do
-      game = Fabricate(:game)
+      game = create :game
 
-      get :edit, :id => game
+      get :edit, id: game
       expect(response).to be_success
       expect(response).to render_template(:edit)
       expect(assigns(:game)).to_not be_nil
@@ -36,9 +36,9 @@ describe GamesController do
     end
 
     it 'test failure for edit page with invalid ID' do
-      get :edit, :id => 'not_found'
+      get :edit, id: 'not_found'
       expect(response).to be_redirect
-      expect(response).to redirect_to(:action => :index)
+      expect(response).to redirect_to action: :index
       expect(flash[:error]).to eq 'Game not found'
     end
   end

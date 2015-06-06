@@ -12,53 +12,6 @@ class Game < ActiveRecord::Base
   attr_accessor :auto_users
   attr_accessor :random_teams
 
-  class << self
-    def matchmake(user_ids,random_teams = false)
-      random_teams = random_teams.to_i
-      user_ids.reject!(&:empty?)
-      return false if user_ids.count != 4
-
-      # do something here to sort users by rank
-      users = User.of_ids(user_ids).ordered_by_score
-
-      game = Game.new
-      game.num_players = 4
-      game.teams = []
-
-      player_order = [1,4,2,3]
-      player_order.shuffle! if random_teams == 1
-
-      %w(Yellow Black).shuffle.each_with_index do |c,cidx|
-        positions = %w(front back).shuffle
-        team = Team.new
-        team.color = c
-        team.num_players = 2
-        2.times do
-          player = Player.new
-          # 1/4/2/3 selection of teams, unless random_teams is true
-          if random_teams
-            player.user = users.at(player_order.shift.to_i-1)
-          else
-            player.user = users.sample
-          end
-
-          # select position based on player's history, putting them in least played position if one of the top 2 players
-          if positions.count > 1
-            position = positions.delete(player.least_played_position.to_s)
-          else
-            position = positions.pop
-          end
-          player.position = position
-
-          team.players << player
-        end
-        game.teams << team
-      end
-
-      game
-    end
-  end
-
   ##
   # Returns a collection of User records for team of specified color
   #

@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe User do
-  let(:user) { Fabricate(:user) }
+  let(:user) { create :user }
 
   it 'has a valid factory for players' do
     expect(user).to be_valid
   end
 
   it 'test ordered_by_score scope' do
-    4.times { Fabricate(:user,score: rand(500)) }
+    4.times { create(:user,score: rand(500)) }
 
     users = User.ordered_by_score
     last_score = 99999999999
@@ -19,7 +19,7 @@ describe User do
 
   it 'test of_ids scope' do
     ids = []
-    4.times { ids << Fabricate(:user).id }
+    4.times { ids << create(:user).id }
 
     users = User.of_ids(ids)
     users.each do |u|
@@ -41,12 +41,12 @@ describe User do
   it 'test total_points' do
     expect(user.total_points).to eq 0
 
-    p = Fabricate(:player,user: user)
+    p = create(:player,user: user)
     p.save
     p.score
     expect(user.total_points).to eq 1
 
-    p = Fabricate(:player,user: user)
+    p = create(:player,user: user)
     p.save
     p.score
     expect(user.total_points).to eq 2
@@ -61,7 +61,7 @@ describe User do
 
     expect(user.average_points_per_game).to eq 1
 
-    p = Fabricate(:player,user: user)
+    p = create(:player,user: user)
     p.save
     p.score
     p.score
@@ -103,7 +103,7 @@ describe User do
       user.inc_stat(:fake,3)
       expect(user.stats.count).to eq 1
 
-      u2 = Fabricate(:user)
+      u2 = create(:user)
       u2.inc_stat(:fake,5)
       expect(user.stats.count).to eq 1
       s = user.stats.first
@@ -194,17 +194,17 @@ describe User do
   end
 
   def create_game_for_user
-    g = Fabricate(:game)
-    t1 = Fabricate(:team,game: g,color: 'Yellow')
-    p1 = Fabricate(:player,team: t1,user: user)
-    p2 = Fabricate(:player,team: t1)
+    g = create(:game)
+    t1 = create(:team,game: g,color: 'Yellow')
+    p1 = create(:player,team: t1,user: user)
+    p2 = create(:player,team: t1)
     t1.players << p1
     t1.players << p2
     g.teams << t1
 
-    t2 = Fabricate(:team,game: g,color: 'Black')
-    p3 = Fabricate(:player,team: t2)
-    p4 = Fabricate(:player,team: t2)
+    t2 = create(:team,game: g,color: 'Black')
+    p3 = create(:player,team: t2)
+    p4 = create(:player,team: t2)
     t2.players << p3
     t2.players << p4
     g.teams << t2
