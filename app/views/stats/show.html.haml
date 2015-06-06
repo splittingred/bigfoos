@@ -12,10 +12,10 @@
 
 %table.table.table-striped
   %tbody
-    - @users.each_with_index do |user,idx|
+    - users.each_with_index do |user,idx|
       %tr
         %td{style: 'width: 20px; font-weight: bold'}= '#'+(idx+1).to_s
         %td{style: 'width: 50px; '}
           %img{src: user.gravatar_url(size: 30), alt: ''}
-        %td= link_to user.name, user_path(user)
-        %td= user.value.to_s
+        %td= user.show_link
+        %td= user.value

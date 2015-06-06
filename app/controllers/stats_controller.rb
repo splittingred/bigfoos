@@ -1,4 +1,5 @@
 class StatsController < ApplicationController
+  decorates_assigned :users, :user
 
   def index
     @top_winners = User.top_winners.limit(5)
@@ -11,7 +12,7 @@ class StatsController < ApplicationController
   end
 
   def show
-    @stat = params[:id]
+    @stat = URI.decode(params[:id])
     @users = User.top_for_stat(@stat)
   end
 
