@@ -14,7 +14,6 @@ module Games
 
       @random_teams = context.random_teams.present?
       @colors = %w(Yellow Black).shuffle
-      @positions = %w(front back).shuffle
       @player_order = [1,4,2,3]
       @player_order.shuffle! if @random_teams
     end
@@ -24,21 +23,22 @@ module Games
 
       @colors.each do |color|
         team = Team.new(color: color, num_players: 2)
+        positions = %w(front back).shuffle
 
         2.times do
           player = Player.new
           # 1/4/2/3 selection of teams, unless random_teams is true
-          if random_teams
+          if @random_teams
             player.user = @users.at(@player_order.shift.to_i-1)
           else
             player.user = @users.sample
           end
 
           # select position based on player's history, putting them in least played position if one of the top 2 players
-          if @positions.count > 1
-            position = @positions.delete(player.least_played_position.to_s)
+          if positions.count > 1
+            position = positions.delete(player.least_played_position.to_s)
           else
-            position = @positions.pop
+            position = positions.pop
           end
           player.position = position
 
