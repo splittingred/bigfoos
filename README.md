@@ -14,11 +14,5 @@ rake db:seed_fu
 ## Testing
 
 ```
-rspec
+spring rspec
 ```
-
-## TODO
-
-* Add `piece` to Score model to pinpoint what piece made the score
-* Improve UI to have foosball-table view for score logging and player selection
-* Add hash dictionary of all pieces on foosball table for telling what piece is where
