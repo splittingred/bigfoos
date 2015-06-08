@@ -1,6 +1,6 @@
 # BigFoos
 
-For tracking foosball games at Bigcommerce.
+For tracking foosball games at Bigcommerce. Complete with rankings, auto-matchmaking, team balancing, achievements, and more.
 
 ## Setup
 
