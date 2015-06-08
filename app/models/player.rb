@@ -6,7 +6,7 @@ class Player < ActiveRecord::Base
   scope :by_team, ->(team) { where(team: team) }
   scope :by_user, ->(user) { where(user: user) }
   scope :top_scorer_for_teams, ->(team_ids) { where(team_id: team_ids).maximum(:points) }
-  default_scope { order(:position) }
+  default_scope { order(:position_id) }
 
   class << self
     def for_user(game,user)
@@ -75,8 +75,12 @@ class Player < ActiveRecord::Base
     self.user.dec_stat(:scores)
     self.other_team.players.each do |p|
       p.user.dec_stat(:scored_against)
-      p.user.dec_stat(:scored_against_as_front) if p.position == 'front'
-      p.user.dec_stat(:scored_against_as_back) if p.position == 'back'
+      p.user.dec_stat(:scored_against_as_front) if p.position.front?
+      p.user.dec_stat(:scored_against_as_back) if p.position.back?
     end if self.other_team
+  end
+
+  def position
+    Position.find(position_id)
   end
 end

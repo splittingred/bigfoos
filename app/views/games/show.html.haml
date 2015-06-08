@@ -27,6 +27,6 @@
           = team.color
         - team.players.each do |p|
           %div{class: "player #{p.top_scorer_css_class}"}
-            %span{class: 'position'}= p.position_formatted+' - '
+            %span{class: 'position'}= p.position.to_s+' - '
             = p.link_to_user
             = ': '+p.points.to_s

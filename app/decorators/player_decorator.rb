@@ -5,10 +5,6 @@ class PlayerDecorator < ApplicationDecorator
     top_scorer? ? 'top-scorer' : ''
   end
 
-  def position_formatted
-    position.capitalize.to_s
-  end
-
   def link_to_user
     h.link_to user.name, user
   end

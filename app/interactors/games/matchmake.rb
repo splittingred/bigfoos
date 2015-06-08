@@ -40,7 +40,7 @@ module Games
           else
             position = positions.pop
           end
-          player.position = position
+          player.position_id = position
 
           team.players << player
         end
