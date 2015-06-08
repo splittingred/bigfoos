@@ -2,9 +2,9 @@
 
 = f.fields_for :teams do |t|
   = t.hidden_field :id
-  %h3= t.object.color
+  %h3= t.object.color.to_s
 
-  = t.text_field :color
+  = t.text_field :color_id
   = t.number_field :score, max: 10, min: 0
 
   %h4 Players

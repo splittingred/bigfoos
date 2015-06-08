@@ -41,14 +41,14 @@ class Player < ActiveRecord::Base
   # Get the players team color
   #
   def team_color
-    self.team.color.downcase
+    self.team.color
   end
 
   ##
   # Get the other team's color
   #
   def other_teams_color
-    self.team_color == 'yellow' ? 'black' : 'yellow'
+    self.team_color.yellow? ? Color.find(:black) : Color.find(:yellow)
   end
 
   ##

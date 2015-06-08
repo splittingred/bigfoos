@@ -38,6 +38,10 @@ class Position < Hashie::Dash
     def as_selectable_array
       all.inject([]) { |h,t| h << [t.name, t.key] }
     end
+
+    def to_a
+      all.inject([]) { |h,t| h << t.name }
+    end
   end
 
   TYPES.each do |key, name|

@@ -16,6 +16,10 @@ class Team < ActiveRecord::Base
   end
 
   def other_team
-    self.game.teams.where('color != ?',self.color).first
+    self.game.teams.where('color_id != ?',self.color_id).first
+  end
+
+  def color
+    Color.find(color_id)
   end
 end

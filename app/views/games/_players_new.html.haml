@@ -1,11 +1,11 @@
 .row
 
   = f.fields_for :teams do |t,idx|
-    %div{class: 'well col-xs-5 team-'+t.object.color.downcase, style: 'margin: 10px'}
-      = t.hidden_field :color
+    %div{class: 'well col-xs-5 team-'+t.object.color.css_class, style: 'margin: 10px'}
+      = t.hidden_field :color_id
       = t.hidden_field :score
 
-      %h4{class: t.object.color.downcase}= t.object.color.capitalize+' Team'
+      %h4{class: t.object.color.css_class}= t.object.color.to_s+' Team'
       .form-group
         = t.fields_for :players do |p,pidx|
           - position = cycle('front','back')

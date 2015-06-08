@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150608130556) do
+ActiveRecord::Schema.define(version: 20150608134219) do
 
   create_table "achievements", force: true do |t|
     t.string   "name"
@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 20150608130556) do
 
   create_table "teams", force: true do |t|
     t.integer  "game_id",     default: 0,     null: false
-    t.string   "color",       default: "",    null: false
+    t.string   "color_id",    default: "",    null: false
     t.integer  "num_players", default: 2,     null: false
     t.datetime "created_at"
     t.datetime "updated_at"

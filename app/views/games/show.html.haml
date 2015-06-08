@@ -24,7 +24,7 @@
       .col-xs-5.well.score-box
         %h3.pull-right.scores= team.score
         %h4{class: team.css_class}
-          = team.color
+          = team.color.to_s
         - team.players.each do |p|
           %div{class: "player #{p.top_scorer_css_class}"}
             %span{class: 'position'}= p.position.to_s+' - '

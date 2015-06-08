@@ -93,9 +93,9 @@ class GamesController < ApplicationController
   def build_game
     @game = Game.new
     @game.teams = []
-    ['Yellow','Black'].each do |c|
+    Color.to_a.each do |c|
       t = Team.new
-      t.color = c
+      t.color_id = c
       t.num_players = 2
       2.times do
         t.players << Player.new
@@ -111,7 +111,7 @@ class GamesController < ApplicationController
                                  teams_attributes: [
       :id,
       :score,
-      :color,
+      :color_id,
       :_destroy,
       players_attributes: [
           :id,

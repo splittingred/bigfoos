@@ -13,7 +13,7 @@ module Games
       context.fail!(error: 'Not enough players selected.') if @users.count != 4
 
       @random_teams = context.random_teams.present?
-      @colors = %w(Yellow Black).shuffle
+      @colors = Color.to_a.shuffle
       @player_order = [1,4,2,3]
       @player_order.shuffle! if @random_teams
     end
@@ -21,9 +21,9 @@ module Games
     def call
       @game = Game.new(num_players: 4, teams: [])
 
-      @colors.each do |color|
-        team = Team.new(color: color, num_players: 2)
-        positions = %w(front back).shuffle
+      @colors.each do |color_id|
+        team = Team.new(color_id: color_id, num_players: 2)
+        positions = Position.to_a.shuffle
 
         2.times do
           player = Player.new
