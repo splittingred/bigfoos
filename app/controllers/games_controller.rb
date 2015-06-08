@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
   before_action :fetch_game, only: [:show, :edit, :update, :destroy]
-  before_action :build_game, only: [:new, :create, :auto]
+  before_action :build_game, only: [:new, :create, :auto, :auto_create]
   before_action :prepare_teams, only: [:edit]
 
   decorates_assigned :games, :game
@@ -22,13 +22,14 @@ class GamesController < ApplicationController
   end
 
   def auto_create
-    @game = Games::Matchmake.call(users: game_params[:auto_users], random_teams: game_params[:random_teams])
+    result = Games::Matchmake.call(user_ids: game_params[:auto_users], random_teams: game_params[:random_teams])
 
     if result.success?
       flash[:success] = 'Game successfully created.'
       redirect_to result.game
     else
       flash.now[:error] = result.error
+      @users = User.order('name ASC')
       render action: :auto
     end
   end
@@ -39,16 +40,19 @@ class GamesController < ApplicationController
 
   def score
     @player = Player.find(params[:player_id])
-    @player.score
-  rescue ActiveRecord::RecordNotFound
-    render :nothing => true
+
+    result = Scores::Create.call!(player: @player)
+
+    render nothing: true unless result.success?
   end
 
   def unscore
     @player = Player.find(params[:player_id])
     @player.unscore
   rescue ActiveRecord::RecordNotFound
-    render :nothing => true
+    render nothing: true
+  rescue ActiveRecord::RecordNotSaved
+    render nothing: true
   end
 
   def create

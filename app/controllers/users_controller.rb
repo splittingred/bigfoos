@@ -11,7 +11,7 @@ class UsersController < ApplicationController
 
   def show
     @games = @user.games.latest.page(params[:page])
-    @achievements = @user.achievements.page(params[:page])
+    @achievements = @user.achievements.select('achievements.*, user_achievements.created_at AS earned_on').order('stat ASC, value ASC').page(params[:page])
     @stats = @user.stats_as_hash
   end
 

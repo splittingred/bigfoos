@@ -28,17 +28,6 @@ class Player < ActiveRecord::Base
   end
 
   ##
-  # Gives a point to the player
-  #
-  def score
-    s = Score.new
-    s.game = self.game
-    s.player = self
-    return false unless s.save
-    s
-  end
-
-  ##
   # Takes away a point from the player
   #
   def unscore
@@ -49,36 +38,6 @@ class Player < ActiveRecord::Base
       return false unless s.destroy
     end
     s
-  end
-
-  ##
-  # Sets the player to win the game
-  #
-  def win
-    self.user.inc_stat(:wins)
-    self.won = true
-    self.finish
-  end
-
-  ##
-  # Sets the player lose the game
-  #
-  def lose
-    self.user.inc_stat(:losses)
-    self.won = false
-    self.finish
-  end
-
-  ##
-  # finishes the game and stores a stat on position playing
-  #
-  def finish
-    self.points_against = self.other_team.score
-    self.user.inc_stat(('played_'+self.position).to_sym)
-    self.user.inc_stat(:games)
-    self.user.recalculate_ratios
-    self.user.do_score
-    self.save
   end
 
   ##

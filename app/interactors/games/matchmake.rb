@@ -5,10 +5,10 @@ module Games
     before do
       if context.user_ids.present?
         context.user_ids.reject!(&:empty?)
-        context.users = User.of_ids(context.user_ids)
+        context.users = User.of_ids(context.user_ids).order(score: :desc)
       end
       # get and sort users by rank
-      @users = context.users.order(score: :desc)
+      @users = context.users
 
       context.fail!(error: 'Not enough players selected.') if @users.count != 4
 

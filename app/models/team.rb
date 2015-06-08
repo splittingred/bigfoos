@@ -15,20 +15,6 @@ class Team < ActiveRecord::Base
   end
 
   ##
-  # Set the team to win, updating players with win status
-  #
-  def win
-    transaction do
-      self.won = true
-      if self.save
-        self.players.each do |p|
-          p.win
-        end
-      end
-    end
-  end
-
-  ##
   # Set the team to lose, updating players with loss status
   #
   def lose

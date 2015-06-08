@@ -50,27 +50,6 @@ class Game < ActiveRecord::Base
   end
 
   ##
-  # Finishes the game, setting winners/losers
-  #
-  def finish
-    saved = false
-    transaction do
-      winner = self.teams.where('score >= ?',5).first
-      loser = self.teams.where('score < ?',5).first
-      if winner and loser
-        winner.win
-        loser.lose
-        self.status = 'finished'
-        self.ended_at = Time.now
-        saved = self.save
-
-        ScoreWorker.new.async.perform(self)
-      end
-    end
-    saved
-  end
-
-  ##
   # Sets winner for the game
   #
   def set_winner(team)
