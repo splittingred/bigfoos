@@ -14,12 +14,22 @@ module Scores
 
       before do
         @player = context.player
+        @user = @player.user
+        @other_team = @player.other_team
       end
 
       def call
-        @player.inc_score_stats
+        @user.inc_stat(:scores)
+        @user.inc_stat(:score_as_front) if @player.position == 'front'
+        @user.inc_stat(:score_as_back) if @player.position == 'back'
 
-      rescue StandardError => e
+        @other_team.players.each do |p|
+          p.user.inc_stat(:scored_against)
+          p.user.inc_stat(:scored_against_as_front) if p.position == 'front'
+          p.user.inc_stat(:scored_against_as_back) if p.position == 'back'
+        end if @other_team.present?
+
+      rescue ActiveRecord::ActiveRecordError => e
         context.fail!(error: e.message)
       end
 

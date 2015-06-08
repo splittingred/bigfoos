@@ -1,8 +1,10 @@
 class Player < ActiveRecord::Base
   belongs_to :team
   belongs_to :user
-  has_many :score, :dependent => :destroy
+  has_many :score, dependent: :destroy
 
+  scope :by_team, ->(team) { where(team: team) }
+  scope :by_user, ->(user) { where(user: user) }
   scope :top_scorer_for_teams, ->(team_ids) { where(team_id: team_ids).maximum(:points) }
   default_scope { order(:position) }
 
@@ -67,17 +69,6 @@ class Player < ActiveRecord::Base
   #
   def other_team
     self.team.other_team
-  end
-
-  def inc_score_stats
-    self.user.inc_stat(:scores)
-    self.user.inc_stat(:score_as_front) if self.position == 'front'
-    self.user.inc_stat(:score_as_back) if self.position == 'back'
-    self.other_team.players.each do |p|
-      p.user.inc_stat(:scored_against)
-      p.user.inc_stat(:scored_against_as_front) if p.position == 'front'
-      p.user.inc_stat(:scored_against_as_back) if p.position == 'back'
-    end if self.other_team
   end
 
   def dec_score_stats

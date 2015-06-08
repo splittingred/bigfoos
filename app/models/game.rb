@@ -50,16 +50,6 @@ class Game < ActiveRecord::Base
   end
 
   ##
-  # Sets winner for the game
-  #
-  def set_winner(team)
-    if team.win
-      self.status = 'finished'
-      self.save
-    end
-  end
-
-  ##
   # Finds the winning team for the game by score
   #
   def winning_team
