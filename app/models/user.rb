@@ -292,6 +292,15 @@ class User < ActiveRecord::Base
   end
 
   ##
+  # Return if user has given achievement
+  #
+  # @return [Boolean]
+  #
+  def has_achievement?(achievement)
+    UserAchievement.for_user_and_achievement(self,achievement).count > 0
+  end
+
+  ##
   # Find a user by email and API Auth token
   #
   # @param [String] email

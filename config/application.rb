@@ -8,8 +8,6 @@ Bundler.require(:default, Rails.env)
 
 module BigFoos
   class Application < Rails::Application
-    config.time_zone = 'Eastern Time (US & Canada)'
-
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -31,10 +29,15 @@ module BigFoos
       g.helper_specs false
     end
 
+    config.time_zone = 'Central Time (US & Canada)'
+
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
+    config.i18n.default_locale = :en
+
     config.autoload_paths += Dir[Rails.root.join('lib')]
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
-    config.autoload_paths += Dir[Rails.root.join('app', 'models')]
-    config.autoload_paths += Dir[Rails.root.join('app', 'interactors')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'models', 'decorators')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'interactors', 'concerns')]
 
     config.assets.intialize_on_precompile = false
     config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
@@ -42,4 +45,11 @@ module BigFoos
   end
 end
 
-I18n.enforce_available_locales = false
+I18n.enforce_available_locales = true
+
+##
+# Draper and AMS 0.9.1+ don't play nicely together.
+#
+# See https://github.com/drapergem/draper/issues/644
+require 'draper'
+Draper::Railtie.initializers.delete_if {|initializer| initializer.name == 'draper.setup_active_model_serializers' }

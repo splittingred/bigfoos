@@ -95,6 +95,11 @@ group :development, :test do
   gem 'coveralls', require: false
   gem 'pry-rails'
   gem 'pry-debugger'
-  gem 'yard'
+end
+
+
+group :development, :documentation do
+  gem 'yard', '~> 0.8' # API documentation
+  gem 'yard-activerecord', '~> 0.0'
   gem 'yard-rspec'
 end

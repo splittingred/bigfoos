@@ -9,7 +9,6 @@ class Achievement < ActiveRecord::Base
       .order('user_achievements.created_at DESC, achievements.stat ASC, achievements.value ASC')
       .limit(limit)
   }
-  scope :with_code, ->(code) { where(code: code).first }
   scope :paged,     ->(limit = 0,offset = 0) { limit(limit).offset(offset) }
   scope :for_user,  ->(user_id) {
     joins(:user_achievements)
@@ -36,7 +35,7 @@ class Achievement < ActiveRecord::Base
             value = ach.value.to_i
             op = ach.operator.to_sym
             if stats[ach.stat.to_sym].send(op,value)
-              ach.grant(user,game)
+              Achievements::Grant.call(user: user, game: game, achievement: ach)
               granted[user.name.to_sym] << ach.code
             end
           end
@@ -44,30 +43,10 @@ class Achievement < ActiveRecord::Base
       end
       granted
     end
-
-    def grant(code,user,game = nil)
-      achievement = Achievement.with_code(code)
-      if achievement
-        achievement.grant(user,game)
-      end
-    end
   end
 
   def to_param
     code
-  end
-
-  def grant(user,game = nil)
-    return false unless UserAchievement.for_user_and_achievement(user,self).count == 0
-
-    ua = UserAchievement.new
-    ua.user = user
-    ua.achievement = self
-    ua.game = game unless game.nil?
-    success = ua.save
-    if success
-      #RailgunMailer.achievement_gained(user: user,achievement: self).deliver
-    end
   end
 
   def users_with_stats
