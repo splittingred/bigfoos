@@ -13,7 +13,7 @@
     .col-xs-5
       = p.hidden_field :id
       = p.collection_select(:user_id,User.order(name: :asc).all,:id,:name)
-      = p.select(:position,[["Front",'front'],['Back','back'],['','']])
+      = p.select(:position_id,Position.as_selectable_array)
       = p.text_field :points
 
   .clearfix

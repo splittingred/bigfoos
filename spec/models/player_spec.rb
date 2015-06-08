@@ -8,45 +8,6 @@ describe Player do
     expect(player.game).to eq game
   end
 
-  context 'scoring' do
-    it 'test score' do
-      score = player.score
-      expect(score.player).to eq player
-      expect(score.game).to eq player.game
-      expect(player.points).to eq 1
-      expect(player.team.score).to eq 1
-    end
-
-    it 'test unscore' do
-      player.score
-      expect(player.points).to eq 1
-      expect(player.team.score).to eq 1
-      expect(player.unscore).to_not eq false
-      player.reload
-      expect(player.points).to eq 0
-      expect(player.team.score).to eq 0
-    end
-
-    it 'test failed unscore' do
-      expect(player.unscore).to be_falsey
-      expect(player.points).to eq 0
-    end
-  end
-
-
-  it 'test top_scorer?' do
-    player.score
-    expect(player.top_scorer?).to be_truthy
-
-    player2 = Player.new
-    player2.team = player.team
-    player2.points = 2
-    player2.save
-
-    expect(player.top_scorer?).to be_falsey
-    expect(player2.top_scorer?).to be_truthy
-  end
-
   it 'test team_color' do
     expect(player.team_color).to eq player.team.color.downcase
   end

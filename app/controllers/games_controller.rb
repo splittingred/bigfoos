@@ -48,11 +48,8 @@ class GamesController < ApplicationController
 
   def unscore
     @player = Player.find(params[:player_id])
-    @player.unscore
-  rescue ActiveRecord::RecordNotFound
-    render nothing: true
-  rescue ActiveRecord::RecordNotSaved
-    render nothing: true
+    result = Scores::Revert.call(player: @player)
+    render nothing: true unless result.success?
   end
 
   def create
@@ -110,16 +107,16 @@ class GamesController < ApplicationController
   def game_params
     params.require(:game).permit(:num_players,
                                  :random_teams,
-                                 :auto_users => [],
+                                 auto_users: [],
                                  teams_attributes: [
       :id,
       :score,
       :color,
       :_destroy,
-      :players_attributes => [
+      players_attributes: [
           :id,
           :user_id,
-          :position,
+          :position_id,
           :points,
           :_destroy,
       ]

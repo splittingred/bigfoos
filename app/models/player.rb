@@ -20,26 +20,13 @@ class Player < ActiveRecord::Base
   end
 
   def times_at_position(position)
-    Player.where(user_id: self.user_id, position: position.to_s).count
+    Player.where(user_id: self.user_id, position_id: position.to_s).count
   end
 
   def least_played_position
     f = times_at_position(:front)
     b = times_at_position(:back)
     f > b ? :back : :front
-  end
-
-  ##
-  # Takes away a point from the player
-  #
-  def unscore
-    s = Score.for_player(self).last
-
-    if s
-      s.player = self
-      return false unless s.destroy
-    end
-    s
   end
 
   ##

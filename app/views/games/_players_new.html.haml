@@ -9,6 +9,6 @@
       .form-group
         = t.fields_for :players do |p,pidx|
           - position = cycle('front','back')
-          = p.hidden_field :position, :value => position
+          = p.hidden_field :position_id, value: position
           = p.select(:user_id,options_from_collection_for_select(@users,:id,:name),{:prompt => '--- Select a Person ---'},label: position.capitalize)
           %br

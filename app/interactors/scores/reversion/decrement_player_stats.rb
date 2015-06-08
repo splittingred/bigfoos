@@ -1,7 +1,7 @@
 module Scores
-  module Creation
+  module Reversion
     ##
-    # Increment the statistics for the given player.
+    # Decrement the statistics for the given player.
     #
     # @TODO Eventually move this entirely out of the scoring flow. In reality, we should only be calculating statistics
     #       for finished matches. Move all this into the Scoring worker.
@@ -9,7 +9,7 @@ module Scores
     # @param [Interactor::Context<Player>] player
     # @return [Interactor::Context]
     #
-    class IncrementPlayerStats
+    class DecrementPlayerStats
       include Interactor
 
       before do
@@ -19,14 +19,14 @@ module Scores
       end
 
       def call
-        @user.inc_stat(:scores)
-        @user.inc_stat(:score_as_front) if @player.position.front?
-        @user.inc_stat(:score_as_back) if @player.position.back?
+        @user.dec_stat(:scores)
+        @user.dec_stat(:score_as_front) if @player.position.front?
+        @user.dec_stat(:score_as_back) if @player.position.back?
 
         @other_team.players.each do |p|
-          p.user.inc_stat(:scored_against)
-          p.user.inc_stat(:scored_against_as_front) if p.position.front?
-          p.user.inc_stat(:scored_against_as_back) if p.position.back?
+          p.user.dec_stat(:scored_against)
+          p.user.dec_stat(:scored_against_as_front) if p.position.front?
+          p.user.dec_stat(:scored_against_as_back) if p.position.back?
         end if @other_team.present?
 
       rescue ActiveRecord::ActiveRecordError => e
@@ -34,7 +34,7 @@ module Scores
       end
 
       def rollback
-        Scores::Reversion::DecrementPlayerStats.call(player: @player)
+        Scores::Creation::IncrementPlayerStats.call(player: @player)
       end
     end
   end
