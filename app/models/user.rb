@@ -226,8 +226,9 @@ class User < ActiveRecord::Base
   ##
   # Set the value for a ratio
   #
-  def set_ratio(k,v)
-    Ratio.set_for_user(self,k,v)
+  def set_ratio(k, v)
+    result = Ratios::Set.call(user: self, name: k, value: v)
+    result.success?
   end
 
   ##

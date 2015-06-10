@@ -12,7 +12,7 @@ module Ratios
         context.fail!(error: 'Could not get stats for user') unless stats.present?
 
         ratio = (stats[:games].to_i > 0) ? (stats[:wins].to_f / stats[:games].to_f) : 0.00
-        Ratio.set_for_user(user,'win-loss',ratio)
+        Ratios::Set.call(user: user, name: 'win-loss', value: ratio)
       end
     end
   end
