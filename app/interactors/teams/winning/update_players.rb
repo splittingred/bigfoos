@@ -8,7 +8,7 @@ module Teams
       end
 
       def call
-        @team.players.each do |player|
+        @team.players.uniq.each do |player|
           Players::Win.call(player: player)
         end
       end
