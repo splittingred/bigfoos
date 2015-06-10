@@ -23,7 +23,7 @@ module Scores
         @user.inc_stat(:score_as_front) if @player.position.front?
         @user.inc_stat(:score_as_back) if @player.position.back?
 
-        @other_team.players.each do |p|
+        @other_team.players.uniq.each do |p|
           p.user.inc_stat(:scored_against)
           p.user.inc_stat(:scored_against_as_front) if p.position.front?
           p.user.inc_stat(:scored_against_as_back) if p.position.back?
