@@ -224,15 +224,6 @@ class User < ActiveRecord::Base
   end
 
   ##
-  # recalculates and saves ratios
-  #
-  # @return [Boolean]
-  #
-  def recalculate_ratios
-    Ratio.recalculate_for(self)
-  end
-
-  ##
   # Set the value for a ratio
   #
   def set_ratio(k,v)

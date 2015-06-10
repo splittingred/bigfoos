@@ -7,9 +7,8 @@ module Players
     end
 
     def call
-      @player.user.recalculate_ratios
-    rescue StandardError => e
-      context.fail!(error: e.message)
+      result = Ratios::Recalculate.call(subject: @player.user)
+      context.fail!(error: result.error) unless result.success?
     end
   end
 end

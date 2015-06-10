@@ -179,19 +179,21 @@ describe User do
     end
   end
 
-  it 'test recalculation of win/loss ratio' do
-    user.set_stat(:wins,90)
-    user.set_stat(:games,100)
-    expect(user.recalculate_ratios).to be_truthy
-    expect(user.ratio('win-loss',true)).to eq 0.9
-  end
-
-  it 'test recalculation of pf/pa ratio' do
-    user.set_stat(:scores,30)
-    user.set_stat(:scored_against,20)
-    expect(user.recalculate_ratios).to be_truthy
-    expect(user.ratio('pf-pa',true)).to eq 0.6
-  end
+  # move these to interactor test
+  #
+  # it 'test recalculation of win/loss ratio' do
+  #   user.set_stat(:wins,90)
+  #   user.set_stat(:games,100)
+  #   expect(user.recalculate_ratios).to be_truthy
+  #   expect(user.ratio('win-loss',true)).to eq 0.9
+  # end
+  #
+  # it 'test recalculation of pf/pa ratio' do
+  #   user.set_stat(:scores,30)
+  #   user.set_stat(:scored_against,20)
+  #   expect(user.recalculate_ratios).to be_truthy
+  #   expect(user.ratio('pf-pa',true)).to eq 0.6
+  # end
 
   def create_game_for_user
     g = create(:game)
