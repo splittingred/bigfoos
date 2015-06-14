@@ -41,6 +41,7 @@ BigFoos::Application.configure do
 
   STDOUT.sync = true
   config.logger = Logger.new(STDOUT)
+  config.log_level = ENV['LOG_LEVEL'].present? ? ENV['LOG_LEVEL'].to_s.downcase.to_sym : :debug
   config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
   config.assets.precompile += %w( .svg .eot .woff .ttf )
 end

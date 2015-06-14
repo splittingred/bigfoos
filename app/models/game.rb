@@ -49,11 +49,12 @@ class Game < ActiveRecord::Base
     str.join delimiter
   end
 
-  ##
-  # Finds the winning team for the game by score
-  #
   def winning_team
-    self.teams.ordered_by_score.first
+    self.teams.won.first
+  end
+
+  def losing_team
+    self.teams.lost.first
   end
 
   ##
