@@ -19,7 +19,7 @@ module Players
       def rollback
         @player.update!(
           won: nil,
-          points_against: nil
+          points_against: 0
         )
       end
     end

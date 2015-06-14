@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150608134219) do
+ActiveRecord::Schema.define(version: 20150614012650) do
 
   create_table "achievements", force: true do |t|
     t.string   "name"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20150608134219) do
     t.integer  "points",         default: 0,     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "won",            default: false, null: false
+    t.boolean  "won",            default: false
     t.string   "position_id",    default: "",    null: false
     t.integer  "points_against", default: 0,     null: false
   end
@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 20150608134219) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "score",       default: 0,     null: false
-    t.boolean  "won",         default: false, null: false
+    t.boolean  "won",         default: false
   end
 
   add_index "teams", ["game_id"], name: "index_teams_on_game_id", using: :btree
